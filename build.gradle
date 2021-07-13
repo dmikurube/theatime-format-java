@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "maven-publish"
     id "signing"
+    id "checkstyle"
 }
 
 repositories {
@@ -129,4 +130,15 @@ test {
         outputs.upToDateWhen { false }
         showStandardStreams = true
     }
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}
+
+checkstyle {
+    toolVersion = "8.44"
 }
