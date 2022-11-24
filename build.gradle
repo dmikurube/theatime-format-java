@@ -13,8 +13,8 @@ group = "org.theatime"
 version = "0.1.0-SNAPSHOT"
 description = "Converts date and time to/from a string."
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
     compileClasspath.resolutionStrategy.activateDependencyLocking()
