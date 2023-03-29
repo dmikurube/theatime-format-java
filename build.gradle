@@ -13,9 +13,6 @@ group = "org.theatime"
 version = "0.1.0-SNAPSHOT"
 description = "Converts date and time to/from a string."
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
 configurations {
     compileClasspath.resolutionStrategy.activateDependencyLocking()
     runtimeClasspath.resolutionStrategy.activateDependencyLocking()
@@ -27,6 +24,10 @@ tasks.withType(JavaCompile) {
 }
 
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+
     withJavadocJar()
     withSourcesJar()
 }
@@ -50,21 +51,18 @@ javadoc {
 jar {
     metaInf {
         from rootProject.file("LICENSE")
-        from rootProject.file("NOTICE")
     }
 }
 
 sourcesJar {
     metaInf {
         from rootProject.file("LICENSE")
-        from rootProject.file("NOTICE")
     }
 }
 
 javadocJar {
     metaInf {
         from rootProject.file("LICENSE")
-        from rootProject.file("NOTICE")
     }
 }
 
@@ -90,6 +88,7 @@ publishing {
                         // http://central.sonatype.org/pages/requirements.html#license-information
                         name = "The Apache License, Version 2.0"
                         url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                        distribution = "repo"
                     }
                 }
 
@@ -127,6 +126,10 @@ publishing {
 }
 
 signing {
+    if (project.hasProperty("signingKey") && project.hasProperty("signingPassword")) {
+        logger.lifecycle("Signing with an in-memory key.")
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
     sign publishing.publications.maven
 }
 
