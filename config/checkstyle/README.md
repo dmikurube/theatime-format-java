@@ -1,8 +1,11 @@
-* google_check.xml: downloaded
-    * https://github.com/checkstyle/checkstyle/blob/checkstyle-8.44/src/main/resources/google_checks.xml
-* checkstyle.xml: customized from google_check.xml
-    * Enable suppressions through /config/checkstyle/suppressions.xml
-    * Enable suppressions with @SuppressWarnings
-    * Indent with 4-column spaces
-    * Limit columns to 180 characters
-    * Reject unused imports.
+Checkstyle
+===========
+
+* google_check.xml:
+    * Downloaded from: https://github.com/checkstyle/checkstyle/blob/checkstyle-9.3/src/main/resources/google_checks.xml
+* checkstyle.xml: Customized from google_check.xml.
+    * To enable suppressions through checkstyle-suppressions.xml.
+    * To enable suppressions with @SuppressWarnings.
+    * To indent with 4-column spaces.
+    * To limit columns to 180 characters.
+    * To reject unused imports.

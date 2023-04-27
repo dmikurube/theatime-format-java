@@ -154,5 +154,11 @@ tasks.withType(Checkstyle) {
 }
 
 checkstyle {
-    toolVersion = "8.44"
+    toolVersion = "9.3"
+    configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+    configProperties = [
+        "org.checkstyle.google.suppressionfilter.config": file("${rootProject.projectDir}/config/checkstyle/checkstyle-suppressions.xml")
+    ]
+    ignoreFailures = false
+    maxWarnings = 0  // https://github.com/gradle/gradle/issues/881
 }

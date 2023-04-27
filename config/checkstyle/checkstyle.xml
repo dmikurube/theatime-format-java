@@ -22,14 +22,6 @@
   <property name="severity" value="warning"/>
 
   <property name="fileExtensions" value="java, properties, xml"/>
-
-  <module name="SuppressionFilter">
-    <property name="file" value="${config_loc}/suppressions.xml"/>
-    <property name="optional" value="false"/>
-  </module>
-
-  <module name="SuppressWarningsFilter" />
-
   <!-- Excludes all 'module-info.java' files              -->
   <!-- See https://checkstyle.org/config_filefilters.html -->
   <module name="BeforeExecutionExclusionFileFilter">
@@ -39,7 +31,7 @@
   <module name="SuppressionFilter">
     <property name="file" value="${org.checkstyle.google.suppressionfilter.config}"
            default="checkstyle-suppressions.xml" />
-    <property name="optional" value="true"/>
+    <property name="optional" value="false"/>
   </module>
 
   <!-- Checks for whitespace                               -->
@@ -255,7 +247,7 @@
     </module>
     <module name="Indentation">
       <property name="basicOffset" value="4"/>
-      <property name="braceAdjustment" value="2"/>
+      <property name="braceAdjustment" value="4"/>
       <property name="caseIndent" value="4"/>
       <property name="throwsIndent" value="8"/>
       <property name="lineWrappingIndentation" value="8"/>
@@ -269,6 +261,7 @@
                     PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,
                     RECORD_COMPONENT_DEF"/>
     </module>
+    <module name="NoWhitespaceBeforeCaseDefaultColon"/>
     <module name="OverloadMethodsDeclarationOrder"/>
     <module name="VariableDeclarationUsageDistance"/>
     <module name="CustomImportOrder">
