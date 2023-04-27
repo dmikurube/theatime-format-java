@@ -16,10 +16,5 @@
 
 package org.theatime.string;
 
-import java.time.temporal.TemporalAccessor;
-
-public abstract class UnitFormatter {
-    public abstract boolean format(TemporalAccessor temporal, DateTimeFormattingContext context, StringBuilder builder);
-
-    public abstract int parse(DateTimeParsingContext context, CharSequence string, int position);
+public class DateTimeFormattingContext {
 }

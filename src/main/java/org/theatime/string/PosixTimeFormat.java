@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Dai MIKURUBE
+ * Copyright 2018-2023 Dai MIKURUBE
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,18 @@
 
 package org.theatime.string;
 
-import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
-public abstract class UnitFormatter {
-    public abstract boolean format(TemporalAccessor temporal, DateTimeFormattingContext context, StringBuilder builder);
-
-    public abstract int parse(DateTimeParsingContext context, CharSequence string, int position);
+/**
+ * Represents a Ruby-compatible date-time format.
+ */
+final class PosixTimeFormat implements Iterable<Format.TokenWithNext> {
+    @Override
+    public Iterator<Format.TokenWithNext> iterator() {
+        return null;
+    }
 }

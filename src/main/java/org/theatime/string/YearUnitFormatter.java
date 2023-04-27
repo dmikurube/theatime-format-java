@@ -16,6 +16,10 @@
 
 package org.theatime.string;
 
+import java.time.format.DecimalStyle;
+import java.time.format.SignStyle;
+import java.time.temporal.TemporalAccessor;
+
 /**
  * The year, including the century (for example, 1988).
  *
@@ -26,27 +30,19 @@ package org.theatime.string;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/007904875/functions/strptime.html">strptime - The Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004 Edition</a>
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
-public final class YearUnitFormatter extends UnitFormatter {
+public final class YearUnitFormatter extends NumberUnitFormatter {
     private YearUnitFormatter(final int digits) {
-        this.digits = digits;
+        super(digits, DecimalStyle.STANDARD, SignStyle.NORMAL);
     }
 
     @Override
-    public boolean format(final DateTimeFormattingContext context, final StringBuilder builder) {
-        builder.append();
+    public boolean format(final TemporalAccessor temporal, final DateTimeFormattingContext context, final StringBuilder builder) {
+        builder.append("");
         return true;
     }
 
     @Override
     public int parse(DateTimeParsingContext context, CharSequence string, int position) {
-        return ;
+        return 0;
     }
-
-    /**
-     * The number of digits to read.
-     *
-     * <p>In case of the POSIX formatter {@code %Y}, it would be {@code 4} if it is followed by a number-based formatter,
-     * or {@link Integer.MAX_VALUE} otherwise.
-     */
-    private final int digits;
 }
