@@ -34,48 +34,52 @@ import java.time.temporal.TemporalAccessor;
 public abstract class NumberUnitFormatter extends UnitFormatter {
     protected NumberUnitFormatter(
             final int digits,
+            final int minWidth,
+            final int maxWidth,
             final DecimalStyle decimalStyle,
             final SignStyle signStyle) {
-        this.digits = digits;
+        this.digits = digits;  // From strftime / strptime
+        this.minWidth = minWidth;  // From DateTimeFormatter
+        this.maxWidth = maxWidth;  // From DateTimeFormatter
         this.decimalStyle = decimalStyle;
         this.signStyle = signStyle;
-        this.maxWidth = 4;
-        this.minWidth = 2;
     }
 
     public final void formatNumber(final long value, final DateTimeFormattingContext context, final StringBuilder builder) {
-        String str = (value == Long.MIN_VALUE ? "9223372036854775808" : Long.toString(Math.abs(value)));
-        if (str.length() > this.maxWidth) {
+        final String naiveString = Long.toString(Math.abs(value));
+        if (naiveString.length() > this.maxWidth) {
             throw new DateTimeException("Field " + field +
                                         " cannot be printed as the value " + value +
                                         " exceeds the maximum print width of " + maxWidth);
         }
-        str = this.decimalStyle.convertNumberToI18N(str);
+        // TODO: Consider DecimalStyle#getZeroDigit().
 
         if (value >= 0) {
-            switch (signStyle) {
-            case EXCEEDS_PAD:
-                if (minWidth < 19 && value >= EXCEED_POINTS[minWidth]) {
+            switch (this.signStyle) {
+                case EXCEEDS_PAD:
+                    if (this.minWidth < 19 && value >= EXCEED_POINTS[this.minWidth]) {
+                        builder.append(decimalStyle.getPositiveSign());
+                    }
+                    break;
+                case ALWAYS:
                     builder.append(decimalStyle.getPositiveSign());
-                }
-                break;
-            case ALWAYS:
-                builder.append(decimalStyle.getPositiveSign());
-                break;
+                    break;
             }
         } else {
-            switch (signStyle) {
-            case NORMAL:
-            case EXCEEDS_PAD:
-            case ALWAYS:
-                builder.append(decimalStyle.getNegativeSign());
-                break;
-            case NOT_NEGATIVE:
-                throw new DateTimeException("Field " + field +
-                                            " cannot be printed as the value " + value +
-                                            " cannot be negative according to the SignStyle");
+            switch (this.signStyle) {
+                case NORMAL:
+                case EXCEEDS_PAD:
+                case ALWAYS:
+                    builder.append(decimalStyle.getNegativeSign());
+                    break;
+                case NOT_NEGATIVE:
+                    throw new DateTimeException("Field " + field +
+                                                " cannot be printed as the value " + value +
+                                                " cannot be negative according to the SignStyle");
             }
         }
+
+        // TODO: Consider 0-fill, space-fill, no-fill, ...
         for (int i = 0; i < minWidth - str.length(); i++) {
             builder.append(this.decimalStyle.getZeroDigit());
         }
@@ -83,7 +87,7 @@ public abstract class NumberUnitFormatter extends UnitFormatter {
     }
 
     public final int parseNumber() {
-        return 0;
+        return 0L;
     }
 
     /**
