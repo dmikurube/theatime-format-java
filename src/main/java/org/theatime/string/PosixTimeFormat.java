@@ -16,6 +16,8 @@
 
 package org.theatime.string;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 
 public final class PosixTimeFormat {
@@ -25,6 +27,17 @@ public final class PosixTimeFormat {
 
     public static PosixTimeFormat compile(final String format, final PosixTimeFormatOption... options) {
         return new PosixTimeFormat(PosixTimeFormatTokenizer.tokenize(format, options));
+    }
+
+    public static DateTimeFormatter compileToDateTimeFormatter(final String format, final PosixTimeFormatOption... options) {
+        final List<PosixTimeFormatSpecification> specifications = PosixTimeFormatTokenizer.tokenize(format, options);
+        final DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+        for (final PosixTimeFormatSpecification specification : specifications) {
+            if (!specification.appendToDateTimeFormatterBuilder(builder)) {
+                throw new IllegalArgumentException("Invalid format for java.time.format.DateTimeFormatter.");
+            }
+        }
+        return builder.toFormatter();
     }
 
     private final List<PosixTimeFormatSpecification> formatSpecifications;

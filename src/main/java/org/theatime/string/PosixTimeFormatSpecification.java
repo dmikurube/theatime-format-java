@@ -16,9 +16,20 @@
 
 package org.theatime.string;
 
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.SignStyle;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoField;
 import java.util.Objects;
 
 /**
+ * Represents a conversion specification, or ordinary characters, in POSIX {@code strftime} and {@code strptime} formats.
+ *
+ * <p>For example, conversion specifications such as {@code "%A"}, {@code "%-h"}, {@code "%04Y"}, or
+ * ordinary characters such as {@code "T"}, {@code ":"}, {@code "hour"}, or {@code "時"}.
+ *
+ * <p>It assumes that it is running is in the "C" or "POSIX" locale.
+ *
  * @see <a href="https://pubs.opengroup.org/onlinepubs/009695399/functions/strftime.html">strftime - The Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004 Edition</a>
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strftime.html">strftime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  * @see <a href="https://pubs.opengroup.org/onlinepubs/007904875/functions/strptime.html">strptime - The Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004 Edition</a>
@@ -36,7 +47,12 @@ final class PosixTimeFormatSpecification {
             final boolean isAvailableForFormatting,
             final boolean isAvailableForParsing,
             final String original) {
-        assert isAvailableForFormatting || isAvailableForParsing;
+        if (type == null) {
+            throw new NullPointerException("PosixTimeFormatConversionType is null");
+        }
+        if ((!isAvailableForFormatting) && (!isAvailableForParsing)) {
+            throw new IllegalArgumentException("Unavailable neither for formatting nor parsing.");
+        }
 
         this.type = type;
 
@@ -50,33 +66,24 @@ final class PosixTimeFormatSpecification {
         this.isAvailableForParsing = isAvailableForParsing;
 
         this.original = original;
-
-        this.ordinaryCharacters = null;
-    }
-
-    private PosixTimeFormatSpecification(final String ordinaryCharacters) {
-        this.type = null;
-
-        this.upperCase = false;
-        this.changeCase = false;
-        this.precision = -1;
-        this.colons = -1;
-        this.padding = '\0';
-        this.modifier = '\0';
-        this.isAvailableForFormatting = true;
-        this.isAvailableForParsing = true;
-
-        this.original = ordinaryCharacters;
-
-        this.ordinaryCharacters = ordinaryCharacters;
     }
 
     static PosixTimeFormatSpecification ordinaryCharacters(final String ordinaryCharacters) {
-        return new PosixTimeFormatSpecification(ordinaryCharacters);
+        return new PosixTimeFormatSpecification(
+                PosixTimeFormatConversionType.LITERAL,  // type
+                false,  // upperCase
+                false,  // changeCase
+                -1,  // precision
+                -1,  // colons
+                '\0',  // padding
+                '\0',  // modifier
+                true,  // isAvailableForFormatting
+                true,  // isAvailableForParsing
+                ordinaryCharacters);  // original
     }
 
     static PosixTimeFormatSpecification conversion(
-            final char ch,
+            final PosixTimeFormatConversionType type,
             final boolean upperCase,
             final boolean changeCase,
             final int precision,
@@ -85,16 +92,16 @@ final class PosixTimeFormatSpecification {
             final char modifier,
             final String original) {
         return new PosixTimeFormatSpecification(
-                PosixTimeFormatConversionType.valueOf(ch),
-                upperCase,
-                changeCase,
-                precision,
-                colons,
-                padding,
-                modifier,
-                true,
-                true,
-                original);
+                type,  // type
+                upperCase,  // upperCase
+                changeCase,  // changeCase
+                precision,  // precision
+                colons,  // colons
+                padding,  // padding
+                modifier,  // modifier
+                true,  // isAvailableForFormatting
+                true,  // isAvailableForParsing
+                original);  // original
     }
 
     static class ConversionBuilder {
@@ -149,14 +156,17 @@ final class PosixTimeFormatSpecification {
             return this;
         }
 
-        PosixTimeFormatSpecification build(final char ch, final String original) {
+        PosixTimeFormatSpecification build(
+                final PosixTimeFormatConversionType type,
+                final char paddingIfUnspecified,
+                final String original) {
             return new PosixTimeFormatSpecification(
-                    PosixTimeFormatConversionType.valueOf(ch),
+                    type,
                     this.upperCase,
                     this.changeCase,
                     this.precision,
                     this.colons,
-                    this.padding,
+                    this.padding == '\0' ? paddingIfUnspecified : this.padding,
                     this.modifier,
                     this.isAvailableForFormatting,
                     this.isAvailableForParsing,
@@ -171,6 +181,90 @@ final class PosixTimeFormatSpecification {
         private char modifier;
         private boolean isAvailableForFormatting;
         private boolean isAvailableForParsing;
+    }
+
+    boolean appendToDateTimeFormatterBuilder(final DateTimeFormatterBuilder formatterBuilder) {
+        if ((!this.isAvailableForFormatting) || (!this.isAvailableForParsing)) {
+            // java.time.DateTimeFormatter must be available both for formatting and parsing.
+            return false;
+        }
+
+        switch (this.type) {
+            case LITERAL:
+                formatterBuilder.appendLiteral(this.original);
+                return true;
+            case DAY_OF_WEEK_TEXT_SHORT:
+                if (this.padding == '0' || this.upperCase || this.changeCase) {
+                    return false;
+                }
+                if (this.precision >= 0) {
+                    formatterBuilder.padNext(this.precision, this.padding);
+                }
+                formatterBuilder.appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT);
+                return true;
+            case DAY_OF_WEEK_TEXT_FULL:
+                if (this.padding == '0' || this.upperCase || this.changeCase) {
+                    return false;
+                }
+                if (this.precision >= 0) {
+                    formatterBuilder.padNext(this.precision, this.padding);
+                }
+                formatterBuilder.appendText(ChronoField.DAY_OF_WEEK, TextStyle.FULL);
+                return true;
+            case MONTH_OF_YEAR_TEXT_SHORT:
+                if (this.padding == '0' || this.upperCase || this.changeCase) {
+                    return false;
+                }
+                if (this.precision >= 0) {
+                    formatterBuilder.padNext(this.precision, this.padding);
+                }
+                formatterBuilder.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
+                return true;
+            case MONTH_OF_YEAR_TEXT_FULL:
+                if (this.padding == '0' || this.upperCase || this.changeCase) {
+                    return false;
+                }
+                if (this.precision >= 0) {
+                    formatterBuilder.padNext(this.precision, this.padding);
+                }
+                formatterBuilder.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.FULL);
+                return true;
+            case COMPOSITE_LOCAL_DATE_TIME:
+                // In the C or POSIX locale, the E and O modifiers are ignored and
+                // the replacement strings for the following specifiers are:
+                //
+                // ...
+                //   ...
+                // %c
+                //   Equivalent to %a %b %e %T %Y.
+                //
+                // strftime, strftime_l - convert date and time to a string
+                // The Open Group Base Specifications Issue 7, 2018 edition
+                // https://pubs.opengroup.org/onlinepubs/9699919799/functions/strftime.html#tag_16_576_07
+                if (this.padding == '0' || this.upperCase || this.changeCase) {
+                    return false;
+                }
+                formatterBuilder.appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT);
+                formatterBuilder.appendLiteral(" ");
+                formatterBuilder.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
+                formatterBuilder.appendLiteral(" ");
+                formatterBuilder.padNext(2, ' ');
+                formatterBuilder.appendValue(ChronoField.DAY_OF_MONTH);
+                formatterBuilder.appendLiteral(" ");
+                formatterBuilder.appendValue(ChronoField.HOUR_OF_DAY, 2);
+                formatterBuilder.appendLiteral(":");
+                formatterBuilder.appendValue(ChronoField.MINUTE_OF_HOUR, 2);
+                formatterBuilder.appendLiteral(":");
+                formatterBuilder.appendValue(ChronoField.SECOND_OF_MINUTE, 2);
+                formatterBuilder.appendLiteral(" ");
+                formatterBuilder.appendValue(ChronoField.YEAR, 4, 19, SignStyle.NORMAL);
+                return true;
+            // case 99, 00, 01:
+            //     uu      2      appendValueReduced(ChronoField.YEAR, 2, 2000);
+            default:
+                break;
+        }
+        return false;
     }
 
     boolean isAvailableForFormatting() {
@@ -200,8 +294,7 @@ final class PosixTimeFormatSpecification {
                 && Objects.equals(this.modifier, other.modifier)
                 && Objects.equals(this.isAvailableForFormatting, other.isAvailableForFormatting)
                 && Objects.equals(this.isAvailableForParsing, other.isAvailableForParsing)
-                && Objects.equals(this.original, other.original)
-                && Objects.equals(this.ordinaryCharacters, other.ordinaryCharacters);
+                && Objects.equals(this.original, other.original);
     }
 
     @Override
@@ -216,12 +309,15 @@ final class PosixTimeFormatSpecification {
                 this.modifier,
                 this.isAvailableForFormatting,
                 this.isAvailableForParsing,
-                this.original,
-                this.ordinaryCharacters);
+                this.original);
     }
 
     @Override
     public String toString() {
+        if (this.type == PosixTimeFormatConversionType.LITERAL) {
+            return this.original;
+        }
+
         final StringBuilder builder = new StringBuilder().append("<").append(this.original);
         if (this.upperCase) {
             builder.append(":uppercase");
@@ -264,6 +360,4 @@ final class PosixTimeFormatSpecification {
     private final boolean isAvailableForParsing;
 
     private final String original;
-
-    private final String ordinaryCharacters;
 }

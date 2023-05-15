@@ -16,10 +16,6 @@
 
 package org.theatime.string;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * The type of conversion to be applied by POSIX {@code strftime} and {@code strptime}.
  *
@@ -30,6 +26,8 @@ import java.util.Map;
  */
 @SuppressWarnings("checkstyle:LineLength")
 enum PosixTimeFormatConversionType {
+    LITERAL,
+
     /**
      * {@code %a} - The day of the week, using the locale's weekday names.
      *
@@ -37,7 +35,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The day of the week, using the locale's weekday names; either the abbreviated or full name may be specified.
      */
-    DAY_OF_WEEK_NAME_ABBREVIATED('a'),
+    DAY_OF_WEEK_TEXT_SHORT,
 
     /**
      * {@code %A} - The day of the week, using the locale's weekday names.
@@ -46,7 +44,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The day of the week, using the locale's weekday names; either the abbreviated or full name may be specified.
      */
-    DAY_OF_WEEK_NAME_FULL('A'),
+    DAY_OF_WEEK_TEXT_FULL,
 
     /**
      * {@code %b} - The month, using the locale's month names.
@@ -55,7 +53,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The month, using the locale's month names; either the abbreviated or full name may be specified.
      */
-    MONTH_NAME_ABBREVIATED('b'),
+    MONTH_OF_YEAR_TEXT_SHORT,
 
     /**
      * {@code %B} - The month, using the locale's month names.
@@ -64,7 +62,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The month, using the locale's month names; either the abbreviated or full name may be specified.
      */
-    MONTH_NAME_FULL('B'),
+    MONTH_OF_YEAR_TEXT_FULL,
 
     /**
      * {@code %c}
@@ -73,7 +71,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - Replaced by the locale's appropriate date and time representation.
      */
-    DATE_AND_TIME('c'),  // TODO: Revisit it.
+    COMPOSITE_LOCAL_DATE_TIME,
 
     /**
      * {@code %C}
@@ -84,7 +82,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - All but the last two digits of the year {2}; leading zeros shall be permitted but shall not be required. A leading '+' or '-' character shall be permitted before any leading zeros but shall not be required.
      */
-    CENTURY('C'),
+    CENTURY,
 
     /**
      * {@code %d}
@@ -93,7 +91,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The day of the month [01,31]; leading zeros shall be permitted but shall not be required.
      */
-    DAY_OF_MONTH_ZERO('d'),
+    DAY_OF_MONTH_ZERO,
 
     /**
      * {@code %D}
@@ -102,7 +100,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The date as {@code %m / %d / %y}.
      */
-    DATE_MDY('D'),
+    DATE_MDY,
 
     /**
      * {@code %e}
@@ -111,7 +109,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - Equivalent to {@code %d}.
      */
-    DAY_OF_MONTH_SPACE('e'),
+    DAY_OF_MONTH_SPACE,
 
     /**
      * {@code %F}
@@ -124,7 +122,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>If the minimum field width is specified to be 10, and the year is four digits long, then the output string produced will match the ISO 8601:2000 standard subclause 4.1.2.2 complete representation, extended format date representation of a specific day. If a + flag is specified, a minimum field width of x is specified, and x-7 bytes are sufficient to hold the digits of the year (not including any needed sign character), then the output will match the ISO 8601:2000 standard subclause 4.1.2.4 complete representation, expanded format date representation of a specific day. [Option End]
      */
-    YEAR_MONTH_DAY('F'),
+    YEAR_MONTH_DAY,
 
     /**
      * {@code %g}
@@ -133,7 +131,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Formatting - Replaced by the last 2 digits of the week-based year (see below) as a decimal number [00,99]. [ tm_year, tm_wday, tm_yday]
     */
-    WEEK_BASED_YEAR_OFFSET('g'),
+    WEEK_BASED_YEAR_OFFSET,
 
     /**
      * {@code %G}
@@ -144,7 +142,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>[CX] [Option Start] If a minimum field width is specified, the number of characters placed into the array pointed to by s will be the number of digits and leading sign characters (if any) in the year, or the minimum field width, whichever is greater. [Option End]
      */
-    WEEK_BASED_YEAR_FULL('G'),
+    WEEK_BASED_YEAR_FULL,
 
     /**
      * {@code %h}
@@ -153,7 +151,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - Equivalent to %b.
      */
-    MONTH_NAME_ABBREVIATED_ALIAS('h'),
+    MONTH_TEXT_SHORT_ALIAS,
 
     /**
      * {@code %H}
@@ -162,7 +160,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The hour (24-hour clock) [00,23]; leading zeros shall be permitted but shall not be required.
      */
-    HOUR_24('H'),
+    HOUR_OF_DAY,
 
     /**
      * {@code %I}
@@ -171,7 +169,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The hour (12-hour clock) [01,12]; leading zeros shall be permitted but shall not be required.
      */
-    HOUR_12('I'),
+    HOUR_OF_AMPM,
 
     /**
      * {@code %j}
@@ -180,7 +178,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The day number of the year [001,366]; leading zeros shall be permitted but shall not be required.
      */
-    DAY_OF_YEAR('j'),
+    DAY_OF_YEAR,
 
     /**
      * {@code %m}
@@ -189,7 +187,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The month number [01,12]; leading zeros shall be permitted but shall not be required.
      */
-    MONTH('m'),
+    MONTH_OF_YEAR,
 
     /**
      * {@code %M}
@@ -198,7 +196,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The minute [00,59]; leading zeros shall be permitted but shall not be required.
      */
-    MINUTE('M'),
+    MINUTE_OF_HOUR,
 
     /**
      * {@code %n}
@@ -207,7 +205,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - Any white space.
      */
-    IMMEDIATE_WHITESPACE_NEWLINE('n'),
+    LITERAL_WHITESPACE_NEWLINE,
 
     /**
      * {@code %p}
@@ -216,7 +214,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The locale's equivalent of a.m. or p.m.
      */
-    AMPM('p'),
+    AMPM_OF_DAY,
 
     /**
      * {@code %r}
@@ -225,7 +223,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - 12-hour clock time using the AM/PM notation if t_fmt_ampm is not an empty string in the LC_TIME portion of the current locale; in the POSIX locale, this shall be equivalent to {@code %I : %M : %S %p}.
      */
-    TIME_12_AMPM('r'),
+    TIME_12_AMPM,
 
     /**
      * {@code %R}
@@ -234,7 +232,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The time as {@code %H : %M}.
      */
-    HOUR_MINUTE_24('R'),
+    HOUR_MINUTE_24,
 
     /**
      * {@code %S}
@@ -243,7 +241,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The seconds [00,60]; leading zeros shall be permitted but shall not be required.
      */
-    SECOND('S'),
+    SECOND_OF_MINUTE,
 
     /**
      * {@code %t}
@@ -252,7 +250,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - Any white space.
      */
-    IMMEDIATE_WHITESPACE_TAB('t'),
+    LITERAL_WHITESPACE_TAB,
 
     /**
      * {@code %T}
@@ -261,7 +259,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The time as {@code %H : %M : %S}.
      */
-    TIME_24('T'),
+    TIME_24,
 
     /**
      * {@code %u}
@@ -270,7 +268,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Formatting - Replaced by the weekday as a decimal number [1,7], with 1 representing Monday. [tm_wday]
      */
-    DAY_OF_WEEK_1_7('u'),
+    DAY_OF_WEEK_1_7,
 
     /**
      * {@code %U}
@@ -279,7 +277,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The week number of the year (Sunday as the first day of the week) as a decimal number [00,53]; leading zeros shall be permitted but shall not be required.
      */
-    WEEK_NUMBER_OF_YEAR_SUNDAY_0('U'),
+    WEEK_NUMBER_OF_YEAR_SUNDAY_0,
 
     /**
      * {@code %V}
@@ -288,7 +286,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Formatting - Replaced by the week number of the year (Monday as the first day of the week) as a decimal number [01,53]. If the week containing 1 January has four or more days in the new year, then it is considered week 1. Otherwise, it is the last week of the previous year, and the next week is week 1. Both January 4th and the first Thursday of January are always in week 1. [ tm_year, tm_wday, tm_yday]
      */
-    WEEK_NUMBER_OF_YEAR_MONDAY_1('V'),
+    WEEK_NUMBER_OF_YEAR_MONDAY_1,
 
     /**
      * {@code %w}
@@ -297,7 +295,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The weekday as a decimal number [0,6], with 0 representing Sunday.
      */
-    DAY_OF_WEEK_0_6('w'),
+    DAY_OF_WEEK_0_6,
 
     /**
      * {@code %W}
@@ -306,7 +304,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The week number of the year (Monday as the first day of the week) as a decimal number [00,53]; leading zeros shall be permitted but shall not be required.
      */
-    WEEK_NUMBER_OF_YEAR_MONDAY_0('W'),
+    WEEK_NUMBER_OF_YEAR_MONDAY_0,
 
     /**
      * {@code %x}
@@ -315,7 +313,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The date, using the locale's date format.
      */
-    DATE_LOCALE('x'),
+    DATE_LOCALE,
 
     /**
      * {@code %X}
@@ -324,7 +322,7 @@ enum PosixTimeFormatConversionType {
      *
      * <p>Parsing - The time, using the locale's time format.
      */
-    TIME_LOCALE('X'),
+    TIME_LOCALE,
 
     /**
      * {@code %y}
@@ -335,7 +333,7 @@ enum PosixTimeFormatConversionType {
 Note:
 It is expected that in a future version of this standard the default century inferred from a 2-digit year will change. (This would apply to all commands accepting a 2-digit year as input.)
      */
-    YEAR_TWO_DIGITS('y'),
+    YEAR_TWO_DIGITS,
 
     /**
      * {@code %Y}
@@ -346,7 +344,7 @@ It is expected that in a future version of this standard the default century inf
      *
      * <p>Parsing - The full year {4}; leading zeros shall be permitted but shall not be required. A leading '+' or '-' character shall be permitted before any leading zeros but shall not be required.
      */
-    YEAR('Y'),
+    YEAR,
 
     /**
      * {@code %z}
@@ -355,7 +353,7 @@ It is expected that in a future version of this standard the default century inf
      *
      * <p>Formatting - Replaced by the offset from UTC in the ISO 8601:2000 standard format ( +hhmm or -hhmm ), or by no characters if no timezone is determinable. For example, "-0430" means 4 hours 30 minutes behind UTC (west of Greenwich). [CX] [Option Start]  If tm_isdst is zero, the standard time offset is used. If tm_isdst is greater than zero, the daylight savings time offset is used. If tm_isdst is negative, no characters are returned. [Option End] [ tm_isdst]
      */
-    ZONE('z'),
+    ZONE_OFFSET,
 
     /**
      * {@code %Z}
@@ -364,7 +362,7 @@ It is expected that in a future version of this standard the default century inf
      *
      * <p>Formatting - Replaced by the timezone name or abbreviation, or by no bytes if no timezone information exists. [tm_isdst]
      */
-    ZONE_NAME('Z'),
+    ZONE_NAME,
 
     /**
      * {@code %%}
@@ -373,38 +371,6 @@ It is expected that in a future version of this standard the default century inf
      *
      * <p>Parsing - Replaced by {@code %}.
      */
-    IMMEDIATE_PERCENT('%'),
+    LITERAL_PERCENT,
     ;
-
-    PosixTimeFormatConversionType(final char character) {
-        this.character = character;
-    }
-
-    @Override
-    public String toString() {
-        return "" + this.character;
-    }
-
-    public static PosixTimeFormatConversionType valueOf(final char ch) {
-        final PosixTimeFormatConversionType value = MAP.get(ch);
-        if (value == null) {
-            throw new IllegalArgumentException(
-                    String.format("No format conversion specification for: 0x%x ('%c')", (int) ch, ch));
-        }
-        return value;
-    }
-
-    static {
-        final HashMap<Character, PosixTimeFormatConversionType> map = new HashMap<>();
-        for (final PosixTimeFormatConversionType value : values()) {
-            if (null != map.putIfAbsent(value.character, value)) {
-                throw new RuntimeException("Duplicated character assignment in PosixTimeFormatConversionType.");
-            }
-        }
-        MAP = Collections.unmodifiableMap(map);
-    }
-
-    private static final Map<Character, PosixTimeFormatConversionType> MAP;
-
-    final char character;
 }

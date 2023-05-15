@@ -45,7 +45,8 @@ public class TestPosixTimeFormat {
     public void test1() {
         assertFormat(
                 "%nabc",
-                PosixTimeFormatSpecification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
+                PosixTimeFormatSpecification.conversion(
+                        PosixTimeFormatConversionType.LITERAL_WHITESPACE_NEWLINE, false, false, -1, -1, ' ', '\0', "%n"),
                 PosixTimeFormatSpecification.ordinaryCharacters("abc"));
     }
 
@@ -54,7 +55,8 @@ public class TestPosixTimeFormat {
         assertFormat(
                 "abc%nabc",
                 PosixTimeFormatSpecification.ordinaryCharacters("abc"),
-                PosixTimeFormatSpecification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
+                PosixTimeFormatSpecification.conversion(
+                        PosixTimeFormatConversionType.LITERAL_WHITESPACE_NEWLINE, false, false, -1, -1, ' ', '\0', "%n"),
                 PosixTimeFormatSpecification.ordinaryCharacters("abc"));
     }
 
@@ -63,25 +65,26 @@ public class TestPosixTimeFormat {
         assertFormat(
                 "abc%12nabc",
                 PosixTimeFormatSpecification.ordinaryCharacters("abc"),
-                PosixTimeFormatSpecification.conversion('n', false, false, 12, -1, '\0', '\0', "%12n"),
+                PosixTimeFormatSpecification.conversion(
+                        PosixTimeFormatConversionType.LITERAL_WHITESPACE_NEWLINE, false, false, 12, -1, ' ', '\0', "%12n"),
                 PosixTimeFormatSpecification.ordinaryCharacters("abc"));
     }
 
     @ParameterizedTest
     @CsvSource({
-            "%%,%,false,false,-1,-1,,,%%",
-            "%n,n,false,false,-1,-1,,,%n",
-            "%t,t,false,false,-1,-1,,,%t",
-            "%12b,b,false,false,12,-1,,,%12b",
-            "%z,z,false,false,-1,-1,,,%z",
-            "%:z,z,false,false,-1,1,,,%:z",
-            "%::z,z,false,false,-1,2,,,%::z",
-            "%:::z,z,false,false,-1,3,,,%:::z",
-            "%::::z,z,false,false,-1,4,,,%::::z",
+            "%%,LITERAL_PERCENT,false,false,-1,-1,,,%%",
+            "%n,LITERAL_WHITESPACE_NEWLINE,false,false,-1,-1,,,%n",
+            "%t,LITERAL_WHITESPACE_TAB,false,false,-1,-1,,,%t",
+            "%12b,MONTH_OF_YEAR_TEXT_SHORT,false,false,12,-1,,,%12b",
+            "%z,ZONE_OFFSET,false,false,-1,-1,,,%z",
+            "%:z,ZONE_OFFSET,false,false,-1,1,,,%:z",
+            "%::z,ZONE_OFFSET,false,false,-1,2,,,%::z",
+            "%:::z,ZONE_OFFSET,false,false,-1,3,,,%:::z",
+            "%::::z,ZONE_OFFSET,false,false,-1,4,,,%::::z",
     })
     public void testSingles(
             final String format,
-            final String expectedCh,
+            final String expectedType,
             final String expectedUpperCase,
             final String expectedChangeCase,
             final String expectedPrecision,
@@ -91,12 +94,12 @@ public class TestPosixTimeFormat {
             final String expectedOriginal) {
         assertFormat(format,
                      PosixTimeFormatSpecification.conversion(
-                             expectedCh.charAt(0),
+                             PosixTimeFormatConversionType.valueOf(expectedType),
                              Boolean.parseBoolean(expectedUpperCase),
                              Boolean.parseBoolean(expectedChangeCase),
                              Integer.parseInt(expectedPrecision),
                              Integer.parseInt(expectedColons),
-                             (expectedPadding == null || expectedPadding.isEmpty()) ? '\0' : expectedPadding.charAt(0),
+                             (expectedPadding == null || expectedPadding.isEmpty()) ? ' ' : expectedPadding.charAt(0),
                              (expectedModifier == null || expectedModifier.isEmpty()) ? '\0' : expectedModifier.charAt(0),
                              expectedOriginal));
     }
