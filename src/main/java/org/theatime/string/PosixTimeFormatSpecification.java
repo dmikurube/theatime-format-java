@@ -51,10 +51,10 @@ final class PosixTimeFormatSpecification {
 
         this.original = original;
 
-        this.raw = null;
+        this.ordinaryCharacters = null;
     }
 
-    private PosixTimeFormatSpecification(final String raw) {
+    private PosixTimeFormatSpecification(final String ordinaryCharacters) {
         this.type = null;
 
         this.upperCase = false;
@@ -66,13 +66,13 @@ final class PosixTimeFormatSpecification {
         this.isAvailableForFormatting = true;
         this.isAvailableForParsing = true;
 
-        this.original = raw;
+        this.original = ordinaryCharacters;
 
-        this.raw = raw;
+        this.ordinaryCharacters = ordinaryCharacters;
     }
 
-    static PosixTimeFormatSpecification raw(final String raw) {
-        return new PosixTimeFormatSpecification(raw);
+    static PosixTimeFormatSpecification ordinaryCharacters(final String ordinaryCharacters) {
+        return new PosixTimeFormatSpecification(ordinaryCharacters);
     }
 
     static PosixTimeFormatSpecification conversion(
@@ -201,7 +201,7 @@ final class PosixTimeFormatSpecification {
                 && Objects.equals(this.isAvailableForFormatting, other.isAvailableForFormatting)
                 && Objects.equals(this.isAvailableForParsing, other.isAvailableForParsing)
                 && Objects.equals(this.original, other.original)
-                && Objects.equals(this.raw, other.raw);
+                && Objects.equals(this.ordinaryCharacters, other.ordinaryCharacters);
     }
 
     @Override
@@ -217,7 +217,7 @@ final class PosixTimeFormatSpecification {
                 this.isAvailableForFormatting,
                 this.isAvailableForParsing,
                 this.original,
-                this.raw);
+                this.ordinaryCharacters);
     }
 
     @Override
@@ -265,5 +265,5 @@ final class PosixTimeFormatSpecification {
 
     private final String original;
 
-    private final String raw;
+    private final String ordinaryCharacters;
 }

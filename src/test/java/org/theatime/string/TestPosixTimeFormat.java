@@ -38,7 +38,7 @@ public class TestPosixTimeFormat {
             "abc%@abc",
     })
     public void testUnmatch(final String format) {
-        assertFormat(format, PosixTimeFormatSpecification.raw(format));
+        assertFormat(format, PosixTimeFormatSpecification.ordinaryCharacters(format));
     }
 
     @Test
@@ -46,25 +46,25 @@ public class TestPosixTimeFormat {
         assertFormat(
                 "%nabc",
                 PosixTimeFormatSpecification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
-                PosixTimeFormatSpecification.raw("abc"));
+                PosixTimeFormatSpecification.ordinaryCharacters("abc"));
     }
 
     @Test
     public void test2() {
         assertFormat(
                 "abc%nabc",
-                PosixTimeFormatSpecification.raw("abc"),
+                PosixTimeFormatSpecification.ordinaryCharacters("abc"),
                 PosixTimeFormatSpecification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
-                PosixTimeFormatSpecification.raw("abc"));
+                PosixTimeFormatSpecification.ordinaryCharacters("abc"));
     }
 
     @Test
     public void test3() {
         assertFormat(
                 "abc%12nabc",
-                PosixTimeFormatSpecification.raw("abc"),
+                PosixTimeFormatSpecification.ordinaryCharacters("abc"),
                 PosixTimeFormatSpecification.conversion('n', false, false, 12, -1, '\0', '\0', "%12n"),
-                PosixTimeFormatSpecification.raw("abc"));
+                PosixTimeFormatSpecification.ordinaryCharacters("abc"));
     }
 
     @ParameterizedTest

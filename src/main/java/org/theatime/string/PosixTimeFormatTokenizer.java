@@ -59,7 +59,8 @@ final class PosixTimeFormatTokenizer {
 
             if (posPercent < 0) {
                 if (firstOrdinaryCharacter < this.format.length()) {
-                    this.formatSpecifications.add(PosixTimeFormatSpecification.raw(this.format.substring(firstOrdinaryCharacter)));
+                    this.formatSpecifications.add(PosixTimeFormatSpecification.ordinaryCharacters(
+                            this.format.substring(firstOrdinaryCharacter)));
                 }
                 break;
             }
@@ -68,7 +69,8 @@ final class PosixTimeFormatTokenizer {
             final PosixTimeFormatSpecification formatSpecification = this.tokenizeConversion();
             if (formatSpecification != null) {
                 if (firstOrdinaryCharacter < posPercent) {
-                    this.formatSpecifications.add(PosixTimeFormatSpecification.raw(this.format.substring(firstOrdinaryCharacter, posPercent)));
+                    this.formatSpecifications.add(PosixTimeFormatSpecification.ordinaryCharacters(
+                            this.format.substring(firstOrdinaryCharacter, posPercent)));
                 }
                 this.formatSpecifications.add(formatSpecification);
                 firstOrdinaryCharacter = this.pos;
