@@ -34,6 +34,8 @@
     <property name="optional" value="false"/>
   </module>
 
+  <module name="SuppressWarningsFilter" />
+
   <!-- Checks for whitespace                               -->
   <!-- See http://checkstyle.org/config_whitespace.html -->
   <module name="FileTabCharacter">
