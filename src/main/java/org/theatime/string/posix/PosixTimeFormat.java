@@ -19,13 +19,13 @@ package org.theatime.string.posix;
 import java.util.List;
 
 public final class PosixTimeFormat {
-    private PosixTimeFormat(final List<PosixTimeFormatSpecification> formatSpecifications) {
+    private PosixTimeFormat(final List<Specification> formatSpecifications) {
         this.formatSpecifications = formatSpecifications;
     }
 
     public static PosixTimeFormat compile(final String format, final PosixTimeFormatOption... options) {
-        return new PosixTimeFormat(PosixTimeFormatTokenizer.tokenize(format, options));
+        return new PosixTimeFormat(Tokenizer.tokenize(format, options));
     }
 
-    private final List<PosixTimeFormatSpecification> formatSpecifications;
+    private final List<Specification> formatSpecifications;
 }

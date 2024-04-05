@@ -24,9 +24,9 @@ import java.util.Objects;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/007904875/functions/strptime.html">strptime - The Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004 Edition</a>
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
-final class PosixTimeFormatSpecification {
-    private PosixTimeFormatSpecification(
-            final PosixTimeFormatConversionType type,
+final class Specification {
+    private Specification(
+            final ConversionType type,
             final boolean upperCase,
             final boolean changeCase,
             final int precision,
@@ -54,7 +54,7 @@ final class PosixTimeFormatSpecification {
         this.ordinaryCharacters = null;
     }
 
-    private PosixTimeFormatSpecification(final String ordinaryCharacters) {
+    private Specification(final String ordinaryCharacters) {
         this.type = null;
 
         this.upperCase = false;
@@ -71,11 +71,11 @@ final class PosixTimeFormatSpecification {
         this.ordinaryCharacters = ordinaryCharacters;
     }
 
-    static PosixTimeFormatSpecification ordinaryCharacters(final String ordinaryCharacters) {
-        return new PosixTimeFormatSpecification(ordinaryCharacters);
+    static Specification ordinaryCharacters(final String ordinaryCharacters) {
+        return new Specification(ordinaryCharacters);
     }
 
-    static PosixTimeFormatSpecification conversion(
+    static Specification conversion(
             final char ch,
             final boolean upperCase,
             final boolean changeCase,
@@ -84,8 +84,8 @@ final class PosixTimeFormatSpecification {
             final char padding,
             final char modifier,
             final String original) {
-        return new PosixTimeFormatSpecification(
-                PosixTimeFormatConversionType.valueOf(ch),
+        return new Specification(
+                ConversionType.valueOf(ch),
                 upperCase,
                 changeCase,
                 precision,
@@ -149,9 +149,9 @@ final class PosixTimeFormatSpecification {
             return this;
         }
 
-        PosixTimeFormatSpecification build(final char ch, final String original) {
-            return new PosixTimeFormatSpecification(
-                    PosixTimeFormatConversionType.valueOf(ch),
+        Specification build(final char ch, final String original) {
+            return new Specification(
+                    ConversionType.valueOf(ch),
                     this.upperCase,
                     this.changeCase,
                     this.precision,
@@ -186,11 +186,11 @@ final class PosixTimeFormatSpecification {
         if (this == otherObject) {
             return true;
         }
-        if (!(otherObject instanceof PosixTimeFormatSpecification)) {
+        if (!(otherObject instanceof Specification)) {
             return false;
         }
 
-        final PosixTimeFormatSpecification other = (PosixTimeFormatSpecification) otherObject;
+        final Specification other = (Specification) otherObject;
         return Objects.equals(this.type, other.type)
                 && Objects.equals(this.upperCase, other.upperCase)
                 && Objects.equals(this.changeCase, other.changeCase)
@@ -253,7 +253,7 @@ final class PosixTimeFormatSpecification {
         return builder.append(">").toString();
     }
 
-    private final PosixTimeFormatConversionType type;
+    private final ConversionType type;
     private final boolean upperCase;
     private final boolean changeCase;
     private final int precision;

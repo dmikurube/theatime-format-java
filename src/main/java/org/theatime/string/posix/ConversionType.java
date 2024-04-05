@@ -29,7 +29,7 @@ import java.util.Map;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
 @SuppressWarnings("checkstyle:LineLength")
-enum PosixTimeFormatConversionType {
+enum ConversionType {
     /**
      * {@code %a} - The day of the week, using the locale's weekday names.
      *
@@ -376,7 +376,7 @@ It is expected that in a future version of this standard the default century inf
     IMMEDIATE_PERCENT('%'),
     ;
 
-    PosixTimeFormatConversionType(final char character) {
+    ConversionType(final char character) {
         this.character = character;
     }
 
@@ -385,8 +385,8 @@ It is expected that in a future version of this standard the default century inf
         return "" + this.character;
     }
 
-    public static PosixTimeFormatConversionType valueOf(final char ch) {
-        final PosixTimeFormatConversionType value = MAP.get(ch);
+    public static ConversionType valueOf(final char ch) {
+        final ConversionType value = MAP.get(ch);
         if (value == null) {
             throw new IllegalArgumentException(
                     String.format("No format conversion specification for: 0x%x ('%c')", (int) ch, ch));
@@ -395,16 +395,16 @@ It is expected that in a future version of this standard the default century inf
     }
 
     static {
-        final HashMap<Character, PosixTimeFormatConversionType> map = new HashMap<>();
-        for (final PosixTimeFormatConversionType value : values()) {
+        final HashMap<Character, ConversionType> map = new HashMap<>();
+        for (final ConversionType value : values()) {
             if (null != map.putIfAbsent(value.character, value)) {
-                throw new RuntimeException("Duplicated character assignment in PosixTimeFormatConversionType.");
+                throw new RuntimeException("Duplicated character assignment in ConversionType.");
             }
         }
         MAP = Collections.unmodifiableMap(map);
     }
 
-    private static final Map<Character, PosixTimeFormatConversionType> MAP;
+    private static final Map<Character, ConversionType> MAP;
 
     final char character;
 }

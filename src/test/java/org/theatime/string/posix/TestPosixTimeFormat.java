@@ -38,33 +38,33 @@ public class TestPosixTimeFormat {
             "abc%@abc",
     })
     public void testUnmatch(final String format) {
-        assertFormat(format, PosixTimeFormatSpecification.ordinaryCharacters(format));
+        assertFormat(format, Specification.ordinaryCharacters(format));
     }
 
     @Test
     public void test1() {
         assertFormat(
                 "%nabc",
-                PosixTimeFormatSpecification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
-                PosixTimeFormatSpecification.ordinaryCharacters("abc"));
+                Specification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
+                Specification.ordinaryCharacters("abc"));
     }
 
     @Test
     public void test2() {
         assertFormat(
                 "abc%nabc",
-                PosixTimeFormatSpecification.ordinaryCharacters("abc"),
-                PosixTimeFormatSpecification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
-                PosixTimeFormatSpecification.ordinaryCharacters("abc"));
+                Specification.ordinaryCharacters("abc"),
+                Specification.conversion('n', false, false, -1, -1, '\0', '\0', "%n"),
+                Specification.ordinaryCharacters("abc"));
     }
 
     @Test
     public void test3() {
         assertFormat(
                 "abc%12nabc",
-                PosixTimeFormatSpecification.ordinaryCharacters("abc"),
-                PosixTimeFormatSpecification.conversion('n', false, false, 12, -1, '\0', '\0', "%12n"),
-                PosixTimeFormatSpecification.ordinaryCharacters("abc"));
+                Specification.ordinaryCharacters("abc"),
+                Specification.conversion('n', false, false, 12, -1, '\0', '\0', "%12n"),
+                Specification.ordinaryCharacters("abc"));
     }
 
     @ParameterizedTest
@@ -90,7 +90,7 @@ public class TestPosixTimeFormat {
             final String expectedModifier,
             final String expectedOriginal) {
         assertFormat(format,
-                     PosixTimeFormatSpecification.conversion(
+                     Specification.conversion(
                              expectedCh.charAt(0),
                              Boolean.parseBoolean(expectedUpperCase),
                              Boolean.parseBoolean(expectedChangeCase),
@@ -101,8 +101,8 @@ public class TestPosixTimeFormat {
                              expectedOriginal));
     }
 
-    private void assertFormat(final String format, final PosixTimeFormatSpecification... expectedFormatSpecifications) {
-        final List<PosixTimeFormatSpecification> actual = PosixTimeFormatTokenizer.tokenize(format);
+    private void assertFormat(final String format, final Specification... expectedFormatSpecifications) {
+        final List<Specification> actual = Tokenizer.tokenize(format);
         assertEquals(Arrays.asList(expectedFormatSpecifications), actual);
         System.out.println("\"" + format + "\"");
         System.out.println(actual);

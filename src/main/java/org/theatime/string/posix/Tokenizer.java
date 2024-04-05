@@ -28,8 +28,8 @@ import java.util.List;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/007904875/functions/strptime.html">strptime - The Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004 Edition</a>
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
-final class PosixTimeFormatTokenizer {
-    private PosixTimeFormatTokenizer(final String format, final PosixTimeFormatOptions options) {
+final class Tokenizer {
+    private Tokenizer(final String format, final PosixTimeFormatOptions options) {
         this.format = format;
         this.options = options;
 
@@ -44,11 +44,11 @@ final class PosixTimeFormatTokenizer {
      * For more specific example, Ruby's extended {@code strptime} accepts an year with longer than 4 digits
      * when the <strong>next</strong> specification is <strong>not</strong> a number pattern.
      */
-    static List<PosixTimeFormatSpecification> tokenize(final String format, final PosixTimeFormatOption... options) {
-        return new PosixTimeFormatTokenizer(format, PosixTimeFormatOptions.of(options)).tokenizeInitial();
+    static List<Specification> tokenize(final String format, final PosixTimeFormatOption... options) {
+        return new Tokenizer(format, PosixTimeFormatOptions.of(options)).tokenizeInitial();
     }
 
-    private List<PosixTimeFormatSpecification> tokenizeInitial() {
+    private List<Specification> tokenizeInitial() {
         int firstOrdinaryCharacter = 0;
 
         this.pos = 0;
@@ -59,17 +59,17 @@ final class PosixTimeFormatTokenizer {
 
             if (posPercent < 0) {
                 if (firstOrdinaryCharacter < this.format.length()) {
-                    this.formatSpecifications.add(PosixTimeFormatSpecification.ordinaryCharacters(
+                    this.formatSpecifications.add(Specification.ordinaryCharacters(
                             this.format.substring(firstOrdinaryCharacter)));
                 }
                 break;
             }
 
             this.pos = posPercent;
-            final PosixTimeFormatSpecification formatSpecification = this.tokenizeConversion();
+            final Specification formatSpecification = this.tokenizeConversion();
             if (formatSpecification != null) {
                 if (firstOrdinaryCharacter < posPercent) {
-                    this.formatSpecifications.add(PosixTimeFormatSpecification.ordinaryCharacters(
+                    this.formatSpecifications.add(Specification.ordinaryCharacters(
                             this.format.substring(firstOrdinaryCharacter, posPercent)));
                 }
                 this.formatSpecifications.add(formatSpecification);
@@ -89,16 +89,16 @@ final class PosixTimeFormatTokenizer {
      * <p>If it recognizes a format specifier, it moves {@code this.pos} forward next to the terminating conversion
      * specifier.
      *
-     * @return {@link PosixTimeFormatSpecification} instance if recognized as a format specification, or {@code null} otherwise.
+     * @return {@link Specification} instance if recognized as a format specification, or {@code null} otherwise.
      * @throws AssertionError  if {@code this.pos} does not point {@code '%'}
      */
     @SuppressWarnings({"checkstyle:FallThrough", "checkstyle:LeftCurly"})
-    private PosixTimeFormatSpecification tokenizeConversion() {
+    private Specification tokenizeConversion() {
         assert this.format.charAt(this.pos) == '%';
         final int posPercent = this.pos;
         this.pos++;
 
-        final PosixTimeFormatSpecification.ConversionBuilder builder = new PosixTimeFormatSpecification.ConversionBuilder();
+        final Specification.ConversionBuilder builder = new Specification.ConversionBuilder();
         boolean hasPrecisionProcessed = false;
 
         for (; this.pos < this.format.length(); this.pos++) {
@@ -112,9 +112,9 @@ final class PosixTimeFormatTokenizer {
                 //    => "         %"
                 //    irb(main):002:0> Time.now.strftime("%010n")
                 //    => "000000000\n"
-                case '%':  // PosixTimeFormatConversionType.IMMEDIATE_PERCENT
-                case 'n':  // PosixTimeFormatConversionType.IMMEDIATE_WHITESPACE_NEWLINE
-                case 't':  // PosixTimeFormatConversionType.IMMEDIATE_WHITESPACE_TAB
+                case '%':  // ConversionType.IMMEDIATE_PERCENT
+                case 'n':  // ConversionType.IMMEDIATE_WHITESPACE_NEWLINE
+                case 't':  // ConversionType.IMMEDIATE_WHITESPACE_TAB
 
                 case 'a':  // FormatDirective.DAY_OF_WEEK_ABBREVIATED_NAME
                 case 'A':  // FormatDirective.DAY_OF_WEEK_FULL_NAME
@@ -337,5 +337,5 @@ final class PosixTimeFormatTokenizer {
     private final PosixTimeFormatOptions options;
 
     private int pos;
-    private List<PosixTimeFormatSpecification> formatSpecifications;
+    private List<Specification> formatSpecifications;
 }
