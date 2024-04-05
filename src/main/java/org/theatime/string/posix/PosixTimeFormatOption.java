@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.theatime.string;
+package org.theatime.string.posix;
 
 public enum PosixTimeFormatOption {
     /**
