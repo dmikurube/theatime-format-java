@@ -29,7 +29,7 @@ import java.util.List;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
 final class Tokenizer {
-    private Tokenizer(final String format, final PosixTimeFormatOptions options) {
+    private Tokenizer(final String format, final Options options) {
         this.format = format;
         this.options = options;
 
@@ -44,8 +44,8 @@ final class Tokenizer {
      * For more specific example, Ruby's extended {@code strptime} accepts an year with longer than 4 digits
      * when the <strong>next</strong> specification is <strong>not</strong> a number pattern.
      */
-    static List<Specification> tokenize(final String format, final PosixTimeFormatOption... options) {
-        return new Tokenizer(format, PosixTimeFormatOptions.of(options)).tokenizeInitial();
+    static List<Specification> tokenize(final String format, final PosixTimeFormat.Option... options) {
+        return new Tokenizer(format, Options.of(options)).tokenizeInitial();
     }
 
     private List<Specification> tokenizeInitial() {
@@ -334,7 +334,7 @@ final class Tokenizer {
     }
 
     private final String format;
-    private final PosixTimeFormatOptions options;
+    private final Options options;
 
     private int pos;
     private List<Specification> formatSpecifications;

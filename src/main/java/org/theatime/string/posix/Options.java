@@ -17,8 +17,8 @@
 package org.theatime.string.posix;
 
 @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
-public final class PosixTimeFormatOptions {
-    private PosixTimeFormatOptions(
+final class Options {
+    private Options(
             final boolean isPlusSignAsTerminatingConversionSpecifier,
             final boolean isUpperCaseLAsTerminatingConversionSpecifier,
             final boolean isUpperCaseNAsTerminatingConversionSpecifier) {
@@ -27,12 +27,12 @@ public final class PosixTimeFormatOptions {
         this.isUpperCaseNAsTerminatingConversionSpecifier = isUpperCaseNAsTerminatingConversionSpecifier;
     }
 
-    public static PosixTimeFormatOptions of(final PosixTimeFormatOption[] options) {
+    public static Options of(final PosixTimeFormat.Option[] options) {
         boolean isPlusSignAsTerminatingConversionSpecifier = false;
         boolean isUpperCaseLAsTerminatingConversionSpecifier = false;
         boolean isUpperCaseNAsTerminatingConversionSpecifier = false;
 
-        for (final PosixTimeFormatOption option : options) {
+        for (final PosixTimeFormat.Option option : options) {
             switch (option) {
                 case PLUS_SIGN_AS_TERMINATING_CONVERSION_SPECIFIER:
                     isPlusSignAsTerminatingConversionSpecifier = true;
@@ -48,7 +48,7 @@ public final class PosixTimeFormatOptions {
             }
         }
 
-        return new PosixTimeFormatOptions(
+        return new Options(
                 isPlusSignAsTerminatingConversionSpecifier,
                 isUpperCaseLAsTerminatingConversionSpecifier,
                 isUpperCaseNAsTerminatingConversionSpecifier);
