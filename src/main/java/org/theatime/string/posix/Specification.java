@@ -301,7 +301,7 @@ final class LowerA extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.padding);
+            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
         }
         return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT);
     }
@@ -319,7 +319,7 @@ final class UpperA extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.padding);
+            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
         }
         return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.FULL);
     }
@@ -337,7 +337,7 @@ final class LowerB extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.padding);
+            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
         }
         return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
     }
@@ -355,7 +355,7 @@ final class UpperB extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.padding);
+            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
         }
         return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.FULL);
     }
