@@ -1,7 +1,7 @@
-theatime-string-java
+theatime-format-java
 =====================
 
-A date-time converter to/from a string that aims at:
+A date-time formatter to/from a string that aims at:
 
 * extending the JSR 310: Date and Time API
 * formatting flexibly not only with ISO 8601, but also with POSIX strftime/strptime
