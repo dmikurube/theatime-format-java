@@ -1,0 +1,26 @@
+name: Reftests on Linux
+on: [ pull_request, push ]
+jobs:
+  reftest-with-libc:
+    runs-on: ubuntu-latest
+    # push: always run.
+    # pull_request: run only when the PR is submitted from a forked repository, not within this repository.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up OpenJDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: 8
+        distribution: "temurin"
+        cache: "gradle"
+    - name: Make build/reftestLibc
+      run: mkdir -p build/reftestLibc
+    - name: Compile try_strftime.c
+      run: gcc -o build/reftestLibc/try_strftime src/reftestLibc/resources/try_strftime.c
+    - name: "Try try_strftime (Expect: '000000Mon Jan  2 15:04:05 2006')"
+      run: ./build/reftestLibc/try_strftime "%030c" 2006 1 2 15 4 5 1 2 0 C
+    - name: Reftest with libc
+      run: ./gradlew --stacktrace -PreftestLibcTryStrftime=build/reftestLibc/try_strftime reftestLibc
