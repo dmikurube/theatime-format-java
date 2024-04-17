@@ -88,6 +88,12 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testDateTimeFormatter2() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_10a").toDateTimeFormatter();
+        assertEquals("       Mon", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
     public void test1() {
         assertFormat(
                 "%nabc",

@@ -297,6 +297,12 @@ final class LowerA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
+        if (this.padding == '0' || this.upperCase || this.changeCase) {
+            throw new IllegalStateException();
+        }
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.padding);
+        }
         return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT);
     }
 }
@@ -309,6 +315,12 @@ final class UpperA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
+        if (this.padding == '0' || this.upperCase || this.changeCase) {
+            throw new IllegalStateException();
+        }
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.padding);
+        }
         return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.FULL);
     }
 }
@@ -321,6 +333,12 @@ final class LowerB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
+        if (this.padding == '0' || this.upperCase || this.changeCase) {
+            throw new IllegalStateException();
+        }
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.padding);
+        }
         return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
     }
 }
@@ -333,6 +351,12 @@ final class UpperB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
+        if (this.padding == '0' || this.upperCase || this.changeCase) {
+            throw new IllegalStateException();
+        }
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.padding);
+        }
         return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.FULL);
     }
 }
