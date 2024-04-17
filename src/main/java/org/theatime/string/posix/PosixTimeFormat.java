@@ -27,6 +27,8 @@ public final class PosixTimeFormat {
     }
 
     public enum Option {
+        GNU_EXTENSION,
+
         /**
          * Recognizes the plus-sign character ({@code '+'}) as a terminating conversion specifier ({@code "%+"})
          * to represent date and time as produced by {@code date(1)}.
@@ -51,8 +53,69 @@ public final class PosixTimeFormat {
          */
         PLUS_SIGN_AS_TERMINATING_CONVERSION_SPECIFIER,
 
+        /**
+         * GNU extension.
+         */
+        UPPERCASE_F_FOR_PARSING,
+
+        /**
+         * GNU extension.
+         */
+        LOWERCASE_G_FOR_PARSING,
+
+        /**
+         * GNU extension.
+         */
+        UPPERCASE_G_FOR_PARSING,
+
+        /**
+         * GNU extension.
+         */
+        LOWERCASE_K_AS_TERMINATING_CONVERSION_SPECIFIER,
+
+        /**
+         * GNU extension.
+         */
+        LOWERCASE_L_AS_TERMINATING_CONVERSION_SPECIFIER,
+
+        /**
+         * GNU extension.
+         */
+        LOWERCASE_S_AS_TERMINATING_CONVERSION_SPECIFIER,
+
+        /**
+         * GNU extension.
+         */
+        LOWERCASE_U_FOR_PARSING,
+
+        /**
+         * GNU extension.
+         */
+        LOWERCASE_V_AS_TERMINATING_CONVERSION_SPECIFIER,
+
+        /**
+         * GNU extension.
+         */
+        UPPERCASE_V_FOR_PARSING,
+
+        /**
+         * GNU extension.
+         */
+        LOWERCASE_Z_FOR_PARSING,
+
+        /**
+         * GNU extension.
+         */
+        UPPERCASE_Z_FOR_PARSING,
+
+        /**
+         * Ruby extension.
+         */
         UPPERCASE_L_AS_TERMINATING_CONVERSION_SPECIFIER,
 
+        /**
+         * Ruby extension.
+         */
         UPPERCASE_N_AS_TERMINATING_CONVERSION_SPECIFIER,
         ;
     }

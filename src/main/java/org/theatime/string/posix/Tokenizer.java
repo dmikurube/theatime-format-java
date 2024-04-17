@@ -277,7 +277,7 @@ final class Tokenizer {
 
                 case '+':
                     // Legacy strftime recognizes "%+" as a terminating conversion specifier for date and time (date(1)).
-                    if (this.options.isPlusSignAsTerminatingConversionSpecifier()) {
+                    if (this.options.acceptsPlusSignAsTerminatingConversionSpecifier()) {
                         return new Plus(ctx.at(posPercent, ++this.pos));
                     }
 
