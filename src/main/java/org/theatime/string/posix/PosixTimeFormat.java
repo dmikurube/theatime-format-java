@@ -16,10 +16,13 @@
 
 package org.theatime.string.posix;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
+import java.util.Locale;
 
 public final class PosixTimeFormat {
-    private PosixTimeFormat(final List<Specification> formatSpecifications) {
+    private PosixTimeFormat(final List<AbstractSpecification> formatSpecifications) {
         this.formatSpecifications = formatSpecifications;
     }
 
@@ -58,5 +61,13 @@ public final class PosixTimeFormat {
         return new PosixTimeFormat(Tokenizer.tokenize(format, options));
     }
 
-    private final List<Specification> formatSpecifications;
+    public DateTimeFormatter toDateTimeFormatter() {
+        final DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+        for (final AbstractSpecification specification : this.formatSpecifications) {
+            specification.appendTo(builder);
+        }
+        return builder.toFormatter(Locale.ROOT);
+    }
+
+    private final List<AbstractSpecification> formatSpecifications;
 }

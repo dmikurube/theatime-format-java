@@ -44,11 +44,13 @@ final class Tokenizer {
      * For more specific example, Ruby's extended {@code strptime} accepts an year with longer than 4 digits
      * when the <strong>next</strong> specification is <strong>not</strong> a number pattern.
      */
-    static List<Specification> tokenize(final String format, final PosixTimeFormat.Option... options) {
+    static List<AbstractSpecification> tokenize(final String format, final PosixTimeFormat.Option... options) {
         return new Tokenizer(format, Options.of(options)).tokenizeInitial();
     }
 
-    private List<Specification> tokenizeInitial() {
+    private List<AbstractSpecification> tokenizeInitial() {
+        final StringBuilder literal = new StringBuilder();
+
         int firstOrdinaryCharacter = 0;
 
         this.pos = 0;
@@ -59,22 +61,35 @@ final class Tokenizer {
 
             if (posPercent < 0) {
                 if (firstOrdinaryCharacter < this.format.length()) {
-                    this.formatSpecifications.add(Specification.ordinaryCharacters(
-                            this.format.substring(firstOrdinaryCharacter)));
+                    literal.append(this.format.substring(firstOrdinaryCharacter));
+                }
+                if (literal.length() > 0) {
+                    this.formatSpecifications.add(Literal.of(
+                            literal.toString(),
+                            AbstractSpecification.EMPTY));
+                    literal.setLength(0);
                 }
                 break;
             }
 
+            if (firstOrdinaryCharacter < posPercent) {
+                literal.append(this.format.substring(firstOrdinaryCharacter, posPercent));
+            }
+
             this.pos = posPercent;
-            final Specification formatSpecification = this.tokenizeConversion();
-            if (formatSpecification != null) {
-                if (firstOrdinaryCharacter < posPercent) {
-                    this.formatSpecifications.add(Specification.ordinaryCharacters(
-                            this.format.substring(firstOrdinaryCharacter, posPercent)));
+            final AbstractSpecification formatSpecification = this.tokenizeConversion();
+            if (formatSpecification instanceof Literal) {
+                literal.append(((Literal) formatSpecification).toString());
+            } else {
+                if (literal.length() > 0) {
+                    this.formatSpecifications.add(Literal.of(
+                            literal.toString(),
+                            AbstractSpecification.EMPTY));
+                    literal.setLength(0);
                 }
                 this.formatSpecifications.add(formatSpecification);
-                firstOrdinaryCharacter = this.pos;
             }
+            firstOrdinaryCharacter = this.pos;
         }
 
         return Collections.unmodifiableList(this.formatSpecifications);
@@ -93,12 +108,12 @@ final class Tokenizer {
      * @throws AssertionError  if {@code this.pos} does not point {@code '%'}
      */
     @SuppressWarnings({"checkstyle:FallThrough", "checkstyle:LeftCurly"})
-    private Specification tokenizeConversion() {
+    private AbstractSpecification tokenizeConversion() {
         assert this.format.charAt(this.pos) == '%';
         final int posPercent = this.pos;
         this.pos++;
 
-        final Specification.ConversionBuilder builder = new Specification.ConversionBuilder();
+        final AbstractSpecification.ContextSource ctx = new AbstractSpecification.ContextSource(this.format);
         boolean hasPrecisionProcessed = false;
 
         for (; this.pos < this.format.length(); this.pos++) {
@@ -113,124 +128,209 @@ final class Tokenizer {
                 //    irb(main):002:0> Time.now.strftime("%010n")
                 //    => "000000000\n"
                 case '%':  // ConversionType.IMMEDIATE_PERCENT
+                    return Literal.ofPercent(ctx.at(posPercent, ++this.pos));
+
                 case 'n':  // ConversionType.IMMEDIATE_WHITESPACE_NEWLINE
+                    return Literal.ofNewline(ctx.at(posPercent, ++this.pos));
+
                 case 't':  // ConversionType.IMMEDIATE_WHITESPACE_TAB
+                    return Literal.ofTab(ctx.at(posPercent, ++this.pos));
 
                 case 'a':  // FormatDirective.DAY_OF_WEEK_ABBREVIATED_NAME
-                case 'A':  // FormatDirective.DAY_OF_WEEK_FULL_NAME
-                case 'h':  // FormatDirective.MONTH_OF_YEAR_ABBREVIATED_NAME_ALIAS_SMALL_H
-                case 'b':  // FormatDirective.MONTH_OF_YEAR_ABBREVIATED_NAME
-                case 'B':  // FormatDirective.MONTH_OF_YEAR_FULL_NAME
+                    return new LowerA(ctx.at(posPercent, ++this.pos));
 
+                case 'A':  // FormatDirective.DAY_OF_WEEK_FULL_NAME
+                    return new UpperA(ctx.at(posPercent, ++this.pos));
+
+                case 'h':  // FormatDirective.MONTH_OF_YEAR_ABBREVIATED_NAME_ALIAS_SMALL_H
+                    return new LowerH(ctx.at(posPercent, ++this.pos));
+
+                case 'b':  // FormatDirective.MONTH_OF_YEAR_ABBREVIATED_NAME
+                    return new LowerB(ctx.at(posPercent, ++this.pos));
+
+                case 'B':  // FormatDirective.MONTH_OF_YEAR_FULL_NAME
+                    return new UpperB(ctx.at(posPercent, ++this.pos));
+
+                /*
                 case 'P':  // FormatDirective.AMPM_OF_DAY_LOWER_CASE
+                    return new UpperP(ctx.at(posPercent, ++this.pos));
+                */
+
                 case 'p':  // FormatDirective.AMPM_OF_DAY_UPPER_CASE
+                    return new LowerP(ctx.at(posPercent, ++this.pos));
 
                 case 'c':  // FormatDirective.RECURRED_UPPER_C
+                    return new LowerC(ctx.at(posPercent, ++this.pos));
+
                 case 'x':  // FormatDirective.RECURRED_LOWER_X
+                    return new LowerX(ctx.at(posPercent, ++this.pos));
+
                 case 'X':  // FormatDirective.RECURRED_UPPER_X
+                    return new UpperX(ctx.at(posPercent, ++this.pos));
+
                 case 'D':  // FormatDirective.RECURRED_UPPER_D
+                    return new UpperD(ctx.at(posPercent, ++this.pos));
+
                 case 'r':  // FormatDirective.RECURRED_LOWER_R
+                    return new LowerR(ctx.at(posPercent, ++this.pos));
+
                 case 'R':  // FormatDirective.RECURRED_UPPER_R
+                    return new UpperR(ctx.at(posPercent, ++this.pos));
+
                 case 'T':  // FormatDirective.RECURRED_UPPER_T
+                    return new UpperT(ctx.at(posPercent, ++this.pos));
+
                 case 'F':  // FormatDirective.RECURRED_UPPER_F
+                    return new UpperF(ctx.at(posPercent, ++this.pos));
 
                 case 'd':  // FormatDirective.DAY_OF_MONTH_ZERO_PADDED
-                case 'H':  // FormatDirective.HOUR_OF_DAY_ZERO_PADDED
-                case 'I':  // FormatDirective.HOUR_OF_AMPM_ZERO_PADDED
-                case 'j':  // FormatDirective.DAY_OF_YEAR
-                case 'm':  // FormatDirective.MONTH_OF_YEAR
-                case 'M':  // FormatDirective.MINUTE_OF_HOUR
-                case 'S':  // FormatDirective.SECOND_OF_MINUTE
-                case 'U':  // FormatDirective.WEEK_OF_YEAR_STARTING_WITH_SUNDAY
-                case 'W':  // FormatDirective.WEEK_OF_YEAR_STARTING_WITH_MONDAY
-                case 'w':  // FormatDirective.DAY_OF_WEEK_STARTING_WITH_SUNDAY_0
-                case 'y':  // FormatDirective.YEAR_WITHOUT_CENTURY
-                case 'Y':  // FormatDirective.YEAR_WITH_CENTURY
-                case 'e':  // FormatDirective.DAY_OF_MONTH_BLANK_PADDED
-                case 'C':  // FormatDirective.CENTURY -- FMTV
-                case 'V':  // FormatDirective.WEEK_OF_WEEK_BASED_YEAR
-                case 'u':  // FormatDirective.DAY_OF_WEEK_STARTING_WITH_MONDAY_1
+                    return new LowerD(ctx.at(posPercent, ++this.pos));
 
+                case 'H':  // FormatDirective.HOUR_OF_DAY_ZERO_PADDED
+                    return new UpperH(ctx.at(posPercent, ++this.pos));
+
+                case 'I':  // FormatDirective.HOUR_OF_AMPM_ZERO_PADDED
+                    return new UpperI(ctx.at(posPercent, ++this.pos));
+
+                case 'j':  // FormatDirective.DAY_OF_YEAR
+                    return new LowerJ(ctx.at(posPercent, ++this.pos));
+
+                case 'm':  // FormatDirective.MONTH_OF_YEAR
+                    return new LowerM(ctx.at(posPercent, ++this.pos));
+
+                case 'M':  // FormatDirective.MINUTE_OF_HOUR
+                    return new UpperM(ctx.at(posPercent, ++this.pos));
+
+                case 'S':  // FormatDirective.SECOND_OF_MINUTE
+                    return new UpperS(ctx.at(posPercent, ++this.pos));
+
+                case 'U':  // FormatDirective.WEEK_OF_YEAR_STARTING_WITH_SUNDAY
+                    return new UpperU(ctx.at(posPercent, ++this.pos));
+
+                case 'W':  // FormatDirective.WEEK_OF_YEAR_STARTING_WITH_MONDAY
+                    return new UpperW(ctx.at(posPercent, ++this.pos));
+
+                case 'w':  // FormatDirective.DAY_OF_WEEK_STARTING_WITH_SUNDAY_0
+                    return new LowerW(ctx.at(posPercent, ++this.pos));
+
+                case 'y':  // FormatDirective.YEAR_WITHOUT_CENTURY
+                    return new LowerY(ctx.at(posPercent, ++this.pos));
+
+                case 'Y':  // FormatDirective.YEAR_WITH_CENTURY
+                    return new UpperY(ctx.at(posPercent, ++this.pos));
+
+                case 'e':  // FormatDirective.DAY_OF_MONTH_BLANK_PADDED
+                    return new LowerE(ctx.at(posPercent, ++this.pos));
+
+                case 'C':  // FormatDirective.CENTURY -- FMTV
+                    return new UpperC(ctx.at(posPercent, ++this.pos));
+
+                case 'V':  // FormatDirective.WEEK_OF_WEEK_BASED_YEAR
+                    return new UpperV(ctx.at(posPercent, ++this.pos));
+
+                case 'u':  // FormatDirective.DAY_OF_WEEK_STARTING_WITH_MONDAY_1
+                    return new LowerU(ctx.at(posPercent, ++this.pos));
+
+                /*
+                // Ruby extensions.
                 case 'Q':  // FormatDirective.MILLISECONDS_SINCE_EPOCH
                         // %Q is only for parsing, not for formatting. Then, %Q never takes any option.
                         // So, a token of "%Q" can always be stringified straightforward to "%Q".
+                    break;
+                */
 
                 case 'z':  // FormatDirective.TIME_OFFSET
+                    return new LowerZ(ctx.at(posPercent, ++this.pos));
+
                 case 'Z':  // FormatDirective.TIME_ZONE_NAME
+                    return new UpperZ(ctx.at(posPercent, ++this.pos));
 
                 case 'G':  // FormatDirective.WEEK_BASED_YEAR_WITH_CENTURY
-                case 'g':  // FormatDirective.WEEK_BASED_YEAR_WITHOUT_CENTURY
+                    return new UpperG(ctx.at(posPercent, ++this.pos));
 
+                case 'g':  // FormatDirective.WEEK_BASED_YEAR_WITHOUT_CENTURY
+                    return new LowerG(ctx.at(posPercent, ++this.pos));
+
+                /*
                 // GNU extensions.
                 case 'k':  // FormatDirective.HOUR_OF_DAY_BLANK_PADDED
                 case 'l':  // FormatDirective.HOUR_OF_AMPM_BLANK_PADDED
                 case 's':  // FormatDirective.SECONDS_SINCE_EPOCH
                 case 'v':  // FormatDirective.RECURRED_LOWER_V
+                */
 
-                    this.pos++;
-                    return builder.build(ch, this.format.substring(posPercent, this.pos));
-
+                /*
                 case 'L':  // Ruby extension: "%L"
                     this.pos++;
                     if (this.options.isUpperCaseLAsTerminatingConversionSpecifier()) {
                         return builder.build(ch, this.format.substring(posPercent, this.pos));
                     }
-                    return null;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case 'N':  // Ruby extension: "%N"
                     this.pos++;
                     if (this.options.isUpperCaseNAsTerminatingConversionSpecifier()) {
                         return builder.build(ch, this.format.substring(posPercent, this.pos));
                     }
-                    return null;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
+                */
 
                 case '+':
                     // Legacy strftime recognizes "%+" as a terminating conversion specifier for date and time (date(1)).
                     if (this.options.isPlusSignAsTerminatingConversionSpecifier()) {
-                        this.pos++;
-                        return builder.build(ch, this.format.substring(posPercent, this.pos));
+                        return new Plus(ctx.at(posPercent, ++this.pos));
                     }
 
                     // Modern strftime recognizes "%+" as an optional flag.
-                    if (hasPrecisionProcessed) {
-                        this.pos++;
-                        return null;
+                    if (!hasPrecisionProcessed) {
+                        // TODO: Set '+' flag.
+                        ctx.padding('0');
+                        break;
                     }
-                    // TODO: Set '+' flag.
-                    builder.padding('0');
-                    break;
+
+                    // The position is after the precision part.
+                    this.pos++;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case '-':
-                    if (hasPrecisionProcessed) {
-                        this.pos++;
-                        return null;
+                    if (!hasPrecisionProcessed) {
+                        // optionsBuilder.setLeft();
+                        break;
                     }
-                    // optionsBuilder.setLeft();
-                    break;
+
+                    // The position is after the precision part.
+                    this.pos++;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case '^':
-                    if (hasPrecisionProcessed) {
-                        this.pos++;
-                        return null;
+                    if (!hasPrecisionProcessed) {
+                        ctx.upperCase();
+                        break;
                     }
-                    builder.upperCase();
-                    break;
+
+                    // The position is after the precision part.
+                    this.pos++;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case '#':
-                    if (hasPrecisionProcessed) {
-                        this.pos++;
-                        return null;
+                    if (!hasPrecisionProcessed) {
+                        ctx.changeCase();
+                        break;
                     }
-                    builder.changeCase();
-                    break;
+
+                    // The position is after the precision part.
+                    this.pos++;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case '_':
-                    if (hasPrecisionProcessed) {
-                        this.pos++;
-                        return null;
+                    if (!hasPrecisionProcessed) {
+                        ctx.padding(' ');
+                        break;
                     }
-                    builder.padding(' ');
-                    break;
+
+                    // The position is after the precision part.
+                    this.pos++;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case ':':
                     // strptime accepts only 3 colons at maximum.
@@ -238,40 +338,40 @@ final class Tokenizer {
                     for (int j = 1; ; j++) {
                         if (this.pos + j >= this.format.length()) {
                             this.pos++;
-                            return null;
+                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                         }
                         if (this.format.charAt(this.pos + j) == 'z') {
-                            builder.colons(j);
+                            ctx.colons(j);
                             this.pos += (j - 1);
                             break;
                         }
                         if (this.format.charAt(this.pos + j) != ':') {
                             this.pos++;
-                            return null;
+                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                         }
                     }
                     break;
 
                 case 'E':
                     if (this.pos + 1 < this.format.length() && "cCxXyY".indexOf(this.format.charAt(this.pos + 1)) >= 0) {
-                        builder.modifier('E');
+                        ctx.modifier('E');
                         break;
                     } else {
                         this.pos++;
-                        return null;
+                        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                     }
 
                 case 'O':
                     if (this.pos + 1 < this.format.length() && "deHImMSuUVwWy".indexOf(this.format.charAt(this.pos + 1)) >= 0) {
-                        builder.modifier('O');
+                        ctx.modifier('O');
                         break;
                     } else {
                         this.pos++;
-                        return null;
+                        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                     }
 
                 case '0':
-                    builder.padding('0');
+                    ctx.padding('0');
                     // Pass-through.
 
                 case '1':
@@ -287,20 +387,20 @@ final class Tokenizer {
                         final String digits = this.tokenizeDigitsForIntValue();
                         if (digits == null) {
                             this.pos++;
-                            return null;
+                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                         }
                         hasPrecisionProcessed = true;
-                        builder.precision(Integer.parseInt(digits));
+                        ctx.precision(Integer.parseInt(digits));
                         this.pos += digits.length() - 1;
                     }
                     break;
 
                 default:
                     this.pos++;
-                    return null;
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
             }
         }
-        return null;
+        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
     }
 
     private String tokenizeDigitsForIntValue() {
@@ -337,5 +437,5 @@ final class Tokenizer {
     private final Options options;
 
     private int pos;
-    private List<Specification> formatSpecifications;
+    private List<AbstractSpecification> formatSpecifications;
 }
