@@ -17,6 +17,7 @@
 package org.theatime.string.posix;
 
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.SignStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoField;
 import java.util.Objects;
@@ -369,7 +370,35 @@ final class LowerC extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        return formatter;
+        // In the C or POSIX locale, the E and O modifiers are ignored and
+        // the replacement strings for the following specifiers are:
+        //
+        // ...
+        //   ...
+        // %c
+        //   Equivalent to %a %b %e %T %Y.
+        //
+        // strftime, strftime_l - convert date and time to a string
+        // The Open Group Base Specifications Issue 7, 2018 edition
+        // https://pubs.opengroup.org/onlinepubs/9699919799/functions/strftime.html#tag_16_576_07
+        if (this.padding == '0' || this.upperCase || this.changeCase) {
+            throw new IllegalStateException();
+        }
+        return formatter
+                .appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT)
+                .appendLiteral(" ")
+                .appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT)
+                .appendLiteral(" ")
+                .padNext(2, ' ')
+                .appendValue(ChronoField.DAY_OF_MONTH)
+                .appendLiteral(" ")
+                .appendValue(ChronoField.HOUR_OF_DAY, 2)
+                .appendLiteral(":")
+                .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+                .appendLiteral(":")
+                .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+                .appendLiteral(" ")
+                .appendValue(ChronoField.YEAR, 4, 19, SignStyle.NORMAL);
     }
 }
 
