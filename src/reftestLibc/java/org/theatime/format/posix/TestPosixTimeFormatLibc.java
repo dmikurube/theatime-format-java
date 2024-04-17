@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.theatime.string.posix;
+package org.theatime.format.posix;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

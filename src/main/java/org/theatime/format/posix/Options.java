@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.theatime.string.posix;
+package org.theatime.format.posix;
 
 import java.util.Collections;
 import java.util.EnumMap;
