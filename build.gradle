@@ -94,7 +94,7 @@ publishing {
 
                 name = project.name
                 description = project.description
-                url = "https://github.com/dmikurube/theatime-string-java"
+                url = "https://github.com/dmikurube/theatime-format-java"
 
                 licenses {
                     license {
@@ -113,9 +113,9 @@ publishing {
                 }
 
                 scm {
-                    connection = "scm:git:git://github.com/dmikurube/theatime-string-java.git"
-                    developerConnection = "scm:git:git@github.com:dmikurube/theatime-string-java.git"
-                    url = "https://github.com/dmikurube/theatime-string-java"
+                    connection = "scm:git:git://github.com/dmikurube/theatime-format-java.git"
+                    developerConnection = "scm:git:git@github.com:dmikurube/theatime-format-java.git"
+                    url = "https://github.com/dmikurube/theatime-format-java"
                 }
             }
         }
