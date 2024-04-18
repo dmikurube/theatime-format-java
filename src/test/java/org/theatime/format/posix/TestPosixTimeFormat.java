@@ -43,7 +43,7 @@ public class TestPosixTimeFormat {
     @Test
     public void testLowerA() {
         assertFormat("%a", new LowerA(C));
-        assertFormat("%+a", new LowerA(new AbstractSpecification.Context(false, false, -1, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%0a", new LowerA(new AbstractSpecification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
     }
 
     @Test
@@ -167,7 +167,7 @@ public class TestPosixTimeFormat {
         assertEquals(1, actual.size());
         assertTrue(actual.get(0) instanceof ConversionSpecification);
         final ConversionSpecification actualConversion = (ConversionSpecification) actual.get(0);
-        assertEquals(expectedChar, actualConversion.terminatingConversionSpecifier);
+        assertEquals(expectedChar, actualConversion.terminatingConversionSpecifier.toString().charAt(0));
         assertEquals(expectedUpperCase, actualConversion.upperCase);
         assertEquals(expectedChangeCase, actualConversion.changeCase);
         assertEquals(expectedPrecision, actualConversion.precision);

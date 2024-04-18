@@ -184,12 +184,10 @@ abstract class AbstractSpecification implements Specification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 abstract class ConversionSpecification extends AbstractSpecification {
     ConversionSpecification(
-            final char terminatingConversionSpecifier,
-            final ConversionType conversionType,
+            final ConversionType terminatingConversionSpecifier,
             final Context context) {
         super(context);
         this.terminatingConversionSpecifier = terminatingConversionSpecifier;
-        this.conversionType = conversionType;
     }
 
     @Override
@@ -204,7 +202,6 @@ abstract class ConversionSpecification extends AbstractSpecification {
         final ConversionSpecification other = (ConversionSpecification) otherObject;
         return Objects.equals(this.getClass(), other.getClass())
                 && Objects.equals(this.terminatingConversionSpecifier, other.terminatingConversionSpecifier)
-                && Objects.equals(this.conversionType, other.conversionType)
                 && Objects.equals(this.upperCase, other.upperCase)
                 && Objects.equals(this.changeCase, other.changeCase)
                 && Objects.equals(this.precision, other.precision)
@@ -219,7 +216,6 @@ abstract class ConversionSpecification extends AbstractSpecification {
         return Objects.hash(
                 this.getClass(),
                 this.terminatingConversionSpecifier,
-                this.conversionType,
                 this.upperCase,
                 this.changeCase,
                 this.precision,
@@ -275,7 +271,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
             throw new IllegalStateException("Illegal pad: " + this.pad);
         }
 
-        if (this.precision >= 0) {
+        if (this.precision > 0) {
             builder.append(this.precision);
         }
 
@@ -299,8 +295,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
         return builder.toString();
     }
 
-    final char terminatingConversionSpecifier;
-    final ConversionType conversionType;
+    final ConversionType terminatingConversionSpecifier;
 }
 
 /**
@@ -312,7 +307,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerA extends ConversionSpecification {
     LowerA(final Context context) {
-        super('a', ConversionType.POSIX_LOWER_A, context);
+        super(ConversionType.POSIX_LOWER_A, context);
     }
 
     @Override
@@ -330,7 +325,7 @@ final class LowerA extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperA extends ConversionSpecification {
     UpperA(final Context context) {
-        super('A', ConversionType.POSIX_UPPER_A, context);
+        super(ConversionType.POSIX_UPPER_A, context);
     }
 
     @Override
@@ -348,7 +343,7 @@ final class UpperA extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerB extends ConversionSpecification {
     LowerB(final Context context) {
-        super('b', ConversionType.POSIX_LOWER_B, context);
+        super(ConversionType.POSIX_LOWER_B, context);
     }
 
     @Override
@@ -366,7 +361,7 @@ final class LowerB extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperB extends ConversionSpecification {
     UpperB(final Context context) {
-        super('B', ConversionType.POSIX_UPPER_B, context);
+        super(ConversionType.POSIX_UPPER_B, context);
     }
 
     @Override
@@ -384,7 +379,7 @@ final class UpperB extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerC extends ConversionSpecification {
     LowerC(final Context context) {
-        super('c', ConversionType.POSIX_LOWER_C, context);
+        super(ConversionType.POSIX_LOWER_C, context);
     }
 
     @Override
@@ -424,7 +419,7 @@ final class LowerC extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperC extends ConversionSpecification {
     UpperC(final Context context) {
-        super('C', ConversionType.POSIX_UPPER_C, context);
+        super(ConversionType.POSIX_UPPER_C, context);
     }
 
     @Override
@@ -436,7 +431,7 @@ final class UpperC extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerD extends ConversionSpecification {
     LowerD(final Context context) {
-        super('d', ConversionType.POSIX_LOWER_D, context);
+        super(ConversionType.POSIX_LOWER_D, context);
     }
 
     @Override
@@ -448,7 +443,7 @@ final class LowerD extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperD extends ConversionSpecification {
     UpperD(final Context context) {
-        super('D', ConversionType.POSIX_UPPER_D, context);
+        super(ConversionType.POSIX_UPPER_D, context);
     }
 
     @Override
@@ -460,7 +455,7 @@ final class UpperD extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerE extends ConversionSpecification {
     LowerE(final Context context) {
-        super('e', ConversionType.POSIX_LOWER_E, context);
+        super(ConversionType.POSIX_LOWER_E, context);
     }
 
     @Override
@@ -472,7 +467,7 @@ final class LowerE extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperF extends ConversionSpecification {
     UpperF(final Context context) {
-        super('F', ConversionType.POSIX_UPPER_F, context);
+        super(ConversionType.POSIX_UPPER_F, context);
     }
 
     @Override
@@ -484,7 +479,7 @@ final class UpperF extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerG extends ConversionSpecification {
     LowerG(final Context context) {
-        super('g', ConversionType.POSIX_LOWER_G, context);
+        super(ConversionType.POSIX_LOWER_G, context);
     }
 
     @Override
@@ -496,7 +491,7 @@ final class LowerG extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperG extends ConversionSpecification {
     UpperG(final Context context) {
-        super('G', ConversionType.POSIX_UPPER_G, context);
+        super(ConversionType.POSIX_UPPER_G, context);
     }
 
     @Override
@@ -508,7 +503,7 @@ final class UpperG extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerH extends ConversionSpecification {
     LowerH(final Context context) {
-        super('h', ConversionType.POSIX_LOWER_H, context);
+        super(ConversionType.POSIX_LOWER_H, context);
     }
 
     @Override
@@ -520,7 +515,7 @@ final class LowerH extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperH extends ConversionSpecification {
     UpperH(final Context context) {
-        super('H', ConversionType.POSIX_UPPER_H, context);
+        super(ConversionType.POSIX_UPPER_H, context);
     }
 
     @Override
@@ -532,7 +527,7 @@ final class UpperH extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperI extends ConversionSpecification {
     UpperI(final Context context) {
-        super('I', ConversionType.POSIX_UPPER_I, context);
+        super(ConversionType.POSIX_UPPER_I, context);
     }
 
     @Override
@@ -544,7 +539,7 @@ final class UpperI extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerJ extends ConversionSpecification {
     LowerJ(final Context context) {
-        super('j', ConversionType.POSIX_LOWER_J, context);
+        super(ConversionType.POSIX_LOWER_J, context);
     }
 
     @Override
@@ -556,7 +551,7 @@ final class LowerJ extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerM extends ConversionSpecification {
     LowerM(final Context context) {
-        super('m', ConversionType.POSIX_LOWER_M, context);
+        super(ConversionType.POSIX_LOWER_M, context);
     }
 
     @Override
@@ -568,7 +563,7 @@ final class LowerM extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperM extends ConversionSpecification {
     UpperM(final Context context) {
-        super('M', ConversionType.POSIX_UPPER_M, context);
+        super(ConversionType.POSIX_UPPER_M, context);
     }
 
     @Override
@@ -580,7 +575,7 @@ final class UpperM extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerN extends ConversionSpecification {
     LowerN(final Context context) {
-        super('n', ConversionType.IMMEDIATE_WHITESPACE_NEWLINE, context);
+        super(ConversionType.IMMEDIATE_WHITESPACE_NEWLINE, context);
     }
 
     @Override
@@ -592,7 +587,7 @@ final class LowerN extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerP extends ConversionSpecification {
     LowerP(final Context context) {
-        super('p', ConversionType.POSIX_LOWER_P, context);
+        super(ConversionType.POSIX_LOWER_P, context);
     }
 
     @Override
@@ -604,7 +599,7 @@ final class LowerP extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerR extends ConversionSpecification {
     LowerR(final Context context) {
-        super('r', ConversionType.POSIX_LOWER_R, context);
+        super(ConversionType.POSIX_LOWER_R, context);
     }
 
     @Override
@@ -616,7 +611,7 @@ final class LowerR extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperR extends ConversionSpecification {
     UpperR(final Context context) {
-        super('R', ConversionType.POSIX_UPPER_R, context);
+        super(ConversionType.POSIX_UPPER_R, context);
     }
 
     @Override
@@ -628,7 +623,7 @@ final class UpperR extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperS extends ConversionSpecification {
     UpperS(final Context context) {
-        super('S', ConversionType.POSIX_UPPER_S, context);
+        super(ConversionType.POSIX_UPPER_S, context);
     }
 
     @Override
@@ -640,7 +635,7 @@ final class UpperS extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerT extends ConversionSpecification {
     LowerT(final Context context) {
-        super('t', ConversionType.IMMEDIATE_WHITESPACE_TAB, context);
+        super(ConversionType.IMMEDIATE_WHITESPACE_TAB, context);
     }
 
     @Override
@@ -652,7 +647,7 @@ final class LowerT extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperT extends ConversionSpecification {
     UpperT(final Context context) {
-        super('T', ConversionType.POSIX_UPPER_T, context);
+        super(ConversionType.POSIX_UPPER_T, context);
     }
 
     @Override
@@ -664,7 +659,7 @@ final class UpperT extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerU extends ConversionSpecification {
     LowerU(final Context context) {
-        super('u', ConversionType.POSIX_LOWER_U, context);
+        super(ConversionType.POSIX_LOWER_U, context);
     }
 
     @Override
@@ -676,7 +671,7 @@ final class LowerU extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperU extends ConversionSpecification {
     UpperU(final Context context) {
-        super('U', ConversionType.POSIX_UPPER_U, context);
+        super(ConversionType.POSIX_UPPER_U, context);
     }
 
     @Override
@@ -688,7 +683,7 @@ final class UpperU extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperV extends ConversionSpecification {
     UpperV(final Context context) {
-        super('V', ConversionType.POSIX_UPPER_V, context);
+        super(ConversionType.POSIX_UPPER_V, context);
     }
 
     @Override
@@ -700,7 +695,7 @@ final class UpperV extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerW extends ConversionSpecification {
     LowerW(final Context context) {
-        super('w', ConversionType.POSIX_LOWER_W, context);
+        super(ConversionType.POSIX_LOWER_W, context);
     }
 
     @Override
@@ -712,7 +707,7 @@ final class LowerW extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperW extends ConversionSpecification {
     UpperW(final Context context) {
-        super('W', ConversionType.POSIX_UPPER_W, context);
+        super(ConversionType.POSIX_UPPER_W, context);
     }
 
     @Override
@@ -724,7 +719,7 @@ final class UpperW extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerX extends ConversionSpecification {
     LowerX(final Context context) {
-        super('x', ConversionType.POSIX_LOWER_X, context);
+        super(ConversionType.POSIX_LOWER_X, context);
     }
 
     @Override
@@ -736,7 +731,7 @@ final class LowerX extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperX extends ConversionSpecification {
     UpperX(final Context context) {
-        super('X', ConversionType.POSIX_UPPER_X, context);
+        super(ConversionType.POSIX_UPPER_X, context);
     }
 
     @Override
@@ -748,7 +743,7 @@ final class UpperX extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerY extends ConversionSpecification {
     LowerY(final Context context) {
-        super('y', ConversionType.POSIX_LOWER_Y, context);
+        super(ConversionType.POSIX_LOWER_Y, context);
     }
 
     @Override
@@ -760,7 +755,7 @@ final class LowerY extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperY extends ConversionSpecification {
     UpperY(final Context context) {
-        super('Y', ConversionType.POSIX_UPPER_Y, context);
+        super(ConversionType.POSIX_UPPER_Y, context);
     }
 
     @Override
@@ -772,7 +767,7 @@ final class UpperY extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerZ extends ConversionSpecification {
     LowerZ(final Context context) {
-        super('z', ConversionType.POSIX_LOWER_Z, context);
+        super(ConversionType.POSIX_LOWER_Z, context);
     }
 
     @Override
@@ -784,7 +779,7 @@ final class LowerZ extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperZ extends ConversionSpecification {
     UpperZ(final Context context) {
-        super('Z', ConversionType.POSIX_UPPER_Z, context);
+        super(ConversionType.POSIX_UPPER_Z, context);
     }
 
     @Override
@@ -793,10 +788,11 @@ final class UpperZ extends ConversionSpecification {
     }
 }
 
+/*
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class Plus extends ConversionSpecification {
     Plus(final Context context) {
-        super('+', null, context);
+        super(null, context);
     }
 
     @Override
@@ -804,6 +800,7 @@ final class Plus extends ConversionSpecification {
         return formatter;
     }
 }
+*/
 
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class Literal extends AbstractSpecification {

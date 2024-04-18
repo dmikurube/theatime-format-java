@@ -275,6 +275,7 @@ final class Tokenizer {
                     return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                 */
 
+                /*
                 case '+':
                     // Legacy strftime recognizes "%+" as a terminating conversion specifier for date and time (date(1)).
                     if (this.options.acceptsPlusSignAsTerminatingConversionSpecifier()) {
@@ -291,6 +292,7 @@ final class Tokenizer {
                     // The position is after the precision part.
                     this.pos++;
                     return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
+                */
 
                 case '-':
                     if (!hasPrecisionProcessed) {
