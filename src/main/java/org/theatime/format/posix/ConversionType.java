@@ -16,10 +16,6 @@
 
 package org.theatime.format.posix;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * The type of conversion to be applied by POSIX {@code strftime} and {@code strptime}.
  *
@@ -124,6 +120,7 @@ enum ConversionType {
      * <p>Parsing - Replaced by {@code %}.
      */
     IMMEDIATE_PERCENT('%'),
+
     ;
 
     ConversionType(final char character) {
@@ -134,27 +131,6 @@ enum ConversionType {
     public String toString() {
         return "" + this.character;
     }
-
-    public static ConversionType valueOf(final char ch) {
-        final ConversionType value = MAP.get(ch);
-        if (value == null) {
-            throw new IllegalArgumentException(
-                    String.format("No format conversion specification for: 0x%x ('%c')", (int) ch, ch));
-        }
-        return value;
-    }
-
-    static {
-        final HashMap<Character, ConversionType> map = new HashMap<>();
-        for (final ConversionType value : values()) {
-            if (null != map.putIfAbsent(value.character, value)) {
-                throw new RuntimeException("Duplicated character assignment in ConversionType.");
-            }
-        }
-        MAP = Collections.unmodifiableMap(map);
-    }
-
-    private static final Map<Character, ConversionType> MAP;
 
     final char character;
 }
