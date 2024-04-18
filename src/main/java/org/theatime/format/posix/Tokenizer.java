@@ -294,7 +294,7 @@ final class Tokenizer {
 
                 case '-':
                     if (!hasPrecisionProcessed) {
-                        // optionsBuilder.setLeft();
+                        ctx.padding('-');
                         break;
                     }
 
@@ -324,7 +324,7 @@ final class Tokenizer {
 
                 case '_':
                     if (!hasPrecisionProcessed) {
-                        ctx.padding(' ');
+                        ctx.padding('_');
                         break;
                     }
 

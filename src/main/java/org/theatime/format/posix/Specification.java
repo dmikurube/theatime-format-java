@@ -53,6 +53,23 @@ abstract class AbstractSpecification implements Specification {
 
     abstract DateTimeFormatterBuilder appendTo(DateTimeFormatterBuilder formatter);
 
+    final char actualPad(final char defaultPad) {
+        if (this.padding == '\0') {
+            return defaultPad;
+        } else if (this.padding == '0') {
+            return '0';
+        } else if (this.padding == '_') {
+            return ' ';
+        } else if (this.padding == '-') {
+            return defaultPad;
+        }
+        throw new IllegalStateException("Illegal padding: '" + this.padding + "'");
+    }
+
+    final boolean isLeftAligned() {
+        return this.padding == '-';
+    }
+
     static class Context {
         Context(final boolean upperCase,
                 final boolean changeCase,
@@ -250,8 +267,10 @@ abstract class ConversionSpecification extends AbstractSpecification {
             // Pass-through.
         } else if (this.padding == '0') {
             builder.append("0");
-        } else if (this.padding == ' ') {
+        } else if (this.padding == '_') {
             builder.append("_");
+        } else if (this.padding == '-') {
+            builder.append("-");
         } else {
             throw new IllegalStateException("Illegal padding: " + this.padding);
         }
@@ -267,9 +286,9 @@ abstract class ConversionSpecification extends AbstractSpecification {
         }
         if (this.modifier == '\0') {
             // Pass-through.
-        } else if (this.padding == 'E') {
+        } else if (this.modifier == 'E') {
             builder.append('E');
-        } else if (this.padding == '0') {
+        } else if (this.modifier == '0') {
             builder.append('O');
         } else {
             throw new IllegalStateException("Illegal modifier: " + this.modifier);
@@ -302,7 +321,7 @@ final class LowerA extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
+            formatter.padNext(this.precision, this.actualPad(' '));
         }
         return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT);
     }
@@ -320,7 +339,7 @@ final class UpperA extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
+            formatter.padNext(this.precision, this.actualPad(' '));
         }
         return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.FULL);
     }
@@ -338,7 +357,7 @@ final class LowerB extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
+            formatter.padNext(this.precision, this.actualPad(' '));
         }
         return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
     }
@@ -356,7 +375,7 @@ final class UpperB extends ConversionSpecification {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
-            formatter.padNext(this.precision, (this.padding == '\0' ? ' ' : this.padding));
+            formatter.padNext(this.precision, this.actualPad(' '));
         }
         return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.FULL);
     }
