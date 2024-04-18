@@ -142,49 +142,38 @@ final class Tokenizer {
                 case 'A':
                     return new UpperA(ctx.at(posPercent, ++this.pos));
 
-                case 'h':
-                    return new LowerH(ctx.at(posPercent, ++this.pos));
-
                 case 'b':
                     return new LowerB(ctx.at(posPercent, ++this.pos));
 
                 case 'B':
                     return new UpperB(ctx.at(posPercent, ++this.pos));
 
-                /*
-                case 'P':
-                    return new UpperP(ctx.at(posPercent, ++this.pos));
-                */
-
-                case 'p':
-                    return new LowerP(ctx.at(posPercent, ++this.pos));
-
                 case 'c':
                     return new LowerC(ctx.at(posPercent, ++this.pos));
 
-                case 'x':
-                    return new LowerX(ctx.at(posPercent, ++this.pos));
+                case 'C':
+                    return new UpperC(ctx.at(posPercent, ++this.pos));
 
-                case 'X':
-                    return new UpperX(ctx.at(posPercent, ++this.pos));
+                case 'd':
+                    return new LowerD(ctx.at(posPercent, ++this.pos));
 
                 case 'D':
                     return new UpperD(ctx.at(posPercent, ++this.pos));
 
-                case 'r':
-                    return new LowerR(ctx.at(posPercent, ++this.pos));
-
-                case 'R':
-                    return new UpperR(ctx.at(posPercent, ++this.pos));
-
-                case 'T':
-                    return new UpperT(ctx.at(posPercent, ++this.pos));
+                case 'e':
+                    return new LowerE(ctx.at(posPercent, ++this.pos));
 
                 case 'F':
                     return new UpperF(ctx.at(posPercent, ++this.pos));
 
-                case 'd':
-                    return new LowerD(ctx.at(posPercent, ++this.pos));
+                case 'g':
+                    return new LowerG(ctx.at(posPercent, ++this.pos));
+
+                case 'G':
+                    return new UpperG(ctx.at(posPercent, ++this.pos));
+
+                case 'h':
+                    return new LowerH(ctx.at(posPercent, ++this.pos));
 
                 case 'H':
                     return new UpperH(ctx.at(posPercent, ++this.pos));
@@ -195,68 +184,12 @@ final class Tokenizer {
                 case 'j':
                     return new LowerJ(ctx.at(posPercent, ++this.pos));
 
-                case 'm':
-                    return new LowerM(ctx.at(posPercent, ++this.pos));
-
-                case 'M':
-                    return new UpperM(ctx.at(posPercent, ++this.pos));
-
-                case 'S':
-                    return new UpperS(ctx.at(posPercent, ++this.pos));
-
-                case 'U':
-                    return new UpperU(ctx.at(posPercent, ++this.pos));
-
-                case 'W':
-                    return new UpperW(ctx.at(posPercent, ++this.pos));
-
-                case 'w':
-                    return new LowerW(ctx.at(posPercent, ++this.pos));
-
-                case 'y':
-                    return new LowerY(ctx.at(posPercent, ++this.pos));
-
-                case 'Y':
-                    return new UpperY(ctx.at(posPercent, ++this.pos));
-
-                case 'e':
-                    return new LowerE(ctx.at(posPercent, ++this.pos));
-
-                case 'C':
-                    return new UpperC(ctx.at(posPercent, ++this.pos));
-
-                case 'V':
-                    return new UpperV(ctx.at(posPercent, ++this.pos));
-
-                case 'u':
-                    return new LowerU(ctx.at(posPercent, ++this.pos));
-
                 /*
-                // Ruby extensions.
-                case 'Q':
-                        // %Q is only for parsing, not for formatting. Then, %Q never takes any option.
-                        // So, a token of "%Q" can always be stringified straightforward to "%Q".
-                    break;
+                case 'k':  // GNU extension.
                 */
 
-                case 'z':
-                    return new LowerZ(ctx.at(posPercent, ++this.pos));
-
-                case 'Z':
-                    return new UpperZ(ctx.at(posPercent, ++this.pos));
-
-                case 'G':
-                    return new UpperG(ctx.at(posPercent, ++this.pos));
-
-                case 'g':
-                    return new LowerG(ctx.at(posPercent, ++this.pos));
-
                 /*
-                // GNU extensions.
-                case 'k':
-                case 'l':
-                case 's':
-                case 'v':
+                case 'l':  // GNU extension.
                 */
 
                 /*
@@ -266,7 +199,15 @@ final class Tokenizer {
                         return builder.build(ch, this.format.substring(posPercent, this.pos));
                     }
                     return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
+                */
 
+                case 'm':
+                    return new LowerM(ctx.at(posPercent, ++this.pos));
+
+                case 'M':
+                    return new UpperM(ctx.at(posPercent, ++this.pos));
+
+                /*
                 case 'N':  // Ruby extension: "%N"
                     this.pos++;
                     if (this.options.isUpperCaseNAsTerminatingConversionSpecifier()) {
@@ -274,6 +215,75 @@ final class Tokenizer {
                     }
                     return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                 */
+
+                case 'p':
+                    return new LowerP(ctx.at(posPercent, ++this.pos));
+
+                /*
+                case 'P':
+                    return new UpperP(ctx.at(posPercent, ++this.pos));
+                */
+
+                /*
+                // Ruby extensions.
+                case 'Q':
+                        // %Q is only for parsing, not for formatting. Then, %Q never takes any option.
+                        // So, a token of "%Q" can always be stringified straightforward to "%Q".
+                    break;
+                */
+
+                case 'r':
+                    return new LowerR(ctx.at(posPercent, ++this.pos));
+
+                case 'R':
+                    return new UpperR(ctx.at(posPercent, ++this.pos));
+
+                /*
+                case 's':  // GNU extension.
+                */
+
+                case 'S':
+                    return new UpperS(ctx.at(posPercent, ++this.pos));
+
+                case 'T':
+                    return new UpperT(ctx.at(posPercent, ++this.pos));
+
+                case 'u':
+                    return new LowerU(ctx.at(posPercent, ++this.pos));
+
+                case 'U':
+                    return new UpperU(ctx.at(posPercent, ++this.pos));
+
+                /*
+                case 'v':  // GNU extensions.
+                */
+
+                case 'V':
+                    return new UpperV(ctx.at(posPercent, ++this.pos));
+
+                case 'w':
+                    return new LowerW(ctx.at(posPercent, ++this.pos));
+
+                case 'W':
+                    return new UpperW(ctx.at(posPercent, ++this.pos));
+
+                case 'x':
+                    return new LowerX(ctx.at(posPercent, ++this.pos));
+
+                case 'X':
+                    return new UpperX(ctx.at(posPercent, ++this.pos));
+
+                case 'y':
+                    return new LowerY(ctx.at(posPercent, ++this.pos));
+
+                case 'Y':
+                    return new UpperY(ctx.at(posPercent, ++this.pos));
+
+                case 'z':
+                    return new LowerZ(ctx.at(posPercent, ++this.pos));
+
+                case 'Z':
+                    return new UpperZ(ctx.at(posPercent, ++this.pos));
 
                 /*
                 case '+':
