@@ -127,136 +127,136 @@ final class Tokenizer {
                 //    => "         %"
                 //    irb(main):002:0> Time.now.strftime("%010n")
                 //    => "000000000\n"
-                case '%':  // ConversionType.IMMEDIATE_PERCENT
+                case '%':
                     return Literal.ofPercent(ctx.at(posPercent, ++this.pos));
 
-                case 'n':  // ConversionType.IMMEDIATE_WHITESPACE_NEWLINE
+                case 'n':
                     return Literal.ofNewline(ctx.at(posPercent, ++this.pos));
 
-                case 't':  // ConversionType.IMMEDIATE_WHITESPACE_TAB
+                case 't':
                     return Literal.ofTab(ctx.at(posPercent, ++this.pos));
 
                 case 'a':
                     return new LowerA(ctx.at(posPercent, ++this.pos));
 
-                case 'A':  // FormatDirective.DAY_OF_WEEK_FULL_NAME
+                case 'A':
                     return new UpperA(ctx.at(posPercent, ++this.pos));
 
-                case 'h':  // FormatDirective.MONTH_OF_YEAR_ABBREVIATED_NAME_ALIAS_SMALL_H
+                case 'h':
                     return new LowerH(ctx.at(posPercent, ++this.pos));
 
-                case 'b':  // FormatDirective.MONTH_OF_YEAR_ABBREVIATED_NAME
+                case 'b':
                     return new LowerB(ctx.at(posPercent, ++this.pos));
 
-                case 'B':  // FormatDirective.MONTH_OF_YEAR_FULL_NAME
+                case 'B':
                     return new UpperB(ctx.at(posPercent, ++this.pos));
 
                 /*
-                case 'P':  // FormatDirective.AMPM_OF_DAY_LOWER_CASE
+                case 'P':
                     return new UpperP(ctx.at(posPercent, ++this.pos));
                 */
 
-                case 'p':  // FormatDirective.AMPM_OF_DAY_UPPER_CASE
+                case 'p':
                     return new LowerP(ctx.at(posPercent, ++this.pos));
 
-                case 'c':  // FormatDirective.RECURRED_UPPER_C
+                case 'c':
                     return new LowerC(ctx.at(posPercent, ++this.pos));
 
-                case 'x':  // FormatDirective.RECURRED_LOWER_X
+                case 'x':
                     return new LowerX(ctx.at(posPercent, ++this.pos));
 
-                case 'X':  // FormatDirective.RECURRED_UPPER_X
+                case 'X':
                     return new UpperX(ctx.at(posPercent, ++this.pos));
 
-                case 'D':  // FormatDirective.RECURRED_UPPER_D
+                case 'D':
                     return new UpperD(ctx.at(posPercent, ++this.pos));
 
-                case 'r':  // FormatDirective.RECURRED_LOWER_R
+                case 'r':
                     return new LowerR(ctx.at(posPercent, ++this.pos));
 
-                case 'R':  // FormatDirective.RECURRED_UPPER_R
+                case 'R':
                     return new UpperR(ctx.at(posPercent, ++this.pos));
 
-                case 'T':  // FormatDirective.RECURRED_UPPER_T
+                case 'T':
                     return new UpperT(ctx.at(posPercent, ++this.pos));
 
-                case 'F':  // FormatDirective.RECURRED_UPPER_F
+                case 'F':
                     return new UpperF(ctx.at(posPercent, ++this.pos));
 
-                case 'd':  // FormatDirective.DAY_OF_MONTH_ZERO_PADDED
+                case 'd':
                     return new LowerD(ctx.at(posPercent, ++this.pos));
 
-                case 'H':  // FormatDirective.HOUR_OF_DAY_ZERO_PADDED
+                case 'H':
                     return new UpperH(ctx.at(posPercent, ++this.pos));
 
-                case 'I':  // FormatDirective.HOUR_OF_AMPM_ZERO_PADDED
+                case 'I':
                     return new UpperI(ctx.at(posPercent, ++this.pos));
 
-                case 'j':  // FormatDirective.DAY_OF_YEAR
+                case 'j':
                     return new LowerJ(ctx.at(posPercent, ++this.pos));
 
-                case 'm':  // FormatDirective.MONTH_OF_YEAR
+                case 'm':
                     return new LowerM(ctx.at(posPercent, ++this.pos));
 
-                case 'M':  // FormatDirective.MINUTE_OF_HOUR
+                case 'M':
                     return new UpperM(ctx.at(posPercent, ++this.pos));
 
-                case 'S':  // FormatDirective.SECOND_OF_MINUTE
+                case 'S':
                     return new UpperS(ctx.at(posPercent, ++this.pos));
 
-                case 'U':  // FormatDirective.WEEK_OF_YEAR_STARTING_WITH_SUNDAY
+                case 'U':
                     return new UpperU(ctx.at(posPercent, ++this.pos));
 
-                case 'W':  // FormatDirective.WEEK_OF_YEAR_STARTING_WITH_MONDAY
+                case 'W':
                     return new UpperW(ctx.at(posPercent, ++this.pos));
 
-                case 'w':  // FormatDirective.DAY_OF_WEEK_STARTING_WITH_SUNDAY_0
+                case 'w':
                     return new LowerW(ctx.at(posPercent, ++this.pos));
 
-                case 'y':  // FormatDirective.YEAR_WITHOUT_CENTURY
+                case 'y':
                     return new LowerY(ctx.at(posPercent, ++this.pos));
 
-                case 'Y':  // FormatDirective.YEAR_WITH_CENTURY
+                case 'Y':
                     return new UpperY(ctx.at(posPercent, ++this.pos));
 
-                case 'e':  // FormatDirective.DAY_OF_MONTH_BLANK_PADDED
+                case 'e':
                     return new LowerE(ctx.at(posPercent, ++this.pos));
 
-                case 'C':  // FormatDirective.CENTURY -- FMTV
+                case 'C':
                     return new UpperC(ctx.at(posPercent, ++this.pos));
 
-                case 'V':  // FormatDirective.WEEK_OF_WEEK_BASED_YEAR
+                case 'V':
                     return new UpperV(ctx.at(posPercent, ++this.pos));
 
-                case 'u':  // FormatDirective.DAY_OF_WEEK_STARTING_WITH_MONDAY_1
+                case 'u':
                     return new LowerU(ctx.at(posPercent, ++this.pos));
 
                 /*
                 // Ruby extensions.
-                case 'Q':  // FormatDirective.MILLISECONDS_SINCE_EPOCH
+                case 'Q':
                         // %Q is only for parsing, not for formatting. Then, %Q never takes any option.
                         // So, a token of "%Q" can always be stringified straightforward to "%Q".
                     break;
                 */
 
-                case 'z':  // FormatDirective.TIME_OFFSET
+                case 'z':
                     return new LowerZ(ctx.at(posPercent, ++this.pos));
 
-                case 'Z':  // FormatDirective.TIME_ZONE_NAME
+                case 'Z':
                     return new UpperZ(ctx.at(posPercent, ++this.pos));
 
-                case 'G':  // FormatDirective.WEEK_BASED_YEAR_WITH_CENTURY
+                case 'G':
                     return new UpperG(ctx.at(posPercent, ++this.pos));
 
-                case 'g':  // FormatDirective.WEEK_BASED_YEAR_WITHOUT_CENTURY
+                case 'g':
                     return new LowerG(ctx.at(posPercent, ++this.pos));
 
                 /*
                 // GNU extensions.
-                case 'k':  // FormatDirective.HOUR_OF_DAY_BLANK_PADDED
-                case 'l':  // FormatDirective.HOUR_OF_AMPM_BLANK_PADDED
-                case 's':  // FormatDirective.SECONDS_SINCE_EPOCH
-                case 'v':  // FormatDirective.RECURRED_LOWER_V
+                case 'k':
+                case 'l':
+                case 's':
+                case 'v':
                 */
 
                 /*
