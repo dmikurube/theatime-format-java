@@ -31,7 +31,7 @@ import java.util.Objects;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
 public interface Specification {
-    String originalFormat();
+    String original();
 }
 
 @SuppressWarnings("checkstyle:OneTopLevelClass")
@@ -44,13 +44,13 @@ abstract class AbstractSpecification implements Specification {
         this.pad = context.pad;
         this.modifier = context.modifier;
 
-        this.originalEntireFormat = context.originalEntireFormat;
+        this.entireFormat = context.entireFormat;
         this.start = context.start;
         this.end = context.end;
     }
 
-    public final String originalFormat() {
-        return this.originalEntireFormat.substring(this.start, this.end);
+    public final String original() {
+        return this.entireFormat.substring(this.start, this.end);
     }
 
     abstract DateTimeFormatterBuilder appendTo(DateTimeFormatterBuilder formatter);
@@ -79,7 +79,7 @@ abstract class AbstractSpecification implements Specification {
                 final int colons,
                 final char pad,
                 final char modifier,
-                final String originalEntireFormat,
+                final String entireFormat,
                 final int start,
                 final int end) {
             this.upperCase = upperCase;
@@ -88,7 +88,7 @@ abstract class AbstractSpecification implements Specification {
             this.colons = colons;
             this.pad = pad;
             this.modifier = modifier;
-            this.originalEntireFormat = originalEntireFormat;
+            this.entireFormat = entireFormat;
             this.start = start;
             this.end = end;
         }
@@ -100,14 +100,14 @@ abstract class AbstractSpecification implements Specification {
         final char pad;
         final char modifier;
 
-        final String originalEntireFormat;
+        final String entireFormat;
         final int start;
         final int end;
     }
 
     static class ContextSource {
-        ContextSource(final String originalEntireFormat) {
-            this.originalEntireFormat = originalEntireFormat;
+        ContextSource(final String entireFormat) {
+            this.entireFormat = entireFormat;
             this.upperCase = false;
             this.changeCase = false;
             this.precision = -1;
@@ -154,12 +154,12 @@ abstract class AbstractSpecification implements Specification {
                     this.colons,
                     this.pad,
                     this.modifier,
-                    this.originalEntireFormat,
+                    this.entireFormat,
                     start,
                     end);
         }
 
-        private final String originalEntireFormat;
+        private final String entireFormat;
 
         private boolean upperCase;
         private boolean changeCase;
@@ -178,7 +178,7 @@ abstract class AbstractSpecification implements Specification {
     final char pad;
     final char modifier;
 
-    final String originalEntireFormat;
+    final String entireFormat;
     private final int start;
     private final int end;
 }
@@ -227,7 +227,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
     }
 
     public String explain() {
-        final StringBuilder builder = new StringBuilder().append("<").append(this.originalEntireFormat);
+        final StringBuilder builder = new StringBuilder().append("<").append(this.entireFormat);
         if (this.upperCase) {
             builder.append(":uppercase");
         }
