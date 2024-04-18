@@ -174,8 +174,8 @@ public abstract class Specification {
     final char modifier;
 
     final String entireFormat;
-    private final int start;
-    private final int end;
+    final int start;
+    final int end;
 }
 
 @SuppressWarnings("checkstyle:OneTopLevelClass")
@@ -1100,6 +1100,25 @@ final class Literal extends Specification {
 
     static Literal ofTab(final Context context) {
         return new Literal("\t", context);
+    }
+
+    Literal append(final Literal other) {
+        if (this.end != other.start) {
+            throw new IllegalArgumentException("Non-consecutive literals are appended.");
+        }
+
+        return new Literal(
+                this.literal + other.literal,
+                new Context(
+                        false,
+                        false,
+                        -1,
+                        -1,
+                        '\0',
+                        '\0',
+                        this.entireFormat,
+                        this.start,
+                        other.end));
     }
 
     @Override
