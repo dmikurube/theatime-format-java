@@ -30,7 +30,6 @@ import java.util.Objects;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/007904875/functions/strptime.html">strptime - The Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004 Edition</a>
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
-@SuppressWarnings("checkstyle:OneTopLevelClass")
 public abstract class Specification {
     Specification(final Context context) {
         this.upperCase = context.upperCase;
