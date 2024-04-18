@@ -39,7 +39,7 @@ abstract class AbstractSpecification implements Specification {
         this.changeCase = context.changeCase;
         this.precision = context.precision;
         this.colons = context.colons;
-        this.padding = context.padding;
+        this.pad = context.pad;
         this.modifier = context.modifier;
 
         this.originalEntireFormat = context.originalEntireFormat;
@@ -54,20 +54,20 @@ abstract class AbstractSpecification implements Specification {
     abstract DateTimeFormatterBuilder appendTo(DateTimeFormatterBuilder formatter);
 
     final char actualPad(final char defaultPad) {
-        if (this.padding == '\0') {
+        if (this.pad == '\0') {
             return defaultPad;
-        } else if (this.padding == '0') {
+        } else if (this.pad == '0') {
             return '0';
-        } else if (this.padding == '_') {
+        } else if (this.pad == '_') {
             return ' ';
-        } else if (this.padding == '-') {
+        } else if (this.pad == '-') {
             return defaultPad;
         }
-        throw new IllegalStateException("Illegal padding: '" + this.padding + "'");
+        throw new IllegalStateException("Illegal pad: '" + this.pad + "'");
     }
 
     final boolean isLeftAligned() {
-        return this.padding == '-';
+        return this.pad == '-';
     }
 
     static class Context {
@@ -75,7 +75,7 @@ abstract class AbstractSpecification implements Specification {
                 final boolean changeCase,
                 final int precision,
                 final int colons,
-                final char padding,
+                final char pad,
                 final char modifier,
                 final String originalEntireFormat,
                 final int start,
@@ -84,7 +84,7 @@ abstract class AbstractSpecification implements Specification {
             this.changeCase = changeCase;
             this.precision = precision;
             this.colons = colons;
-            this.padding = padding;
+            this.pad = pad;
             this.modifier = modifier;
             this.originalEntireFormat = originalEntireFormat;
             this.start = start;
@@ -95,7 +95,7 @@ abstract class AbstractSpecification implements Specification {
         final boolean changeCase;
         final int precision;
         final int colons;
-        final char padding;
+        final char pad;
         final char modifier;
 
         final String originalEntireFormat;
@@ -110,7 +110,7 @@ abstract class AbstractSpecification implements Specification {
             this.changeCase = false;
             this.precision = -1;
             this.colons = -1;
-            this.padding = '\0';
+            this.pad = '\0';
             this.modifier = '\0';
         }
 
@@ -134,8 +134,8 @@ abstract class AbstractSpecification implements Specification {
             return this;
         }
 
-        ContextSource padding(final char padding) {
-            this.padding = padding;
+        ContextSource pad(final char pad) {
+            this.pad = pad;
             return this;
         }
 
@@ -150,7 +150,7 @@ abstract class AbstractSpecification implements Specification {
                     this.changeCase,
                     this.precision,
                     this.colons,
-                    this.padding,
+                    this.pad,
                     this.modifier,
                     this.originalEntireFormat,
                     start,
@@ -163,7 +163,7 @@ abstract class AbstractSpecification implements Specification {
         private boolean changeCase;
         private int precision;
         private int colons;
-        private char padding;
+        private char pad;
         private char modifier;
     }
 
@@ -173,7 +173,7 @@ abstract class AbstractSpecification implements Specification {
     final boolean changeCase;
     final int precision;
     final int colons;
-    final char padding;
+    final char pad;
     final char modifier;
 
     final String originalEntireFormat;
@@ -209,7 +209,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
                 && Objects.equals(this.changeCase, other.changeCase)
                 && Objects.equals(this.precision, other.precision)
                 && Objects.equals(this.colons, other.colons)
-                && Objects.equals(this.padding, other.padding)
+                && Objects.equals(this.pad, other.pad)
                 && Objects.equals(this.modifier, other.modifier)
                 ;
     }
@@ -224,7 +224,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
                 this.changeCase,
                 this.precision,
                 this.colons,
-                this.padding,
+                this.pad,
                 this.modifier);
     }
 
@@ -242,8 +242,8 @@ abstract class ConversionSpecification extends AbstractSpecification {
         if (this.colons >= 0) {
             builder.append(":colons=").append(this.colons);
         }
-        if (this.padding != '\0') {
-            builder.append(":padding=").append(this.padding);
+        if (this.pad != '\0') {
+            builder.append(":pad=").append(this.pad);
         }
         if (this.modifier != '\0') {
             builder.append(":modifier=").append(this.modifier);
@@ -263,16 +263,16 @@ abstract class ConversionSpecification extends AbstractSpecification {
             builder.append("#");
         }
 
-        if (this.padding == '\0') {
+        if (this.pad == '\0') {
             // Pass-through.
-        } else if (this.padding == '0') {
+        } else if (this.pad == '0') {
             builder.append("0");
-        } else if (this.padding == '_') {
+        } else if (this.pad == '_') {
             builder.append("_");
-        } else if (this.padding == '-') {
+        } else if (this.pad == '-') {
             builder.append("-");
         } else {
-            throw new IllegalStateException("Illegal padding: " + this.padding);
+            throw new IllegalStateException("Illegal pad: " + this.pad);
         }
 
         if (this.precision >= 0) {
@@ -317,7 +317,7 @@ final class LowerA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        if (this.padding == '0' || this.upperCase || this.changeCase) {
+        if (this.pad == '0' || this.upperCase || this.changeCase) {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
@@ -335,7 +335,7 @@ final class UpperA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        if (this.padding == '0' || this.upperCase || this.changeCase) {
+        if (this.pad == '0' || this.upperCase || this.changeCase) {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
@@ -353,7 +353,7 @@ final class LowerB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        if (this.padding == '0' || this.upperCase || this.changeCase) {
+        if (this.pad == '0' || this.upperCase || this.changeCase) {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
@@ -371,7 +371,7 @@ final class UpperB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        if (this.padding == '0' || this.upperCase || this.changeCase) {
+        if (this.pad == '0' || this.upperCase || this.changeCase) {
             throw new IllegalStateException();
         }
         if (this.precision >= 0) {
@@ -400,7 +400,7 @@ final class LowerC extends ConversionSpecification {
         // strftime, strftime_l - convert date and time to a string
         // The Open Group Base Specifications Issue 7, 2018 edition
         // https://pubs.opengroup.org/onlinepubs/9699919799/functions/strftime.html#tag_16_576_07
-        if (this.padding == '0' || this.upperCase || this.changeCase) {
+        if (this.pad == '0' || this.upperCase || this.changeCase) {
             throw new IllegalStateException();
         }
         return formatter

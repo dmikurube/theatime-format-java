@@ -284,7 +284,7 @@ final class Tokenizer {
                     // Modern strftime recognizes "%+" as an optional flag.
                     if (!hasPrecisionProcessed) {
                         // TODO: Set '+' flag.
-                        ctx.padding('0');
+                        ctx.pad('0');
                         break;
                     }
 
@@ -294,7 +294,7 @@ final class Tokenizer {
 
                 case '-':
                     if (!hasPrecisionProcessed) {
-                        ctx.padding('-');
+                        ctx.pad('-');
                         break;
                     }
 
@@ -324,7 +324,7 @@ final class Tokenizer {
 
                 case '_':
                     if (!hasPrecisionProcessed) {
-                        ctx.padding('_');
+                        ctx.pad('_');
                         break;
                     }
 
@@ -371,7 +371,7 @@ final class Tokenizer {
                     }
 
                 case '0':
-                    ctx.padding('0');
+                    ctx.pad('0');
                     // Pass-through.
 
                 case '1':
