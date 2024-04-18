@@ -31,6 +31,7 @@ final class Literal extends Specification {
         // For example,
         // "%010q" => "00000%010q"
         // "%010%" => "000000000%"
+        // "%^010q" => "0000%^010Q"
         return new Literal(immediate, context);
     }
 
