@@ -167,7 +167,7 @@ public class TestPosixTimeFormat {
         assertEquals(1, actual.size());
         assertTrue(actual.get(0) instanceof ConversionSpecification);
         final ConversionSpecification actualConversion = (ConversionSpecification) actual.get(0);
-        assertEquals(expectedChar, actualConversion.conversionChar);
+        assertEquals(expectedChar, actualConversion.terminatingConversionSpecifier);
         assertEquals(expectedUpperCase, actualConversion.upperCase);
         assertEquals(expectedChangeCase, actualConversion.changeCase);
         assertEquals(expectedPrecision, actualConversion.precision);
