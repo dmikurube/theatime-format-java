@@ -167,11 +167,11 @@ abstract class AbstractSpecification implements Specification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 abstract class ConversionSpecification extends AbstractSpecification {
     ConversionSpecification(
-            final char conversionChar,
+            final char terminatingConversionSpecifier,
             final ConversionType conversionType,
             final Context context) {
         super(context);
-        this.conversionChar = conversionChar;
+        this.terminatingConversionSpecifier = terminatingConversionSpecifier;
         this.conversionType = conversionType;
     }
 
@@ -186,7 +186,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
 
         final ConversionSpecification other = (ConversionSpecification) otherObject;
         return Objects.equals(this.getClass(), other.getClass())
-                && Objects.equals(this.conversionChar, other.conversionChar)
+                && Objects.equals(this.terminatingConversionSpecifier, other.terminatingConversionSpecifier)
                 && Objects.equals(this.conversionType, other.conversionType)
                 && Objects.equals(this.upperCase, other.upperCase)
                 && Objects.equals(this.changeCase, other.changeCase)
@@ -201,7 +201,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
     public int hashCode() {
         return Objects.hash(
                 this.getClass(),
-                this.conversionChar,
+                this.terminatingConversionSpecifier,
                 this.conversionType,
                 this.upperCase,
                 this.changeCase,
@@ -275,12 +275,12 @@ abstract class ConversionSpecification extends AbstractSpecification {
             throw new IllegalStateException("Illegal modifier: " + this.modifier);
         }
 
-        builder.append(this.conversionChar);
+        builder.append(this.terminatingConversionSpecifier);
 
         return builder.toString();
     }
 
-    final char conversionChar;
+    final char terminatingConversionSpecifier;
     final ConversionType conversionType;
 }
 
