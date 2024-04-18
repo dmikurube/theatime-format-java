@@ -133,7 +133,7 @@ public class TestPosixTimeFormat {
             final String expectedChangeCase,
             final String expectedPrecision,
             final String expectedColons,
-            final String expectedPadding,
+            final String expectedPad,
             final String expectedModifier,
             final String expectedOriginal) {
         assertSingleFormatOptions(
@@ -142,7 +142,7 @@ public class TestPosixTimeFormat {
                 Boolean.parseBoolean(expectedChangeCase),
                 Integer.parseInt(expectedPrecision),
                 Integer.parseInt(expectedColons),
-                (expectedPadding == null || expectedPadding.isEmpty()) ? '\0' : expectedPadding.charAt(0),
+                (expectedPad == null || expectedPad.isEmpty()) ? '\0' : expectedPad.charAt(0),
                 (expectedModifier == null || expectedModifier.isEmpty()) ? '\0' : expectedModifier.charAt(0),
                 format);
     }
@@ -160,7 +160,7 @@ public class TestPosixTimeFormat {
             final boolean expectedChangeCase,
             final int expectedPrecision,
             final int expectedColons,
-            final char expectedPadding,
+            final char expectedPad,
             final char expectedModifier,
             final String format) {
         final List<AbstractSpecification> actual = Tokenizer.tokenize(format);
@@ -172,7 +172,7 @@ public class TestPosixTimeFormat {
         assertEquals(expectedChangeCase, actualConversion.changeCase);
         assertEquals(expectedPrecision, actualConversion.precision);
         assertEquals(expectedColons, actualConversion.colons);
-        assertEquals(expectedPadding, actualConversion.padding);
+        assertEquals(expectedPad, actualConversion.pad);
         assertEquals(expectedModifier, actualConversion.modifier);
     }
 
