@@ -43,7 +43,7 @@ public class TestPosixTimeFormat {
     @Test
     public void testLowerA() {
         assertFormat("%a", new LowerA(C));
-        assertFormat("%0a", new LowerA(new AbstractSpecification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%0a", new LowerA(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
     }
 
     @Test
@@ -147,8 +147,8 @@ public class TestPosixTimeFormat {
                 format);
     }
 
-    private void assertFormat(final String format, final AbstractSpecification... expectedFormatSpecifications) {
-        final List<AbstractSpecification> actual = Tokenizer.tokenize(format);
+    private void assertFormat(final String format, final Specification... expectedFormatSpecifications) {
+        final List<Specification> actual = Tokenizer.tokenize(format);
         assertEquals(Arrays.asList(expectedFormatSpecifications), actual);
         System.out.println("\"" + format + "\"");
         System.out.println(actual);
@@ -163,7 +163,7 @@ public class TestPosixTimeFormat {
             final char expectedPad,
             final char expectedModifier,
             final String format) {
-        final List<AbstractSpecification> actual = Tokenizer.tokenize(format);
+        final List<Specification> actual = Tokenizer.tokenize(format);
         assertEquals(1, actual.size());
         assertTrue(actual.get(0) instanceof ConversionSpecification);
         final ConversionSpecification actualConversion = (ConversionSpecification) actual.get(0);
@@ -176,5 +176,5 @@ public class TestPosixTimeFormat {
         assertEquals(expectedModifier, actualConversion.modifier);
     }
 
-    private static AbstractSpecification.Context C = AbstractSpecification.EMPTY;
+    private static Specification.Context C = Specification.EMPTY;
 }
