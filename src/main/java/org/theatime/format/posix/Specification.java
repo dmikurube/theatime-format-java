@@ -312,7 +312,7 @@ abstract class ConversionSpecification extends AbstractSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerA extends ConversionSpecification {
     LowerA(final Context context) {
-        super('a', ConversionType.DAY_OF_WEEK_NAME_ABBREVIATED, context);
+        super('a', ConversionType.POSIX_LOWER_A, context);
     }
 
     @Override
@@ -330,7 +330,7 @@ final class LowerA extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperA extends ConversionSpecification {
     UpperA(final Context context) {
-        super('A', ConversionType.DAY_OF_WEEK_NAME_FULL, context);
+        super('A', ConversionType.POSIX_UPPER_A, context);
     }
 
     @Override
@@ -348,7 +348,7 @@ final class UpperA extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerB extends ConversionSpecification {
     LowerB(final Context context) {
-        super('b', ConversionType.MONTH_NAME_ABBREVIATED, context);
+        super('b', ConversionType.POSIX_LOWER_B, context);
     }
 
     @Override
@@ -366,7 +366,7 @@ final class LowerB extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperB extends ConversionSpecification {
     UpperB(final Context context) {
-        super('B', ConversionType.MONTH_NAME_FULL, context);
+        super('B', ConversionType.POSIX_UPPER_B, context);
     }
 
     @Override
@@ -384,7 +384,7 @@ final class UpperB extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerC extends ConversionSpecification {
     LowerC(final Context context) {
-        super('c', ConversionType.DATE_AND_TIME, context);
+        super('c', ConversionType.POSIX_LOWER_C, context);
     }
 
     @Override
@@ -424,7 +424,7 @@ final class LowerC extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperC extends ConversionSpecification {
     UpperC(final Context context) {
-        super('C', ConversionType.CENTURY, context);
+        super('C', ConversionType.POSIX_UPPER_C, context);
     }
 
     @Override
@@ -436,7 +436,7 @@ final class UpperC extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerD extends ConversionSpecification {
     LowerD(final Context context) {
-        super('d', ConversionType.DAY_OF_MONTH_ZERO, context);
+        super('d', ConversionType.POSIX_LOWER_D, context);
     }
 
     @Override
@@ -448,7 +448,7 @@ final class LowerD extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperD extends ConversionSpecification {
     UpperD(final Context context) {
-        super('D', ConversionType.DATE_MDY, context);
+        super('D', ConversionType.POSIX_UPPER_D, context);
     }
 
     @Override
@@ -460,7 +460,7 @@ final class UpperD extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerE extends ConversionSpecification {
     LowerE(final Context context) {
-        super('e', ConversionType.DAY_OF_MONTH_SPACE, context);
+        super('e', ConversionType.POSIX_LOWER_E, context);
     }
 
     @Override
@@ -472,7 +472,7 @@ final class LowerE extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperF extends ConversionSpecification {
     UpperF(final Context context) {
-        super('F', ConversionType.YEAR_MONTH_DAY, context);
+        super('F', ConversionType.POSIX_UPPER_F, context);
     }
 
     @Override
@@ -484,7 +484,7 @@ final class UpperF extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerG extends ConversionSpecification {
     LowerG(final Context context) {
-        super('g', ConversionType.WEEK_BASED_YEAR_OFFSET, context);
+        super('g', ConversionType.POSIX_LOWER_G, context);
     }
 
     @Override
@@ -496,7 +496,7 @@ final class LowerG extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperG extends ConversionSpecification {
     UpperG(final Context context) {
-        super('G', ConversionType.WEEK_BASED_YEAR_FULL, context);
+        super('G', ConversionType.POSIX_UPPER_G, context);
     }
 
     @Override
@@ -508,7 +508,7 @@ final class UpperG extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerH extends ConversionSpecification {
     LowerH(final Context context) {
-        super('h', ConversionType.MONTH_NAME_ABBREVIATED_ALIAS, context);
+        super('h', ConversionType.POSIX_LOWER_H, context);
     }
 
     @Override
@@ -520,7 +520,7 @@ final class LowerH extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperH extends ConversionSpecification {
     UpperH(final Context context) {
-        super('H', ConversionType.HOUR_24, context);
+        super('H', ConversionType.POSIX_UPPER_H, context);
     }
 
     @Override
@@ -532,7 +532,7 @@ final class UpperH extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperI extends ConversionSpecification {
     UpperI(final Context context) {
-        super('I', ConversionType.HOUR_12, context);
+        super('I', ConversionType.POSIX_UPPER_I, context);
     }
 
     @Override
@@ -544,7 +544,7 @@ final class UpperI extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerJ extends ConversionSpecification {
     LowerJ(final Context context) {
-        super('j', ConversionType.DAY_OF_YEAR, context);
+        super('j', ConversionType.POSIX_LOWER_J, context);
     }
 
     @Override
@@ -556,7 +556,7 @@ final class LowerJ extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerM extends ConversionSpecification {
     LowerM(final Context context) {
-        super('m', ConversionType.MONTH, context);
+        super('m', ConversionType.POSIX_LOWER_M, context);
     }
 
     @Override
@@ -568,7 +568,7 @@ final class LowerM extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperM extends ConversionSpecification {
     UpperM(final Context context) {
-        super('M', ConversionType.MINUTE, context);
+        super('M', ConversionType.POSIX_UPPER_M, context);
     }
 
     @Override
@@ -592,7 +592,7 @@ final class LowerN extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerP extends ConversionSpecification {
     LowerP(final Context context) {
-        super('p', ConversionType.AMPM, context);
+        super('p', ConversionType.POSIX_LOWER_P, context);
     }
 
     @Override
@@ -604,7 +604,7 @@ final class LowerP extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerR extends ConversionSpecification {
     LowerR(final Context context) {
-        super('r', ConversionType.TIME_12_AMPM, context);
+        super('r', ConversionType.POSIX_LOWER_R, context);
     }
 
     @Override
@@ -616,7 +616,7 @@ final class LowerR extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperR extends ConversionSpecification {
     UpperR(final Context context) {
-        super('R', ConversionType.HOUR_MINUTE_24, context);
+        super('R', ConversionType.POSIX_UPPER_R, context);
     }
 
     @Override
@@ -628,7 +628,7 @@ final class UpperR extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperS extends ConversionSpecification {
     UpperS(final Context context) {
-        super('S', ConversionType.SECOND, context);
+        super('S', ConversionType.POSIX_UPPER_S, context);
     }
 
     @Override
@@ -652,7 +652,7 @@ final class LowerT extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperT extends ConversionSpecification {
     UpperT(final Context context) {
-        super('T', ConversionType.TIME_24, context);
+        super('T', ConversionType.POSIX_UPPER_T, context);
     }
 
     @Override
@@ -664,7 +664,7 @@ final class UpperT extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerU extends ConversionSpecification {
     LowerU(final Context context) {
-        super('u', ConversionType.DAY_OF_WEEK_1_7, context);
+        super('u', ConversionType.POSIX_LOWER_U, context);
     }
 
     @Override
@@ -676,7 +676,7 @@ final class LowerU extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperU extends ConversionSpecification {
     UpperU(final Context context) {
-        super('U', ConversionType.WEEK_NUMBER_OF_YEAR_SUNDAY_0, context);
+        super('U', ConversionType.POSIX_UPPER_U, context);
     }
 
     @Override
@@ -688,7 +688,7 @@ final class UpperU extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperV extends ConversionSpecification {
     UpperV(final Context context) {
-        super('V', ConversionType.WEEK_NUMBER_OF_YEAR_MONDAY_1, context);
+        super('V', ConversionType.POSIX_UPPER_V, context);
     }
 
     @Override
@@ -700,7 +700,7 @@ final class UpperV extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerW extends ConversionSpecification {
     LowerW(final Context context) {
-        super('w', ConversionType.DAY_OF_WEEK_0_6, context);
+        super('w', ConversionType.POSIX_LOWER_W, context);
     }
 
     @Override
@@ -712,7 +712,7 @@ final class LowerW extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperW extends ConversionSpecification {
     UpperW(final Context context) {
-        super('W', ConversionType.WEEK_NUMBER_OF_YEAR_MONDAY_0, context);
+        super('W', ConversionType.POSIX_UPPER_W, context);
     }
 
     @Override
@@ -724,7 +724,7 @@ final class UpperW extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerX extends ConversionSpecification {
     LowerX(final Context context) {
-        super('x', ConversionType.DATE_LOCALE, context);
+        super('x', ConversionType.POSIX_LOWER_X, context);
     }
 
     @Override
@@ -736,7 +736,7 @@ final class LowerX extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperX extends ConversionSpecification {
     UpperX(final Context context) {
-        super('X', ConversionType.TIME_LOCALE, context);
+        super('X', ConversionType.POSIX_UPPER_X, context);
     }
 
     @Override
@@ -748,7 +748,7 @@ final class UpperX extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerY extends ConversionSpecification {
     LowerY(final Context context) {
-        super('y', ConversionType.YEAR_TWO_DIGITS, context);
+        super('y', ConversionType.POSIX_LOWER_Y, context);
     }
 
     @Override
@@ -760,7 +760,7 @@ final class LowerY extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperY extends ConversionSpecification {
     UpperY(final Context context) {
-        super('Y', ConversionType.YEAR, context);
+        super('Y', ConversionType.POSIX_UPPER_Y, context);
     }
 
     @Override
@@ -772,7 +772,7 @@ final class UpperY extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class LowerZ extends ConversionSpecification {
     LowerZ(final Context context) {
-        super('z', ConversionType.ZONE, context);
+        super('z', ConversionType.POSIX_LOWER_Z, context);
     }
 
     @Override
@@ -784,7 +784,7 @@ final class LowerZ extends ConversionSpecification {
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 final class UpperZ extends ConversionSpecification {
     UpperZ(final Context context) {
-        super('Z', ConversionType.ZONE_NAME, context);
+        super('Z', ConversionType.POSIX_UPPER_Z, context);
     }
 
     @Override

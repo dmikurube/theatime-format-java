@@ -136,7 +136,7 @@ final class Tokenizer {
                 case 't':  // ConversionType.IMMEDIATE_WHITESPACE_TAB
                     return Literal.ofTab(ctx.at(posPercent, ++this.pos));
 
-                case 'a':  // FormatDirective.DAY_OF_WEEK_ABBREVIATED_NAME
+                case 'a':
                     return new LowerA(ctx.at(posPercent, ++this.pos));
 
                 case 'A':  // FormatDirective.DAY_OF_WEEK_FULL_NAME
