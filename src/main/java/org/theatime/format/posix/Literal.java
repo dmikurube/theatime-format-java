@@ -26,19 +26,24 @@ final class Literal extends Specification {
     }
 
     static Literal of(final String immediate, final Context context) {
+        // TODO: Format the immediate string with context.
+        //
+        // For example,
+        // "%010q" => "00000%010q"
+        // "%010%" => "000000000%"
         return new Literal(immediate, context);
     }
 
     static Literal ofPercent(final Context context) {
-        return new Literal("%", context);
+        return of("%", context);
     }
 
     static Literal ofNewline(final Context context) {
-        return new Literal("\n", context);
+        return of("\n", context);
     }
 
     static Literal ofTab(final Context context) {
-        return new Literal("\t", context);
+        return of("\t", context);
     }
 
     Literal append(final Literal other) {
