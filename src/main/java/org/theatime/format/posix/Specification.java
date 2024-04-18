@@ -30,13 +30,9 @@ import java.util.Objects;
  * @see <a href="https://pubs.opengroup.org/onlinepubs/007904875/functions/strptime.html">strptime - The Open Group Base Specifications Issue 6 IEEE Std 1003.1, 2004 Edition</a>
  * @see <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/strptime.html">strptime - The Open Group Base Specifications Issue 7, 2018 edition IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)</a>
  */
-public interface Specification {
-    String original();
-}
-
 @SuppressWarnings("checkstyle:OneTopLevelClass")
-abstract class AbstractSpecification implements Specification {
-    AbstractSpecification(final Context context) {
+public abstract class Specification {
+    Specification(final Context context) {
         this.upperCase = context.upperCase;
         this.changeCase = context.changeCase;
         this.precision = context.precision;
@@ -184,7 +180,7 @@ abstract class AbstractSpecification implements Specification {
 }
 
 @SuppressWarnings("checkstyle:OneTopLevelClass")
-abstract class ConversionSpecification extends AbstractSpecification {
+abstract class ConversionSpecification extends Specification {
     ConversionSpecification(
             final ConversionType terminatingConversionSpecifier,
             final Context context) {
@@ -1085,7 +1081,7 @@ final class Plus extends ConversionSpecification {
 */
 
 @SuppressWarnings("checkstyle:OneTopLevelClass")
-final class Literal extends AbstractSpecification {
+final class Literal extends Specification {
     private Literal(final String literal, final Context context) {
         super(context);
         this.literal = literal;

@@ -44,11 +44,11 @@ final class Tokenizer {
      * For more specific example, Ruby's extended {@code strptime} accepts an year with longer than 4 digits
      * when the <strong>next</strong> specification is <strong>not</strong> a number pattern.
      */
-    static List<AbstractSpecification> tokenize(final String format, final PosixTimeFormat.Option... options) {
+    static List<Specification> tokenize(final String format, final PosixTimeFormat.Option... options) {
         return new Tokenizer(format, Options.of(options)).tokenizeInitial();
     }
 
-    private List<AbstractSpecification> tokenizeInitial() {
+    private List<Specification> tokenizeInitial() {
         final StringBuilder literal = new StringBuilder();
 
         int firstOrdinaryCharacter = 0;
@@ -66,7 +66,7 @@ final class Tokenizer {
                 if (literal.length() > 0) {
                     this.formatSpecifications.add(Literal.of(
                             literal.toString(),
-                            AbstractSpecification.EMPTY));
+                            Specification.EMPTY));
                     literal.setLength(0);
                 }
                 break;
@@ -77,14 +77,14 @@ final class Tokenizer {
             }
 
             this.pos = posPercent;
-            final AbstractSpecification formatSpecification = this.tokenizeConversion();
+            final Specification formatSpecification = this.tokenizeConversion();
             if (formatSpecification instanceof Literal) {
                 literal.append(((Literal) formatSpecification).toString());
             } else {
                 if (literal.length() > 0) {
                     this.formatSpecifications.add(Literal.of(
                             literal.toString(),
-                            AbstractSpecification.EMPTY));
+                            Specification.EMPTY));
                     literal.setLength(0);
                 }
                 this.formatSpecifications.add(formatSpecification);
@@ -108,12 +108,12 @@ final class Tokenizer {
      * @throws AssertionError  if {@code this.pos} does not point {@code '%'}
      */
     @SuppressWarnings({"checkstyle:FallThrough", "checkstyle:LeftCurly"})
-    private AbstractSpecification tokenizeConversion() {
+    private Specification tokenizeConversion() {
         assert this.format.charAt(this.pos) == '%';
         final int posPercent = this.pos;
         this.pos++;
 
-        final AbstractSpecification.ContextSource ctx = new AbstractSpecification.ContextSource(this.format);
+        final Specification.ContextSource ctx = new Specification.ContextSource(this.format);
         boolean hasPrecisionProcessed = false;
 
         for (; this.pos < this.format.length(); this.pos++) {
@@ -449,5 +449,5 @@ final class Tokenizer {
     private final Options options;
 
     private int pos;
-    private List<AbstractSpecification> formatSpecifications;
+    private List<Specification> formatSpecifications;
 }
