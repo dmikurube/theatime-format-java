@@ -100,7 +100,7 @@ final class Literal extends Specification {
 
     private static String format(final String original, final Context context) {
         final int length = original.length();
-        if (length <= context.precision) {
+        if (length > context.precision) {
             return original;
         }
 
