@@ -61,8 +61,7 @@ final class Tokenizer {
                 if (firstOrdinaryCharacter < this.format.length()) {
                     this.formatSpecifications.add(Literal.of(
                             this.format.substring(firstOrdinaryCharacter),
-                            new Specification.Context(false, false, -1, -1, '\0', '\0', this.format, firstOrdinaryCharacter, this.format.length()),
-                            false));
+                            new Specification.Context(false, false, -1, -1, '\0', '\0', this.format, firstOrdinaryCharacter, this.format.length())));
                 }
                 break;
             }
@@ -73,8 +72,7 @@ final class Tokenizer {
                 if (firstOrdinaryCharacter < posPercent) {
                     this.formatSpecifications.add(Literal.of(
                             this.format.substring(firstOrdinaryCharacter, posPercent),
-                            new Specification.Context(false, false, -1, -1, '\0', '\0', this.format, firstOrdinaryCharacter, posPercent),
-                            false));
+                            new Specification.Context(false, false, -1, -1, '\0', '\0', this.format, firstOrdinaryCharacter, posPercent)));
                 }
                 this.formatSpecifications.add(formatSpecification);
                 firstOrdinaryCharacter = this.pos;
@@ -117,13 +115,13 @@ final class Tokenizer {
                 //    irb(main):002:0> Time.now.strftime("%010n")
                 //    => "000000000\n"
                 case '%':
-                    return Literal.ofPercent(ctx.at(posPercent, ++this.pos), false);
+                    return Literal.ofPercent(ctx.at(posPercent, ++this.pos));
 
                 case 'n':
-                    return Literal.ofNewline(ctx.at(posPercent, ++this.pos), false);
+                    return Literal.ofNewline(ctx.at(posPercent, ++this.pos));
 
                 case 't':
-                    return Literal.ofTab(ctx.at(posPercent, ++this.pos), false);
+                    return Literal.ofTab(ctx.at(posPercent, ++this.pos));
 
                 case 'a':
                     return new LowerA(ctx.at(posPercent, ++this.pos));
@@ -187,7 +185,7 @@ final class Tokenizer {
                     if (this.options.isUpperCaseLAsTerminatingConversionSpecifier()) {
                         return builder.build(ch, this.format.substring(posPercent, this.pos));
                     }
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                 */
 
                 case 'm':
@@ -202,7 +200,7 @@ final class Tokenizer {
                     if (this.options.isUpperCaseNAsTerminatingConversionSpecifier()) {
                         return builder.build(ch, this.format.substring(posPercent, this.pos));
                     }
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                 */
 
                 case 'p':
@@ -290,7 +288,7 @@ final class Tokenizer {
 
                     // The position is after the precision part.
                     this.pos++;
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                 */
 
                 case '-':
@@ -301,7 +299,7 @@ final class Tokenizer {
 
                     // The position is after the precision part.
                     this.pos++;
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case '^':
                     if (!hasPrecisionProcessed) {
@@ -311,7 +309,7 @@ final class Tokenizer {
 
                     // The position is after the precision part.
                     this.pos++;
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case '#':
                     if (!hasPrecisionProcessed) {
@@ -321,7 +319,7 @@ final class Tokenizer {
 
                     // The position is after the precision part.
                     this.pos++;
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case '_':
                     if (!hasPrecisionProcessed) {
@@ -331,7 +329,7 @@ final class Tokenizer {
 
                     // The position is after the precision part.
                     this.pos++;
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
 
                 case ':':
                     // strptime accepts only 3 colons at maximum.
@@ -339,7 +337,7 @@ final class Tokenizer {
                     for (int j = 1; ; j++) {
                         if (this.pos + j >= this.format.length()) {
                             this.pos++;
-                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                         }
                         if (this.format.charAt(this.pos + j) == 'z') {
                             ctx.colons(j);
@@ -348,7 +346,7 @@ final class Tokenizer {
                         }
                         if (this.format.charAt(this.pos + j) != ':') {
                             this.pos++;
-                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                         }
                     }
                     break;
@@ -359,7 +357,7 @@ final class Tokenizer {
                         break;
                     } else {
                         this.pos++;
-                        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                     }
 
                 case 'O':
@@ -368,7 +366,7 @@ final class Tokenizer {
                         break;
                     } else {
                         this.pos++;
-                        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                     }
 
                 case '0':
@@ -388,7 +386,7 @@ final class Tokenizer {
                         final String digits = this.tokenizeDigitsForIntValue();
                         if (digits == null) {
                             this.pos++;
-                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                            return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
                         }
                         hasPrecisionProcessed = true;
                         ctx.precision(Integer.parseInt(digits));
@@ -398,10 +396,10 @@ final class Tokenizer {
 
                 default:
                     this.pos++;
-                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+                    return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
             }
         }
-        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos), false);
+        return Literal.of(this.format.substring(posPercent, this.pos), ctx.at(posPercent, this.pos));
     }
 
     private String tokenizeDigitsForIntValue() {
