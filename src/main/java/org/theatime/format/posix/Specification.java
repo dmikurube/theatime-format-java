@@ -32,6 +32,13 @@ import java.util.Objects;
  */
 public abstract class Specification {
     Specification(final Context context) {
+        this.upperCase = context.upperCase;
+        this.changeCase = context.changeCase;
+        this.precision = context.precision;
+        this.colons = context.colons;
+        this.pad = context.pad;
+        this.modifier = context.modifier;
+
         this.entireFormat = context.entireFormat;
         this.start = context.start;
         this.end = context.end;
@@ -142,6 +149,13 @@ public abstract class Specification {
 
     static final Context EMPTY = new Context(false, false, -1, -1, '\0', '\0', "", 0, 0);
 
+    final boolean upperCase;
+    final boolean changeCase;
+    final int precision;
+    final int colons;
+    final char pad;
+    final char modifier;
+
     final String entireFormat;
     final int start;
     final int end;
@@ -153,14 +167,6 @@ abstract class ConversionSpecification extends Specification {
             final ConversionType terminatingConversionSpecifier,
             final Context context) {
         super(context);
-
-        this.upperCase = context.upperCase;
-        this.changeCase = context.changeCase;
-        this.precision = context.precision;
-        this.colons = context.colons;
-        this.pad = context.pad;
-        this.modifier = context.modifier;
-
         this.terminatingConversionSpecifier = terminatingConversionSpecifier;
     }
 
@@ -285,13 +291,6 @@ abstract class ConversionSpecification extends Specification {
 
         return builder.toString();
     }
-
-    final boolean upperCase;
-    final boolean changeCase;
-    final int precision;
-    final int colons;
-    final char pad;
-    final char modifier;
 
     final ConversionType terminatingConversionSpecifier;
 }
