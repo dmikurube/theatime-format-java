@@ -61,7 +61,7 @@ final class Tokenizer {
                 if (firstOrdinaryCharacter < this.format.length()) {
                     this.formatSpecifications.add(Literal.of(
                             this.format.substring(firstOrdinaryCharacter),
-                            Specification.EMPTY,
+                            new Specification.Context(false, false, -1, -1, '\0', '\0', this.format, firstOrdinaryCharacter, this.format.length()),
                             false));
                 }
                 break;
@@ -73,7 +73,7 @@ final class Tokenizer {
                 if (firstOrdinaryCharacter < posPercent) {
                     this.formatSpecifications.add(Literal.of(
                             this.format.substring(firstOrdinaryCharacter, posPercent),
-                            Specification.EMPTY,
+                            new Specification.Context(false, false, -1, -1, '\0', '\0', this.format, firstOrdinaryCharacter, posPercent),
                             false));
                 }
                 this.formatSpecifications.add(formatSpecification);
