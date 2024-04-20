@@ -37,7 +37,7 @@ public class TestPosixTimeFormat {
     @Test
     public void testEndWithSinglePercent() {
         assertFormat("%", Literal.of("%", C, false));
-        assertFormat("foo%", Literal.of("foo%", C, false));
+        assertFormat("foo%", Literal.of("foo", C, false), Literal.of("%", C, false));
     }
 
     @Test
@@ -48,34 +48,95 @@ public class TestPosixTimeFormat {
 
     @Test
     public void testLiteral() {
-        assertFormat("foo", Literal.of("foo", C, false));
-        assertFormat("%&", Literal.of("%&", C, false));
-        assertFormat("foo%&bar", Literal.of("foo%&bar", C, false));
-        assertFormat("%&foo%&", Literal.of("%&foo%&", C, false));
-        assertFormat("%&foo%&bar%&", Literal.of("%&foo%&bar%&", C, false));
-        assertFormat("foo%&bar%&baz", Literal.of("foo%&bar%&baz", C, false));
+        assertFormat("foo",
+                     Literal.of("foo", C, false));
+        assertFormat("%&",
+                     Literal.of("%&", C, false));
+        assertFormat("foo%&bar",
+                     Literal.of("foo", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("bar", C, false));
+        assertFormat("%&foo%&",
+                     Literal.of("%&", C, false),
+                     Literal.of("foo", C, false),
+                     Literal.of("%&", C, false));
+        assertFormat("%&foo%&bar%&",
+                     Literal.of("%&", C, false),
+                     Literal.of("foo", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("bar", C, false),
+                     Literal.of("%&", C, false));
+        assertFormat("foo%&bar%&baz",
+                     Literal.of("foo", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("bar", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("baz", C, false));
     }
 
     @Test
     public void testMixed() {
-        assertFormat("foo%bbar", Literal.of("foo", C, false), new LowerB(C), Literal.of("bar", C, false));
-        assertFormat("%bfoo%a", new LowerB(C), Literal.of("foo", C, false), new LowerA(C));
-        assertFormat("foo%&bar%bbaz", Literal.of("foo%&bar", C, false), new LowerB(C), Literal.of("baz", C, false));
-        assertFormat("foo%bbar%&baz", Literal.of("foo", C, false), new LowerB(C), Literal.of("bar%&baz", C, false));
-        assertFormat("foo%&bar%bbaz%a", Literal.of("foo%&bar", C, false), new LowerB(C), Literal.of("baz", C, false), new LowerA(C));
-        assertFormat("foo%bbar%&baz%a", Literal.of("foo", C, false), new LowerB(C), Literal.of("bar%&baz", C, false), new LowerA(C));
-        assertFormat("foo%&bar%bbaz%$", Literal.of("foo%&bar", C, false), new LowerB(C), Literal.of("baz%$", C, false));
-        assertFormat("foo%bbar%&baz%$", Literal.of("foo", C, false), new LowerB(C), Literal.of("bar%&baz%$", C, false));
-
-        assertFormat("foo%bbar%&baz%", Literal.of("foo", C, false), new LowerB(C), Literal.of("bar%&baz%", C, false));
+        assertFormat("foo%bbar",
+                     Literal.of("foo", C, false),
+                     new LowerB(C),
+                     Literal.of("bar", C, false));
+        assertFormat("%bfoo%a",
+                     new LowerB(C),
+                     Literal.of("foo", C, false),
+                     new LowerA(C));
+        assertFormat("foo%&bar%bbaz",
+                     Literal.of("foo", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("bar", C, false),
+                     new LowerB(C),
+                     Literal.of("baz", C, false));
+        assertFormat("foo%bbar%&baz",
+                     Literal.of("foo", C, false),
+                     new LowerB(C),
+                     Literal.of("bar", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("baz", C, false));
+        assertFormat("foo%&bar%bbaz%a",
+                     Literal.of("foo", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("bar", C, false),
+                     new LowerB(C),
+                     Literal.of("baz", C, false),
+                     new LowerA(C));
+        assertFormat("foo%bbar%&baz%a",
+                     Literal.of("foo", C, false),
+                     new LowerB(C),
+                     Literal.of("bar", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("baz", C, false),
+                     new LowerA(C));
+        assertFormat("foo%&bar%bbaz%$",
+                     Literal.of("foo", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("bar", C, false),
+                     new LowerB(C),
+                     Literal.of("baz", C, false),
+                     Literal.of("%$", C, false));
+        assertFormat("foo%bbar%&baz%$",
+                     Literal.of("foo", C, false),
+                     new LowerB(C),
+                     Literal.of("bar", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("baz", C, false),
+                     Literal.of("%$", C, false));
+        assertFormat("foo%bbar%&baz%",
+                     Literal.of("foo", C, false),
+                     new LowerB(C),
+                     Literal.of("bar", C, false),
+                     Literal.of("%&", C, false),
+                     Literal.of("baz", C, false),
+                     Literal.of("%", C, false));
     }
 
     @ParameterizedTest
     @CsvSource({
             "abc",
             "%",
-            "%@abc",
-            "abc%@abc",
     })
     public void testUnmatch(final String format) {
         assertFormat(format, Literal.of(format, C, false));
@@ -97,21 +158,26 @@ public class TestPosixTimeFormat {
     public void test1() {
         assertFormat(
                 "%nabc",
-                Literal.of("\nabc", C, false));
+                Literal.of("\n", C, false),
+                Literal.of("abc", C, false));
     }
 
     @Test
     public void test2() {
         assertFormat(
                 "abc%nabc",
-                Literal.of("abc\nabc", C, false));
+                Literal.of("abc", C, false),
+                Literal.of("\n", C, false),
+                Literal.of("abc", C, false));
     }
 
     @Test
     public void test3() {
         assertFormat(
                 "abc%12nabc",
-                Literal.of("abc\nabc", C, false));
+                Literal.of("abc", C, false),
+                Literal.of("\n", C, false),
+                Literal.of("abc", C, false));
     }
 
     @ParameterizedTest
