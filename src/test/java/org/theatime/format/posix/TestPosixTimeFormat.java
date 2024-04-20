@@ -52,6 +52,8 @@ public class TestPosixTimeFormat {
                      Literal.of("foo", C, false));
         assertFormat("%&",
                      Literal.of("%&", C, false));
+        assertFormat("%10&",
+                     Literal.of("%10&", new Specification.Context(false, false, 10, -1, '0', '\0', "", 0, 0), false));
         assertFormat("foo%&bar",
                      Literal.of("foo", C, false),
                      Literal.of("%&", C, false),
@@ -144,8 +146,9 @@ public class TestPosixTimeFormat {
 
     @Test
     public void testDateTimeFormatter() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%a%A%q%b%B").toDateTimeFormatter();
-        assertEquals("MonMonday%qAprApril", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%a%A%10q%b%B").toDateTimeFormatter();
+        assertEquals("MonMonday      %10qAprApril",
+                     formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
     }
 
     @Test
