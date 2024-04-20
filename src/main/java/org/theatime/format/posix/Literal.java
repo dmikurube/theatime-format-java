@@ -72,7 +72,13 @@ final class Literal extends Specification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        return formatter.appendLiteral(this.literal);
+        if (this.precision > 0) {
+            formatter.padNext(this.precision, this.actualPad(' '));
+        }
+        // TODO: upperCase
+        // TODO: changeCase
+        formatter.appendLiteral(this.literal);
+        return formatter;
     }
 
     @Override

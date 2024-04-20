@@ -50,6 +50,23 @@ public abstract class Specification {
 
     abstract DateTimeFormatterBuilder appendTo(DateTimeFormatterBuilder formatter);
 
+    final char actualPad(final char defaultPad) {
+        if (this.pad == '\0') {
+            return defaultPad;
+        } else if (this.pad == '0') {
+            return '0';
+        } else if (this.pad == '_') {
+            return ' ';
+        } else if (this.pad == '-') {
+            return defaultPad;
+        }
+        throw new IllegalStateException("Illegal pad: '" + this.pad + "'");
+    }
+
+    final boolean isLeftAligned() {
+        return this.pad == '-';
+    }
+
     static class Context {
         Context(final boolean upperCase,
                 final boolean changeCase,
@@ -168,23 +185,6 @@ abstract class ConversionSpecification extends Specification {
             final Context context) {
         super(context);
         this.terminatingConversionSpecifier = terminatingConversionSpecifier;
-    }
-
-    final char actualPad(final char defaultPad) {
-        if (this.pad == '\0') {
-            return defaultPad;
-        } else if (this.pad == '0') {
-            return '0';
-        } else if (this.pad == '_') {
-            return ' ';
-        } else if (this.pad == '-') {
-            return defaultPad;
-        }
-        throw new IllegalStateException("Illegal pad: '" + this.pad + "'");
-    }
-
-    final boolean isLeftAligned() {
-        return this.pad == '-';
     }
 
     @Override
