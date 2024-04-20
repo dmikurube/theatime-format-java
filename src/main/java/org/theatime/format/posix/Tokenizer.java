@@ -49,8 +49,6 @@ final class Tokenizer {
     }
 
     private List<Specification> tokenizeInitial() {
-        final StringBuilder literal = new StringBuilder();
-
         int firstOrdinaryCharacter = 0;
 
         this.pos = 0;
@@ -61,37 +59,26 @@ final class Tokenizer {
 
             if (posPercent < 0) {
                 if (firstOrdinaryCharacter < this.format.length()) {
-                    literal.append(this.format.substring(firstOrdinaryCharacter));
-                }
-                if (literal.length() > 0) {
                     this.formatSpecifications.add(Literal.of(
-                            literal.toString(),
+                            this.format.substring(firstOrdinaryCharacter),
                             Specification.EMPTY,
                             false));
-                    literal.setLength(0);
                 }
                 break;
             }
 
-            if (firstOrdinaryCharacter < posPercent) {
-                literal.append(this.format.substring(firstOrdinaryCharacter, posPercent));
-            }
-
             this.pos = posPercent;
             final Specification formatSpecification = this.tokenizeConversion();
-            if (formatSpecification instanceof Literal) {
-                literal.append(((Literal) formatSpecification).toString());
-            } else {
-                if (literal.length() > 0) {
+            if (formatSpecification != null) {
+                if (firstOrdinaryCharacter < posPercent) {
                     this.formatSpecifications.add(Literal.of(
-                            literal.toString(),
+                            this.format.substring(firstOrdinaryCharacter, posPercent),
                             Specification.EMPTY,
                             false));
-                    literal.setLength(0);
                 }
                 this.formatSpecifications.add(formatSpecification);
+                firstOrdinaryCharacter = this.pos;
             }
-            firstOrdinaryCharacter = this.pos;
         }
 
         return Collections.unmodifiableList(this.formatSpecifications);
