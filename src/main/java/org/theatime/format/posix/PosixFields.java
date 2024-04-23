@@ -38,8 +38,20 @@ public final class PosixFields {
         // No instantiation.
     }
 
+    /**
+     * The field that represents the last two digits of the year.
+     *
+     * <p>This field allows the last two digits of the year to be queried and set.
+     * The the last two digits of the year has values from 0 to 99.
+     *
+     * <p>The last two digits of the year can only be calculated if the year is available.
+     */
     public static final TemporalField YEAR_OF_POSIX_CENTURY_1969_2068 = Field.YEAR_OF_POSIX_CENTURY_1969_2068;
 
+    /**
+     * The field that represents all but the last two digits of the year. In other words,
+     * the year divided by 100 and truncated to an integer.
+     */
     public static final TemporalField POSIX_CENTURY = Field.POSIX_CENTURY;
 
     private static enum Field implements TemporalField {
@@ -246,6 +258,7 @@ public final class PosixFields {
             }
 
             // Not to implement #resolve(Map<TemporalField, Long>, TemporalAccessor, ResolverStyle) here.
+
             @Override
             public String toString() {
                 return "PosixCentury";
