@@ -16,6 +16,7 @@
 
 package org.theatime.format.posix;
 
+import java.time.DateTimeException;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.format.TextStyle;
@@ -315,19 +316,18 @@ final class LowerA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.actualPad(' '));
+        }
+
         if (locale.isPresent()) {
-            if (this.pad == '0' || this.upperCase || this.changeCase) {
-                throw new IllegalStateException();
-            }
-            if (this.precision >= 0) {
-                formatter.padNext(this.precision, this.actualPad(' '));
+            if (this.upperCase || this.changeCase) {
+                // TODO: https://stackoverflow.com/a/55236266
+                throw new DateTimeException("\"%a\" does not accept \"^\" nor \"#\" with a locale.");
             }
             return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT);
         }
 
-        if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.actualPad(' '));
-        }
         if (this.upperCase || this.changeCase) {
             return formatter.appendText(ChronoField.DAY_OF_WEEK, AllUpperCase.TEXTS);
         } else {
@@ -383,19 +383,18 @@ final class UpperA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.actualPad(' '));
+        }
+
         if (locale.isPresent()) {
-            if (this.pad == '0' || this.upperCase || this.changeCase) {
-                throw new IllegalStateException();
-            }
-            if (this.precision >= 0) {
-                formatter.padNext(this.precision, this.actualPad(' '));
+            if (this.upperCase || this.changeCase) {
+                // TODO: https://stackoverflow.com/a/55236266
+                throw new DateTimeException("\"%A\" does not accept \"^\" nor \"#\" with a locale.");
             }
             return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.FULL);
         }
 
-        if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.actualPad(' '));
-        }
         if (this.upperCase || this.changeCase) {
             return formatter.appendText(ChronoField.DAY_OF_WEEK, AllUpperCase.TEXTS);
         } else {
@@ -451,19 +450,18 @@ final class LowerB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.actualPad(' '));
+        }
+
         if (locale.isPresent()) {
-            if (this.pad == '0' || this.upperCase || this.changeCase) {
-                throw new IllegalStateException();
-            }
-            if (this.precision >= 0) {
-                formatter.padNext(this.precision, this.actualPad(' '));
+            if (this.upperCase || this.changeCase) {
+                // TODO: https://stackoverflow.com/a/55236266
+                throw new DateTimeException("\"%b\" does not accept \"^\" nor \"#\" with a locale.");
             }
             return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
         }
 
-        if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.actualPad(' '));
-        }
         if (this.upperCase || this.changeCase) {
             return formatter.appendText(ChronoField.MONTH_OF_YEAR, AllUpperCase.TEXTS);
         } else {
@@ -529,19 +527,18 @@ final class UpperB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+        if (this.precision >= 0) {
+            formatter.padNext(this.precision, this.actualPad(' '));
+        }
+
         if (locale.isPresent()) {
-            if (this.pad == '0' || this.upperCase || this.changeCase) {
-                throw new IllegalStateException();
-            }
-            if (this.precision >= 0) {
-                formatter.padNext(this.precision, this.actualPad(' '));
+            if (this.upperCase || this.changeCase) {
+                // TODO: https://stackoverflow.com/a/55236266
+                throw new DateTimeException("\"%B\" does not accept \"^\" nor \"#\" with a locale.");
             }
             return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.FULL);
         }
 
-        if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.actualPad(' '));
-        }
         if (this.upperCase || this.changeCase) {
             return formatter.appendText(ChronoField.MONTH_OF_YEAR, AllUpperCase.TEXTS);
         } else {
