@@ -170,6 +170,16 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testDateTimeFormatter4() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%y").toDateTimeFormatter();
+        assertEquals(2000, formatter.parse("00").getLong(ChronoField.YEAR));
+        assertEquals(2068, formatter.parse("68").getLong(ChronoField.YEAR));
+        assertEquals(1969, formatter.parse("69").getLong(ChronoField.YEAR));
+        assertEquals(1970, formatter.parse("70").getLong(ChronoField.YEAR));
+        assertEquals(1999, formatter.parse("99").getLong(ChronoField.YEAR));
+    }
+
+    @Test
     public void test1() {
         assertFormat(
                 "%nabc",
