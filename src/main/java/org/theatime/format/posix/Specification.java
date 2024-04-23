@@ -464,7 +464,7 @@ final class UpperC extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        return formatter;
+        return formatter.appendValue(PosixFields.POSIX_CENTURY, 2);
     }
 }
 
@@ -996,7 +996,7 @@ final class LowerY extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
-        return formatter;
+        return formatter.appendValue(PosixFields.YEAR_OF_POSIX_CENTURY_1969_2068, 2);
     }
 }
 

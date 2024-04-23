@@ -22,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -155,6 +157,16 @@ public class TestPosixTimeFormat {
     public void testDateTimeFormatter2() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_10a").toDateTimeFormatter();
         assertEquals("       Mon", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatter3() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%C ... %y").toDateTimeFormatter();
+        assertEquals("20 ... 23", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        final TemporalAccessor accessor = formatter.parse("19 ... 87");
+        assertEquals(87, accessor.getLong(PosixFields.YEAR_OF_POSIX_CENTURY_1969_2068));
+        assertEquals(19, accessor.getLong(PosixFields.POSIX_CENTURY));
+        assertEquals(1987, accessor.getLong(ChronoField.YEAR));
     }
 
     @Test
