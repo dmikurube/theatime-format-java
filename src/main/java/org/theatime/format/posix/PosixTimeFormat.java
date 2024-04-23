@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public final class PosixTimeFormat {
     private PosixTimeFormat(final List<Specification> formatSpecifications) {
@@ -125,11 +126,15 @@ public final class PosixTimeFormat {
     }
 
     public DateTimeFormatter toDateTimeFormatter() {
+        return this.toDateTimeFormatter(Optional.empty());
+    }
+
+    public DateTimeFormatter toDateTimeFormatter(final Optional<Locale> locale) {
         final DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
         for (final Specification specification : this.formatSpecifications) {
-            specification.appendTo(builder);
+            specification.appendTo(builder, locale);
         }
-        return builder.toFormatter(Locale.ROOT);
+        return builder.toFormatter(locale.orElse(Locale.ROOT));
     }
 
     private final List<Specification> formatSpecifications;

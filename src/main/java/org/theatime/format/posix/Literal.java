@@ -17,7 +17,9 @@
 package org.theatime.format.posix;
 
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 
 final class Literal extends Specification {
     private Literal(final String literal, final Context context) {
@@ -42,7 +44,7 @@ final class Literal extends Specification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter) {
+    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
         if (this.precision > 0) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }
