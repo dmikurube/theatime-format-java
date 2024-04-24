@@ -20,11 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
+import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class TestPosixTimeFormatLibc {
     @ParameterizedTest
@@ -66,6 +72,44 @@ public class TestPosixTimeFormatLibc {
                        locale);
     }
 
+    @ParameterizedTest
+    @MethodSource("formatAndOrdinaryDateTime")
+    public void testOrdinaryDateTime(final String format, final LocalDateTime datetime) {
+        assertStrftime(format,
+                       datetime.getYear(),
+                       datetime.getMonthValue(),
+                       datetime.getDayOfMonth(),
+                       datetime.getHour(),
+                       datetime.getMinute(),
+                       datetime.getSecond(),
+                       datetime.getDayOfWeek(),
+                       datetime.getDayOfYear(),
+                       0,
+                       "C");
+    }
+
+    static Stream<Arguments> formatAndOrdinaryDateTime() {
+        return ordinaryDateTime().flatMap(dt -> formats().map(f -> Arguments.of(f, dt)));
+    }
+
+    static Stream<String> formats() {
+        return Stream.of(
+                "%a",
+                "%10a",
+                "%A",
+                "%10A",
+                "%b",
+                "%10b",
+                "%B",
+                "%10B",
+                "%c"
+                );
+    }
+
+    static Stream<LocalDateTime> ordinaryDateTime() {
+        return Stream.generate(() -> randomOrdinaryLocalDateTime()).limit(100);
+    }
+
     private static void assertStrftime(
             final String format,
             final int year,
@@ -104,4 +148,20 @@ public class TestPosixTimeFormatLibc {
         System.out.println("\"" + actualFormatted + "\"");
         assertEquals(expectedFormatted, actualFormatted);
     }
+
+    private static LocalDateTime randomOrdinaryLocalDateTime() {
+        final int year = RANDOM.nextInt(2024 - 1970) + 1970;
+        final int month = RANDOM.nextInt(12) + 1;
+        final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
+        return LocalDateTime.of(
+                year,
+                month,
+                day,
+                RANDOM.nextInt(24),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(1_000_000_000));
+    }
+
+    private static Random RANDOM = new Random();
 }
