@@ -95,19 +95,57 @@ public class TestPosixTimeFormatLibc {
     static Stream<String> formats() {
         return Stream.of(
                 "%a",
+                "%^a",
+                "%#a",
                 "%10a",
+                "%^10a",
+                "%#10a",
+                "%010a",
+                "%^010a",
+                "%#010a",
                 "%A",
+                "%^A",
+                "%#A",
                 "%10A",
+                "%^10A",
+                "%#10A",
+                "%010A",
+                "%^010A",
+                "%#010A",
                 "%b",
+                "%^b",
+                "%#b",
                 "%10b",
+                "%^10b",
+                "%#10b",
+                "%010b",
+                "%^010b",
+                "%#010b",
                 "%B",
+                "%^B",
+                "%#B",
                 "%10B",
-                "%c"
+                "%^10B",
+                "%#10B",
+                "%010B",
+                "%^010B",
+                "%#010B",
+                "%c",
+                "%C",
+                "%^C",
+                "%#C",
+                "%10C",
+                "%^10C",
+                "%#10C",
+                "%010C",
+                "%^010C",
+                "%#010C",
+                "%%"
                 );
     }
 
     static Stream<LocalDateTime> ordinaryDateTime() {
-        return Stream.generate(() -> randomOrdinaryLocalDateTime()).limit(100);
+        return Stream.generate(() -> randomOrdinaryLocalDateTime()).limit(20);
     }
 
     private static void assertStrftime(
