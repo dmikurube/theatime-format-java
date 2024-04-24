@@ -88,7 +88,7 @@ public class TestPosixTimeFormatLibc {
                 hourOfDay,
                 minuteOfHour,
                 secondOfMinute,
-                dayOfWeek.getValue(),
+                dayOfWeek == DayOfWeek.SUNDAY ? 0 : dayOfWeek.getValue(),
                 dayOfYear,
                 isDst,
                 locale);
