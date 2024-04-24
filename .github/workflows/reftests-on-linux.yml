@@ -1,5 +1,9 @@
 name: Reftests on Linux
-on: [ pull_request, push ]
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: "0 0 * * *"
 jobs:
   reftest-with-libc:
     runs-on: ubuntu-latest
