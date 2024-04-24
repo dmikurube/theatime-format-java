@@ -658,7 +658,16 @@ final class UpperC extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        return formatter.appendValue(PosixFields.POSIX_CENTURY, 2);
+        if (this.precision >= 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(PosixFields.POSIX_CENTURY, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(PosixFields.POSIX_CENTURY);
+            }
+        }
+        return formatter.appendValue(PosixFields.POSIX_CENTURY);
     }
 }
 
