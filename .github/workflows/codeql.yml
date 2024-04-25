@@ -8,6 +8,7 @@ jobs:
   analyze:
     name: Analyze Java
     runs-on: "ubuntu-latest"
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     timeout-minutes: 360
     permissions:
       # required for all workflows
