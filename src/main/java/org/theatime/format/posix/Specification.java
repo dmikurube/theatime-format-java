@@ -64,7 +64,7 @@ public abstract class Specification {
         } else if (this.pad == '_') {
             return ' ';
         } else if (this.pad == '-') {
-            return defaultPad;
+            return ' ';
         }
         throw new IllegalStateException("Illegal pad: '" + this.pad + "'");
     }
@@ -316,7 +316,7 @@ final class LowerA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        if ((!this.isLeftAligned()) && this.precision >= 4) {
+        if (this.precision >= 4) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }
 
@@ -387,8 +387,8 @@ final class UpperA extends ConversionSpecification {
             throw new DateTimeException("\"%A\" does not accept a locale.");
         }
 
-        if (this.isLeftAligned() || this.precision <= 6 || this.precision >= 9) {
-            if ((!this.isLeftAligned()) && this.precision >= 9) {
+        if (this.precision <= 6 || this.precision >= 9) {
+            if (this.precision >= 9) {
                 formatter.padNext(this.precision, this.actualPad(' '));
             }
             if (this.upperCase || this.changeCase) {
@@ -470,7 +470,7 @@ final class LowerB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        if ((!this.isLeftAligned()) && this.precision >= 4) {
+        if (this.precision >= 4) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }
 
@@ -551,8 +551,8 @@ final class UpperB extends ConversionSpecification {
             throw new DateTimeException("\"%B\" does not accept a locale.");
         }
 
-        if (this.isLeftAligned() || this.precision <= 3 || this.precision >= 9) {
-            if ((!this.isLeftAligned()) && this.precision >= 9) {
+        if (this.precision <= 3 || this.precision >= 9) {
+            if (this.precision >= 9) {
                 formatter.padNext(this.precision, this.actualPad(' '));
             }
             if (this.upperCase || this.changeCase) {
@@ -698,7 +698,7 @@ final class UpperC extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        if ((!this.isLeftAligned()) && this.precision >= 0) {
+        if (this.precision >= 0) {
             final char pad = this.actualPad('0');
             if (pad == '0') {
                 return formatter.appendValue(PosixFields.POSIX_CENTURY, this.precision);
