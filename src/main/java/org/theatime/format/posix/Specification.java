@@ -316,7 +316,7 @@ final class LowerA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        if (this.precision >= 0) {
+        if (this.precision >= 4) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }
 
@@ -470,7 +470,7 @@ final class LowerB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        if (this.precision >= 0) {
+        if (this.precision >= 4) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }
 
