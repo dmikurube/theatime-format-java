@@ -93,71 +93,85 @@ public class TestPosixTimeFormatLibc {
     }
 
     static Stream<String> formats() {
+        return terminalConversionSpecifiers().map(sp -> randomOptions(sp));
+    }
+
+    static String randomOptions(final String specifier) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("%");
+        randomPadCase(builder);
+        randomPrecision(builder);
+        return builder.append(specifier).toString();
+    }
+
+    static StringBuilder randomPadCase(final StringBuilder builder) {
+        final int seed = RANDOM.nextInt(100);
+        final int num;
+        if (seed < 20) {
+            num = 0;
+        } else if (seed < 80) {
+            num = 1;
+        } else if (seed < 90) {
+            num = 2;
+        } else if (seed < 98) {
+            num = 3;
+        } else {
+            num = 4;
+        }
+        for (int i = 0; i < num; i++) {
+            switch (RANDOM.nextInt(5)) {
+                case 0:
+                    builder.append("^");
+                    break;
+                case 1:
+                    builder.append("#");
+                    break;
+                case 2:
+                    builder.append("0");
+                    break;
+                case 3:
+                    builder.append("-");
+                    break;
+                case 4:
+                    builder.append("_");
+                    break;
+            }
+        }
+        return builder;
+    }
+
+    static StringBuilder randomPrecision(final StringBuilder builder) {
+        final int seed = RANDOM.nextInt(99) + 1;
+        if (seed < 19) {
+            return builder.append(Integer.toString(seed));
+        } else if (seed < 30) {
+            return builder.append("1");
+        } else if (seed < 40) {
+            return builder.append("2");
+        } else if (seed < 50) {
+            return builder.append("3");
+        } else if (seed < 60) {
+            return builder.append("4");
+        } else if (seed < 65) {
+            return builder.append("5");
+        } else if (seed < 70) {
+            return builder.append("9");
+        } else if (seed < 85) {
+            return builder.append("10");
+        }
+        return builder;
+    }
+
+    static Stream<String> terminalConversionSpecifiers() {
         return Stream.of(
-                "%a",
-                "%^a",
-                "%#a",
-                "%10a",
-                "%^10a",
-                "%#10a",
-                "%010a",
-                "%^010a",
-                "%#010a",
-                "%A",
-                "%^A",
-                "%#A",
-                "%10A",
-                "%^10A",
-                "%#10A",
-                "%010A",
-                "%^010A",
-                "%#010A",
-                "%b",
-                "%^b",
-                "%#b",
-                "%10b",
-                "%^10b",
-                "%#10b",
-                "%010b",
-                "%^010b",
-                "%#010b",
-                "%B",
-                "%^B",
-                "%#B",
-                "%10B",
-                "%^10B",
-                "%#10B",
-                "%010B",
-                "%^010B",
-                "%#010B",
-                "%c",
-                "%C",
-                "%^C",
-                "%#C",
-                "%10C",
-                "%^10C",
-                "%#10C",
-                "%010C",
-                "%^010C",
-                "%#010C",
-                "%q",  // "%q" does not exist.
-                // "%^q",
-                // "%#q",
-                "%10q",
-                // "%^10q",
-                // "%#10q",
-                "%010q",
-                // "%^010q",
-                // "%#010q",
-                "%%",
-                "%^%",
-                "%#%",
-                "%10%",
-                "%^10%",
-                "%#10%",
-                "%010%",
-                "%^010%",
-                "%#010%"
+                // "q",
+                "a",
+                "A",
+                "b",
+                "B",
+                "C",
+                "d",
+                "%"
                 );
     }
 

@@ -726,7 +726,20 @@ final class LowerD extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.actualPad('0');
+        System.out.println("!!!");
+        if (pad == '0') {
+            System.out.println("**");
+            return formatter.appendValue(ChronoField.DAY_OF_MONTH, Math.max(2, this.precision));
+        } else if (pad == ' ') {
+            System.out.println("&&");
+            formatter.padNext(Math.max(2, this.precision), pad);
+            return formatter.appendValue(ChronoField.DAY_OF_MONTH);
+        } else if (pad == '-') {
+            System.out.println("!");
+            return formatter.appendValue(ChronoField.DAY_OF_MONTH);
+        }
+        throw new AssertionError("");
     }
 }
 
