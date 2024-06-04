@@ -180,6 +180,36 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testDateTimeFormatter5() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
+        assertEquals("  Monday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" Tuesday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Wednesday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Thursday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatter6() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%7B").toDateTimeFormatter();
+        assertEquals("January",
+                     formatter.format(ZonedDateTime.of(2023, 1, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("February",
+                     formatter.format(ZonedDateTime.of(2023, 2, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("  March",
+                     formatter.format(ZonedDateTime.of(2023, 3, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("    May",
+                     formatter.format(ZonedDateTime.of(2023, 5, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" August",
+                     formatter.format(ZonedDateTime.of(2023, 8, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("September",
+                     formatter.format(ZonedDateTime.of(2023, 9, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
     public void test1() {
         assertFormat(
                 "%nabc",
