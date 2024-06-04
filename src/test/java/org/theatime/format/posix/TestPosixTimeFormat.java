@@ -19,7 +19,9 @@ package org.theatime.format.posix;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
@@ -207,6 +209,32 @@ public class TestPosixTimeFormat {
                      formatter.format(ZonedDateTime.of(2023, 8, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
         assertEquals("September",
                      formatter.format(ZonedDateTime.of(2023, 9, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    /*
+     * Import test cases that failed in reftests.
+     */
+    @ParameterizedTest
+    @CsvSource({
+            "OCT,%^2b,2020,10,26,7,48,59,526929475",
+            // "'        29',%-10d,1985,9,29,4,23,20,62491315",
+            // "0000000TUE,%0#10a,2008,9,2,5,31,03,340494545",
+    })
+    public void testFormatSingleWithDateTimeFormatter(
+            final String expectedFormatted,
+            final String format,
+            final int year,
+            final int monthValue,
+            final int dayOfMonth,
+            final int hourOfDay,
+            final int minuteOfHour,
+            final int secondOfMinute,
+            final int nanoOfSecond) {
+        final DateTimeFormatter actualFormatter = PosixTimeFormat.compile(format).toDateTimeFormatter();
+        final OffsetDateTime actualDateTime = OffsetDateTime.of(
+                year, monthValue, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, nanoOfSecond, ZoneOffset.UTC);
+        final String actualFormatted = actualFormatter.format(actualDateTime);
+        assertEquals(expectedFormatted, actualFormatted);
     }
 
     @Test
