@@ -383,23 +383,43 @@ final class UpperA extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.actualPad(' '));
-        }
-
         if (locale.isPresent()) {
-            if (this.upperCase || this.changeCase) {
-                // TODO: https://stackoverflow.com/a/55236266
-                throw new DateTimeException("\"%A\" does not accept \"^\" nor \"#\" with a locale.");
-            }
-            return formatter.appendText(ChronoField.DAY_OF_WEEK, TextStyle.FULL);
+            throw new DateTimeException("\"%A\" does not accept a locale.");
         }
 
-        if (this.upperCase || this.changeCase) {
-            return formatter.appendText(ChronoField.DAY_OF_WEEK, AllUpperCase.TEXTS);
+        if (this.precision <= 6 || this.precision >= 9) {
+            if (this.precision >= 9) {
+                formatter.padNext(this.precision, this.actualPad(' '));
+            }
+            if (this.upperCase || this.changeCase) {
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, AllUpperCase.TEXTS);
+            } else {
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, StartCase.TEXTS);
+            }
         } else {
-            return formatter.appendText(ChronoField.DAY_OF_WEEK, StartCase.TEXTS);
+            if (this.upperCase || this.changeCase) {
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(AllUpperCase.TEXTS, precision, this.actualPad(' ')));
+            } else {
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(StartCase.TEXTS, precision, this.actualPad(' ')));
+            }
         }
+    }
+
+    private static Map<Long, String> softPad(final Map<Long, String> baseTexts, final int precision, final char pad) {
+        final HashMap<Long, String> texts = new HashMap<>();
+        for (final Map.Entry<Long, String> entry : baseTexts.entrySet()) {
+            texts.put(entry.getKey(), softPad(entry.getValue(), precision, pad));
+        }
+        return Collections.unmodifiableMap(texts);
+    }
+
+    private static String softPad(final String text, final int precision, final char pad) {
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < precision - text.length(); i++) {
+            builder.append(pad);
+        }
+        builder.append(text);
+        return builder.toString();
     }
 
     private static class StartCase {  // Initialization-on-demand holder idiom.
@@ -527,23 +547,43 @@ final class UpperB extends ConversionSpecification {
 
     @Override
     DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
-        if (this.precision >= 0) {
-            formatter.padNext(this.precision, this.actualPad(' '));
-        }
-
         if (locale.isPresent()) {
-            if (this.upperCase || this.changeCase) {
-                // TODO: https://stackoverflow.com/a/55236266
-                throw new DateTimeException("\"%B\" does not accept \"^\" nor \"#\" with a locale.");
-            }
-            return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.FULL);
+            throw new DateTimeException("\"%B\" does not accept a locale.");
         }
 
-        if (this.upperCase || this.changeCase) {
-            return formatter.appendText(ChronoField.MONTH_OF_YEAR, AllUpperCase.TEXTS);
+        if (this.precision <= 3 || this.precision >= 9) {
+            if (this.precision >= 9) {
+                formatter.padNext(this.precision, this.actualPad(' '));
+            }
+            if (this.upperCase || this.changeCase) {
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, AllUpperCase.TEXTS);
+            } else {
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, StartCase.TEXTS);
+            }
         } else {
-            return formatter.appendText(ChronoField.MONTH_OF_YEAR, StartCase.TEXTS);
+            if (this.upperCase || this.changeCase) {
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(AllUpperCase.TEXTS, precision, this.actualPad(' ')));
+            } else {
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(StartCase.TEXTS, precision, this.actualPad(' ')));
+            }
         }
+    }
+
+    private static Map<Long, String> softPad(final Map<Long, String> baseTexts, final int precision, final char pad) {
+        final HashMap<Long, String> texts = new HashMap<>();
+        for (final Map.Entry<Long, String> entry : baseTexts.entrySet()) {
+            texts.put(entry.getKey(), softPad(entry.getValue(), precision, pad));
+        }
+        return Collections.unmodifiableMap(texts);
+    }
+
+    private static String softPad(final String text, final int precision, final char pad) {
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < precision - text.length(); i++) {
+            builder.append(pad);
+        }
+        builder.append(text);
+        return builder.toString();
     }
 
     private static class StartCase {  // Initialization-on-demand holder idiom.
