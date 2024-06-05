@@ -387,6 +387,13 @@ final class UpperA extends ConversionSpecification {
             throw new DateTimeException("\"%A\" does not accept a locale.");
         }
 
+        /*
+         * Parsing accepts lenient parsing:
+         * * https://github.com/ThreeTen/threeten/issues/235
+         * * https://github.com/ThreeTen/threeten/issues/65
+         *
+         * Formatting does not accept padding shorter than the precision, though.
+         */
         if (this.precision <= 6 || this.precision >= 9) {
             if (this.precision >= 9) {
                 formatter.padNext(this.precision, this.actualPad(' '));
