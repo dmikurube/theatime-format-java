@@ -211,6 +211,15 @@ public class TestPosixTimeFormat {
                      formatter.format(ZonedDateTime.of(2023, 9, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
     }
 
+    @Test
+    public void testDateTimeFormatter7() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
+        System.out.println(formatter.parse("  Monday").getLong(ChronoField.DAY_OF_WEEK));
+        System.out.println(formatter.parse(" Tuesday").getLong(ChronoField.DAY_OF_WEEK));
+        System.out.println(formatter.parse("Wednesday").getLong(ChronoField.DAY_OF_WEEK));
+        System.out.println(formatter.parse("Thursday").getLong(ChronoField.DAY_OF_WEEK));
+    }
+
     /*
      * Import test cases that failed in reftests.
      */
