@@ -44,7 +44,10 @@ final class Literal extends Specification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         if (this.precision > 0) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }

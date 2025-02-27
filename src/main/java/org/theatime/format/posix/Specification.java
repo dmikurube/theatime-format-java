@@ -54,7 +54,10 @@ public abstract class Specification {
         return this.entireFormat.substring(this.start, this.end);
     }
 
-    abstract DateTimeFormatterBuilder appendTo(DateTimeFormatterBuilder formatter, Optional<Locale> locale);
+    abstract DateTimeFormatterBuilder appendTo(
+            DateTimeFormatterBuilder formatter,
+            PaddingStyle paddingStyle,
+            Optional<Locale> locale);
 
     final char actualPad(final char defaultPad) {
         if (this.pad == '\0') {
@@ -315,7 +318,10 @@ final class LowerA extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         if (this.precision >= 4) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }
@@ -382,7 +388,10 @@ final class UpperA extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         if (locale.isPresent()) {
             throw new DateTimeException("\"%A\" does not accept a locale.");
         }
@@ -476,7 +485,10 @@ final class LowerB extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         if (this.precision >= 4) {
             formatter.padNext(this.precision, this.actualPad(' '));
         }
@@ -553,7 +565,10 @@ final class UpperB extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         if (locale.isPresent()) {
             throw new DateTimeException("\"%B\" does not accept a locale.");
         }
@@ -651,7 +666,10 @@ final class LowerC extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         // In the C or POSIX locale, the E and O modifiers are ignored and
         // the replacement strings for the following specifiers are:
         //
@@ -704,7 +722,10 @@ final class UpperC extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         if (this.precision >= 0) {
             final char pad = this.actualPad('0');
             if (pad == '0') {
@@ -732,7 +753,10 @@ final class LowerD extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -751,7 +775,10 @@ final class UpperD extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -770,7 +797,10 @@ final class LowerE extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -799,7 +829,10 @@ final class UpperF extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -819,7 +852,10 @@ final class LowerG extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -842,7 +878,10 @@ final class UpperG extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -861,7 +900,10 @@ final class LowerH extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
     }
 }
@@ -880,7 +922,10 @@ final class UpperH extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -899,7 +944,10 @@ final class UpperI extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -918,7 +966,10 @@ final class LowerJ extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -937,7 +988,10 @@ final class LowerM extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -956,7 +1010,10 @@ final class UpperM extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -968,7 +1025,10 @@ final class LowerN extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -987,7 +1047,10 @@ final class LowerP extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1008,7 +1071,10 @@ final class LowerR extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1027,7 +1093,10 @@ final class UpperR extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1046,7 +1115,10 @@ final class UpperS extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1058,7 +1130,10 @@ final class LowerT extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1077,7 +1152,10 @@ final class UpperT extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1096,7 +1174,10 @@ final class LowerU extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1117,7 +1198,10 @@ final class UpperU extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1139,7 +1223,10 @@ final class UpperV extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1158,7 +1245,10 @@ final class LowerW extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1179,7 +1269,10 @@ final class UpperW extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1199,7 +1292,10 @@ final class LowerX extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1219,7 +1315,10 @@ final class UpperX extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1245,7 +1344,10 @@ final class LowerY extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter.appendValue(PosixFields.YEAR_OF_POSIX_CENTURY_1969_2068, 2);
     }
 }
@@ -1269,7 +1371,10 @@ final class UpperY extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1291,7 +1396,10 @@ final class LowerZ extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1310,7 +1418,10 @@ final class UpperZ extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
@@ -1323,7 +1434,10 @@ final class Plus extends ConversionSpecification {
     }
 
     @Override
-    DateTimeFormatterBuilder appendTo(final DateTimeFormatterBuilder formatter, final Optional<Locale> locale) {
+    DateTimeFormatterBuilder appendTo(
+            final DateTimeFormatterBuilder formatter,
+            final PaddingStyle paddingStyle,
+            final Optional<Locale> locale) {
         return formatter;
     }
 }
