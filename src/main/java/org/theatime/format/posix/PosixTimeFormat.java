@@ -132,7 +132,7 @@ public final class PosixTimeFormat {
     public DateTimeFormatter toDateTimeFormatter(final Optional<Locale> locale) {
         final DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
         for (final Specification specification : this.formatSpecifications) {
-            specification.appendTo(builder, locale);
+            specification.appendTo(builder, PaddingStyle.DEFAULT, locale);
         }
         return builder.toFormatter(locale.orElse(Locale.ROOT));
     }
