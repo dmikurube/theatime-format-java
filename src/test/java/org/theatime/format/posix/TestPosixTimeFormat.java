@@ -39,6 +39,15 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testLowerE() {
+        assertFormat("%e", new LowerE(C));
+        assertFormat("%0e", new LowerE(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_e", new LowerE(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-e", new LowerE(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%3e", new LowerE(new Specification.Context(false, false, 3, -1, '\0', '\0', "", 0, 0)));
+    }
+
+    @Test
     public void testLiteral() {
         assertFormat("foo",
                      Literal.of("foo", C));
@@ -125,6 +134,12 @@ public class TestPosixTimeFormat {
                      Literal.of("%&", C),
                      Literal.of("baz", C),
                      Literal.of("%", C));
+        assertFormat("%b %e, %Y",
+                     new LowerB(C),
+                     Literal.of(" ", C),
+                     new LowerE(C),
+                     Literal.of(", ", C),
+                     new UpperY(C));
     }
 
     @ParameterizedTest
@@ -208,6 +223,34 @@ public class TestPosixTimeFormat {
         System.out.println(formatter.parse("Thursday").getLong(ChronoField.DAY_OF_WEEK));
     }
 
+    @Test
+    public void testDateTimeFormatterLowerE() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%e").toDateTimeFormatter();
+        assertEquals(" 1", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" 9", formatter.format(ZonedDateTime.of(2023, 4, 9, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("17", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("31", formatter.format(ZonedDateTime.of(2023, 1, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterLowerEWithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%0e").toDateTimeFormatter();
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("09", formatter.format(ZonedDateTime.of(2023, 4, 9, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("17", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterLowerEWithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%4e").toDateTimeFormatter();
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("   9", formatter.format(ZonedDateTime.of(2023, 4, 9, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("  17", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("  31", formatter.format(ZonedDateTime.of(2023, 1, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
     /*
      * Import test cases that failed in reftests.
      */
@@ -216,6 +259,14 @@ public class TestPosixTimeFormat {
             "OCT,%^2b,2020,10,26,7,48,59,526929475",
             // "'        29',%-10d,1985,9,29,4,23,20,62491315",
             // "0000000TUE,%0#10a,2008,9,2,5,31,03,340494545",
+            "' 1',%e,2023,1,1,12,0,0,0",
+            "' 9',%e,2023,1,9,12,0,0,0",
+            "'17',%e,2023,1,17,12,0,0,0",
+            "'31',%e,2023,1,31,12,0,0,0",
+            "'01',%0e,2023,1,1,12,0,0,0",
+            "'09',%0e,2023,1,9,12,0,0,0",
+            "'   1',%4e,2023,1,1,12,0,0,0",
+            "'  17',%4e,2023,1,17,12,0,0,0",
     })
     public void testFormatSingleWithDateTimeFormatter(
             final String expectedFormatted,
