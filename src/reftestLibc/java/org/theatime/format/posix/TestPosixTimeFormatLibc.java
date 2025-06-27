@@ -71,6 +71,14 @@ public class TestPosixTimeFormatLibc {
             "%_S,2023,4,1,12,30,5,SATURDAY,91,0,C",
             "%3S,2023,4,1,12,30,0,SATURDAY,91,0,C",
             "%3S,2023,4,1,12,30,59,SATURDAY,91,0,C",
+            "%M,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%M,2023,4,1,12,5,30,SATURDAY,91,0,C",
+            "%M,2023,4,1,12,30,30,SATURDAY,91,0,C",
+            "%M,2023,4,1,12,59,30,SATURDAY,91,0,C",
+            "%_M,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%_M,2023,4,1,12,5,30,SATURDAY,91,0,C",
+            "%3M,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%3M,2023,4,1,12,59,30,SATURDAY,91,0,C",
     })
     public void test(
             final String format,
