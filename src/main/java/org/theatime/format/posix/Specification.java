@@ -946,7 +946,19 @@ final class UpperH extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.HOUR_OF_DAY, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.HOUR_OF_DAY);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.HOUR_OF_DAY);
+        }
+        return formatter.appendValue(ChronoField.HOUR_OF_DAY, 2);
     }
 }
 
@@ -1407,7 +1419,18 @@ final class UpperY extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.YEAR, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.YEAR);
+            }
+        } else if (this.pad == '_') {
+            return formatter.appendValue(ChronoField.YEAR, 1, 19, SignStyle.NORMAL);
+        }
+        return formatter.appendValue(ChronoField.YEAR, 4, 19, SignStyle.NORMAL);
     }
 }
 
