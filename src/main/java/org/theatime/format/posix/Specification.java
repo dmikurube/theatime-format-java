@@ -757,7 +757,19 @@ final class LowerD extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.DAY_OF_MONTH, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.DAY_OF_MONTH);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.DAY_OF_MONTH);
+        }
+        return formatter.appendValue(ChronoField.DAY_OF_MONTH, 2);
     }
 }
 
@@ -946,7 +958,19 @@ final class UpperH extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.HOUR_OF_DAY, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.HOUR_OF_DAY);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.HOUR_OF_DAY);
+        }
+        return formatter.appendValue(ChronoField.HOUR_OF_DAY, 2);
     }
 }
 
@@ -968,7 +992,19 @@ final class UpperI extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM);
+        }
+        return formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, 2);
     }
 }
 
@@ -1012,7 +1048,19 @@ final class LowerM extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.MONTH_OF_YEAR, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.MONTH_OF_YEAR);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.MONTH_OF_YEAR);
+        }
+        return formatter.appendValue(ChronoField.MONTH_OF_YEAR, 2);
     }
 }
 
@@ -1034,7 +1082,19 @@ final class UpperM extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.MINUTE_OF_HOUR, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.MINUTE_OF_HOUR);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.MINUTE_OF_HOUR);
+        }
+        return formatter.appendValue(ChronoField.MINUTE_OF_HOUR, 2);
     }
 }
 
@@ -1139,7 +1199,19 @@ final class UpperS extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.SECOND_OF_MINUTE, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.SECOND_OF_MINUTE);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.SECOND_OF_MINUTE);
+        }
+        return formatter.appendValue(ChronoField.SECOND_OF_MINUTE, 2);
     }
 }
 
@@ -1395,7 +1467,18 @@ final class UpperY extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.YEAR, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.YEAR);
+            }
+        } else if (this.pad == '_') {
+            return formatter.appendValue(ChronoField.YEAR, 1, 19, SignStyle.NORMAL);
+        }
+        return formatter.appendValue(ChronoField.YEAR, 4, 19, SignStyle.NORMAL);
     }
 }
 
