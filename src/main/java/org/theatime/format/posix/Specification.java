@@ -1012,7 +1012,19 @@ final class LowerM extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.MONTH_OF_YEAR, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.MONTH_OF_YEAR);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(2, ' ');
+            return formatter.appendValue(ChronoField.MONTH_OF_YEAR);
+        }
+        return formatter.appendValue(ChronoField.MONTH_OF_YEAR, 2);
     }
 }
 
