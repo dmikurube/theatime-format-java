@@ -391,6 +391,86 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testDateTimeFormatterUpperD() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
+        assertEquals("01/01/23", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("04/09/23", formatter.format(ZonedDateTime.of(2023, 4, 9, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("12/31/99", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("02/29/00", formatter.format(ZonedDateTime.of(2000, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("07/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterUpperDCenturyTransition() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
+        assertEquals("12/31/68", formatter.format(ZonedDateTime.of(2068, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("01/01/69", formatter.format(ZonedDateTime.of(1969, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("12/31/69", formatter.format(ZonedDateTime.of(1969, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("01/01/70", formatter.format(ZonedDateTime.of(1970, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterUpperDLeapYears() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
+        // Test leap year dates
+        assertEquals("02/29/00", formatter.format(ZonedDateTime.of(2000, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("02/29/04", formatter.format(ZonedDateTime.of(2004, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("02/29/20", formatter.format(ZonedDateTime.of(2020, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("02/29/96", formatter.format(ZonedDateTime.of(1996, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+
+        // Test non-leap year century years
+        assertEquals("02/28/00", formatter.format(ZonedDateTime.of(1900, 2, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("03/01/00", formatter.format(ZonedDateTime.of(1900, 3, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterUpperDMonthBoundaries() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
+        // Test all months with boundary days
+        assertEquals("01/01/23", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("01/31/23", formatter.format(ZonedDateTime.of(2023, 1, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("02/01/23", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("02/28/23", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("04/30/23", formatter.format(ZonedDateTime.of(2023, 4, 30, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("05/01/23", formatter.format(ZonedDateTime.of(2023, 5, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("06/30/23", formatter.format(ZonedDateTime.of(2023, 6, 30, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("09/30/23", formatter.format(ZonedDateTime.of(2023, 9, 30, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("11/30/23", formatter.format(ZonedDateTime.of(2023, 11, 30, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("12/31/23", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterUpperDHistoricalDates() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
+        // Important historical dates
+        assertEquals("07/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // US Bicentennial
+        assertEquals("01/01/00", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // Y2K
+        assertEquals("09/11/01", formatter.format(ZonedDateTime.of(2001, 9, 11, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // 9/11
+        assertEquals("12/07/41", formatter.format(ZonedDateTime.of(1941, 12, 7, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // Pearl Harbor
+        assertEquals("11/09/89", formatter.format(ZonedDateTime.of(1989, 11, 9, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // Berlin Wall fell
+        assertEquals("07/20/69", formatter.format(ZonedDateTime.of(1969, 7, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // Moon landing
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterUpperDYearRange() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
+        // Test the full POSIX century range boundaries
+        assertEquals("01/01/69", formatter.format(ZonedDateTime.of(1969, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // Start of 20th century mapping
+        assertEquals("12/31/99", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // End of 20th century
+        assertEquals("01/01/00", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // Start of 21st century mapping
+        assertEquals("12/31/68", formatter.format(ZonedDateTime.of(2068, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // End of 21st century mapping
+
+        // Test years around boundaries
+        assertEquals("12/31/68", formatter.format(ZonedDateTime.of(1968, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // Last day of 1968 (20th century)
+        assertEquals("01/01/69", formatter.format(ZonedDateTime.of(2069, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo")))); // 2069 wraps to 69
+    }
+
+    @Test
     public void testDateTimeFormatterLowerM() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%m").toDateTimeFormatter();
         assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));

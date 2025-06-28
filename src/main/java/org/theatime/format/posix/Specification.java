@@ -779,6 +779,12 @@ final class UpperD extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
+        // %D is equivalent to %m/%d/%y
+        formatter.appendValue(ChronoField.MONTH_OF_YEAR, 2);
+        formatter.appendLiteral('/');
+        formatter.appendValue(ChronoField.DAY_OF_MONTH, 2);
+        formatter.appendLiteral('/');
+        formatter.appendValue(PosixFields.YEAR_OF_POSIX_CENTURY_1969_2068, 2);
         return formatter;
     }
 }
