@@ -28,4 +28,4 @@ jobs:
     - name: "Try try_strftime (Expect: '000000Mon Jan  2 15:04:05 2006')"
       run: ./build/reftestLibc/try_strftime "%030c" 2006 1 2 15 4 5 1 2 0 C
     - name: Reftest with libc
-      run: ./gradlew --stacktrace -PreftestLibcTryStrftime=build/reftestLibc/try_strftime reftestLibc
+      run: ./gradlew --info -PreftestLibcTryStrftime=build/reftestLibc/try_strftime reftestLibc
