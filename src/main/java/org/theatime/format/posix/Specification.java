@@ -859,6 +859,12 @@ final class UpperF extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
+        // %F is equivalent to %Y-%m-%d (ISO 8601 date format: YYYY-MM-DD)
+        formatter.appendValue(ChronoField.YEAR, 4);
+        formatter.appendLiteral('-');
+        formatter.appendValue(ChronoField.MONTH_OF_YEAR, 2);
+        formatter.appendLiteral('-');
+        formatter.appendValue(ChronoField.DAY_OF_MONTH, 2);
         return formatter;
     }
 }
