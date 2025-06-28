@@ -22,7 +22,7 @@ configurations {
 }
 
 tasks.withType(JavaCompile) {
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
     options.encoding = "UTF-8"
 }
 
