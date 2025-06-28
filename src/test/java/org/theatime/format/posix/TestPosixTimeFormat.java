@@ -93,6 +93,15 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testLowerJ() {
+        assertFormat("%j", new LowerJ(C));
+        assertFormat("%0j", new LowerJ(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_j", new LowerJ(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-j", new LowerJ(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%5j", new LowerJ(new Specification.Context(false, false, 5, -1, '\0', '\0', "", 0, 0)));
+    }
+
+    @Test
     public void testUpperS() {
         assertFormat("%S", new UpperS(C));
         assertFormat("%0S", new UpperS(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
@@ -454,6 +463,113 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testDateTimeFormatterLowerJ() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
+        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("091", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJWithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_j").toDateTimeFormatter();
+        assertEquals("  1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" 32", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" 91", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJWithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%5j").toDateTimeFormatter();
+        assertEquals("00001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("00032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("00091", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("00365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJLeapYear() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
+        assertEquals("060", formatter.format(ZonedDateTime.of(2024, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(2024, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("059", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJSpecialYears() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
+
+        // Century years divisible by 100 but not 400 (not leap years)
+        assertEquals("059", formatter.format(ZonedDateTime.of(1900, 2, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("365", formatter.format(ZonedDateTime.of(1900, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("059", formatter.format(ZonedDateTime.of(2100, 2, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("365", formatter.format(ZonedDateTime.of(2100, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+
+        // Century years divisible by 400 (leap years)
+        assertEquals("060", formatter.format(ZonedDateTime.of(2000, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(2000, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("060", formatter.format(ZonedDateTime.of(1600, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(1600, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+
+        // Regular leap years (divisible by 4 but not century years)
+        assertEquals("060", formatter.format(ZonedDateTime.of(2020, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(2020, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("060", formatter.format(ZonedDateTime.of(2016, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(2016, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+
+        // Years divisible by 4 but in the past/future
+        assertEquals("060", formatter.format(ZonedDateTime.of(1996, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(1996, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("060", formatter.format(ZonedDateTime.of(2028, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(2028, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJMidYearDays() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
+        assertEquals("100", formatter.format(ZonedDateTime.of(2023, 4, 10, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("200", formatter.format(ZonedDateTime.of(2023, 7, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("300", formatter.format(ZonedDateTime.of(2023, 10, 27, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJWithLeftAlign() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%-j").toDateTimeFormatter();
+        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("100", formatter.format(ZonedDateTime.of(2023, 4, 10, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJWithDifferentPrecisions() {
+        final DateTimeFormatter formatter4 = PosixTimeFormat.compile("%4j").toDateTimeFormatter();
+        assertEquals("0001", formatter4.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("0032", formatter4.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("0365", formatter4.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+
+        final DateTimeFormatter formatter6 = PosixTimeFormat.compile("%6j").toDateTimeFormatter();
+        assertEquals("000001", formatter6.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("000032", formatter6.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("000365", formatter6.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerJWithSpacePaddingVariations() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_j").toDateTimeFormatter();
+        assertEquals("  1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" 10", formatter.format(ZonedDateTime.of(2023, 1, 10, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("100", formatter.format(ZonedDateTime.of(2023, 4, 10, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+
+        final DateTimeFormatter formatter5 = PosixTimeFormat.compile("%_5j").toDateTimeFormatter();
+        assertEquals("    1", formatter5.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("  100", formatter5.format(ZonedDateTime.of(2023, 4, 10, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
     public void testDateTimeFormatterUpperS() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%S").toDateTimeFormatter();
         assertEquals("00", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 30, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -579,6 +695,14 @@ public class TestPosixTimeFormat {
             "' 9',%_I,2023,4,1,9,0,0,0",
             "'012',%3I,2023,4,1,0,0,0,0",
             "'011',%3I,2023,4,1,23,0,0,0",
+            "'001',%j,2023,1,1,12,0,0,0",
+            "'032',%j,2023,2,1,12,0,0,0",
+            "'091',%j,2023,4,1,12,0,0,0",
+            "'365',%j,2023,12,31,12,0,0,0",
+            "'  1',%_j,2023,1,1,12,0,0,0",
+            "' 32',%_j,2023,2,1,12,0,0,0",
+            "'00001',%5j,2023,1,1,12,0,0,0",
+            "'00365',%5j,2023,12,31,12,0,0,0",
     })
     public void testFormatSingleWithDateTimeFormatter(
             final String expectedFormatted,
