@@ -472,6 +472,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJWithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_j").toDateTimeFormatter();
         assertEquals("  1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -481,6 +482,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJWithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%5j").toDateTimeFormatter();
         assertEquals("00001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -490,6 +492,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJLeapYear() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
         assertEquals("060", formatter.format(ZonedDateTime.of(2024, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -499,6 +502,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJSpecialYears() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
 
@@ -528,6 +532,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJMidYearDays() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
         assertEquals("100", formatter.format(ZonedDateTime.of(2023, 4, 10, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -536,6 +541,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJWithLeftAlign() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%-j").toDateTimeFormatter();
         assertEquals("001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -545,6 +551,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJWithDifferentPrecisions() {
         final DateTimeFormatter formatter4 = PosixTimeFormat.compile("%4j").toDateTimeFormatter();
         assertEquals("0001", formatter4.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -558,6 +565,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerJWithSpacePaddingVariations() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_j").toDateTimeFormatter();
         assertEquals("  1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
