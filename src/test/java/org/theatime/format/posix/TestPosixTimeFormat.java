@@ -352,6 +352,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerDMonthBoundaries() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%d").toDateTimeFormatter();
         assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -363,6 +364,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerDWithDifferentPrecisions() {
         final DateTimeFormatter formatter3 = PosixTimeFormat.compile("%3d").toDateTimeFormatter();
         assertEquals("001", formatter3.format(ZonedDateTime.of(2023, 6, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -375,6 +377,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerDWithSpacePaddingVariations() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_d").toDateTimeFormatter();
         assertEquals(" 1", formatter.format(ZonedDateTime.of(2023, 6, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -417,6 +420,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerMAllMonths() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%m").toDateTimeFormatter();
         assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -428,6 +432,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterLowerMWithDifferentPrecisions() {
         final DateTimeFormatter formatter3 = PosixTimeFormat.compile("%3m").toDateTimeFormatter();
         assertEquals("001", formatter3.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -464,6 +469,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperYHistoricalYears() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y").toDateTimeFormatter();
         assertEquals("1600", formatter.format(ZonedDateTime.of(1600, 2, 29, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -473,6 +479,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperYWithDifferentPrecisions() {
         final DateTimeFormatter formatter8 = PosixTimeFormat.compile("%8Y").toDateTimeFormatter();
         assertEquals("00002023", formatter8.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -512,6 +519,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperHAllHours() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%H").toDateTimeFormatter();
         assertEquals("00", formatter.format(ZonedDateTime.of(2023, 4, 1, 0, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -524,6 +532,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperHWithSpacePaddingVariations() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_H").toDateTimeFormatter();
         assertEquals(" 0", formatter.format(ZonedDateTime.of(2023, 4, 1, 0, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -734,6 +743,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperSAllSeconds() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%S").toDateTimeFormatter();
         assertEquals("00", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 30, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -745,6 +755,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperSWithSpacePaddingVariations() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_S").toDateTimeFormatter();
         assertEquals(" 0", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 30, 0, 0, ZoneId.of("Asia/Tokyo"))));
@@ -786,6 +797,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperMAllMinutes() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%M").toDateTimeFormatter();
         assertEquals("00", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 30, 0, ZoneId.of("Asia/Tokyo"))));
@@ -797,6 +809,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
     public void testDateTimeFormatterUpperMWithSpacePaddingVariations() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_M").toDateTimeFormatter();
         assertEquals(" 0", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 30, 0, ZoneId.of("Asia/Tokyo"))));
