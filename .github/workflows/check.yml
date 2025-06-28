@@ -10,11 +10,12 @@ jobs:
       fail-fast: false
     steps:
     - uses: actions/checkout@v4
-    - name: Set up OpenJDK 8
+    - name: Set up OpenJDK 8 and 21, with 21 as default
       uses: actions/setup-java@v4
       with:
-        java-version: 8
         distribution: "temurin"
-        cache: "gradle"
+        java-version: |
+          8
+          21
     - name: Check
       run: ./gradlew --stacktrace check
