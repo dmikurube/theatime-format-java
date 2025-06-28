@@ -18,4 +18,4 @@ jobs:
           8
           21
     - name: Check
-      run: ./gradlew --stacktrace check
+      run: ./gradlew --info check
