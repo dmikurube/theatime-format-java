@@ -241,6 +241,40 @@ public class TestPosixTimeFormatLibc {
             "%_t,2023,4,1,12,0,30,SATURDAY,91,0,C",
             "%_4t,2023,4,1,12,0,30,SATURDAY,91,0,C",
             "%t%t%t,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%g,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%g,2023,1,1,12,0,30,SUNDAY,1,0,C",
+            "%g,2024,1,1,12,0,30,MONDAY,1,0,C",
+            "%g,2022,12,31,12,0,30,SATURDAY,365,0,C",
+            "%_g,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%4g,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            // Week-based year boundary cases - January 1st
+            "%g,2025,1,1,12,0,30,WEDNESDAY,1,0,C",
+            "%g,2026,1,1,12,0,30,THURSDAY,1,0,C",
+            "%g,2027,1,1,12,0,30,FRIDAY,1,0,C",
+            "%g,2028,1,1,12,0,30,SATURDAY,1,0,C",
+            "%g,2022,1,1,12,0,30,SATURDAY,1,0,C",
+            "%g,2020,1,1,12,0,30,WEDNESDAY,1,0,C",
+            "%g,2021,1,1,12,0,30,FRIDAY,1,0,C",
+            // December 31st boundary cases
+            "%g,2023,12,31,12,0,30,SUNDAY,365,0,C",
+            "%g,2024,12,31,12,0,30,TUESDAY,366,0,C",
+            "%g,2025,12,31,12,0,30,WEDNESDAY,365,0,C",
+            // Century transitions - complex cases
+            "%g,1999,1,1,12,0,30,FRIDAY,1,0,C",
+            "%g,2000,1,1,12,0,30,SATURDAY,1,0,C",
+            "%g,2001,1,1,12,0,30,MONDAY,1,0,C",
+            "%g,1999,12,31,12,0,30,FRIDAY,365,0,C",
+            "%g,2000,12,31,12,0,30,SUNDAY,366,0,C",
+            // Edge years for testing boundaries
+            "%g,2019,12,30,12,0,30,MONDAY,364,0,C",
+            "%g,2020,1,6,12,0,30,MONDAY,6,0,C",
+            "%g,2021,1,4,12,0,30,MONDAY,4,0,C",
+            "%g,2022,1,3,12,0,30,MONDAY,3,0,C",
+            // Precision and padding tests
+            "%6g,2023,6,15,12,0,30,THURSDAY,166,0,C",
+            "%_4g,2000,6,15,12,0,30,THURSDAY,167,0,C",
+            "%_6g,1999,6,15,12,0,30,TUESDAY,166,0,C",
+            "%-g,2023,6,15,12,0,30,THURSDAY,166,0,C",
     })
     public void test(
             final String format,

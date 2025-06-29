@@ -107,6 +107,15 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testLowerG() {
+        assertFormat("%g", new LowerG(C));
+        assertFormat("%0g", new LowerG(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_g", new LowerG(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-g", new LowerG(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%4g", new LowerG(new Specification.Context(false, false, 4, -1, '\0', '\0', "", 0, 0)));
+    }
+
+    @Test
     public void testUpperS() {
         assertFormat("%S", new UpperS(C));
         assertFormat("%0S", new UpperS(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
@@ -323,6 +332,70 @@ public class TestPosixTimeFormat {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%t%t%t").toDateTimeFormatter();
         assertEquals("\t\t\t", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
     }
+
+    @Test
+    public void testDateTimeFormatterLowerG1() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%g").toDateTimeFormatter();
+        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerG2() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%g").toDateTimeFormatter();
+        assertEquals("24", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerG3() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%g").toDateTimeFormatter();
+        assertEquals("22", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerGboundaries() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%g").toDateTimeFormatter();
+
+        // Week-based year boundaries - January 1st cases
+        assertEquals("22", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Sunday, week-based year 2022
+        assertEquals("24", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Monday, week-based year 2024
+        assertEquals("25", formatter.format(ZonedDateTime.of(2025, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Wednesday, week-based year 2025
+        assertEquals("26", formatter.format(ZonedDateTime.of(2026, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Thursday, week-based year 2026
+        assertEquals("26", formatter.format(ZonedDateTime.of(2027, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Friday, week-based year 2026
+        assertEquals("27", formatter.format(ZonedDateTime.of(2028, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Saturday, week-based year 2027
+        assertEquals("21", formatter.format(ZonedDateTime.of(2022, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Saturday, week-based year 2021
+
+        // December 31st cases - end of year boundaries
+        assertEquals("22", formatter.format(ZonedDateTime.of(2022, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC")))); // Saturday, week-based year 2022
+        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC")))); // Sunday, week-based year 2023
+        assertEquals("25", formatter.format(ZonedDateTime.of(2024, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC")))); // Tuesday, week-based year 2025
+
+        // Cases where January 1st belongs to previous/same week-based year
+        assertEquals("20", formatter.format(ZonedDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Wednesday, week-based year 2020
+        assertEquals("20", formatter.format(ZonedDateTime.of(2021, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Friday, week-based year 2020
+
+        // Century transitions
+        assertEquals("98", formatter.format(ZonedDateTime.of(1999, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Friday, week-based year 1998
+        assertEquals("99", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Saturday, week-based year 1999
+        assertEquals("01", formatter.format(ZonedDateTime.of(2001, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC")))); // Monday, week-based year 2001
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerGwithPrecision() {
+        // Test precision padding
+        final DateTimeFormatter formatter4 = PosixTimeFormat.compile("%4g").toDateTimeFormatter();
+        assertEquals("0023", formatter4.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0000", formatter4.format(ZonedDateTime.of(2000, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0099", formatter4.format(ZonedDateTime.of(1999, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+
+        final DateTimeFormatter formatter6 = PosixTimeFormat.compile("%6g").toDateTimeFormatter();
+        assertEquals("000023", formatter6.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+
+        // Test space padding - libc behavior: treats last 2 digits as variable-width number
+        final DateTimeFormatter formatterSpace = PosixTimeFormat.compile("%_4g").toDateTimeFormatter();
+        assertEquals("  23", formatterSpace.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   0", formatterSpace.format(ZonedDateTime.of(2000, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));  // "0" not "00"
+    }
+
 
     @Test
     public void testDateTimeFormatterLowerE() {

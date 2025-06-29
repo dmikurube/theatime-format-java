@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoField;
+import java.time.temporal.IsoFields;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -888,7 +889,39 @@ final class LowerG extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        // %g - Last 2 digits of week-based year [00,99]
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == ' ') {
+                // Space padding with precision: use custom variable-width formatting
+                formatter.padNext(this.precision, ' ');
+                // Create a mapping for years to their last 2 digits as strings for variable-width formatting
+                Map<Long, String> yearToText = new HashMap<>();
+                for (long year = 1800; year <= 2200; year++) {
+                    long lastTwo = year % 100;
+                    yearToText.put(year, String.valueOf(lastTwo));
+                }
+                return formatter.appendText(IsoFields.WEEK_BASED_YEAR, yearToText);
+            } else {
+                // Zero padding: use fixed 2-digit reduced format
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValueReduced(IsoFields.WEEK_BASED_YEAR, 2, 2, 0);
+            }
+        } else if (this.pad == '_') {
+            // For space padding, libc treats last 2 digits as variable-width number (0-99)
+            // Apply padding first, then use variable-width value formatting
+            formatter.padNext(2, ' ');
+            // Create a mapping for years to their last 2 digits as strings for variable-width formatting
+            Map<Long, String> yearToText = new HashMap<>();
+            for (long year = 1800; year <= 2200; year++) {
+                long lastTwo = year % 100;
+                yearToText.put(year, String.valueOf(lastTwo));
+            }
+            return formatter.appendText(IsoFields.WEEK_BASED_YEAR, yearToText);
+        } else {
+            // Default: zero-padded 2-digit format (works for both left-aligned and normal cases)
+            return formatter.appendValueReduced(IsoFields.WEEK_BASED_YEAR, 2, 2, 0);
+        }
     }
 }
 
