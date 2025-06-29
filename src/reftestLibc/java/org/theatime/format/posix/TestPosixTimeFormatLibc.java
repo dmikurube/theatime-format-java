@@ -235,6 +235,12 @@ public class TestPosixTimeFormatLibc {
             "%_n,2023,4,1,12,0,30,SATURDAY,91,0,C",
             "%_4n,2023,4,1,12,0,30,SATURDAY,91,0,C",
             "%n%n%n,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%t,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%4t,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%04t,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%_t,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%_4t,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%t%t%t,2023,4,1,12,0,30,SATURDAY,91,0,C",
     })
     public void test(
             final String format,

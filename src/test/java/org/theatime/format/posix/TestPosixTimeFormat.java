@@ -102,6 +102,11 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testLowerT() {
+        assertFormat("%t", Literal.of("\t", C));
+    }
+
+    @Test
     public void testUpperS() {
         assertFormat("%S", new UpperS(C));
         assertFormat("%0S", new UpperS(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
@@ -305,6 +310,18 @@ public class TestPosixTimeFormat {
     public void testDateTimeFormatterLowerN2() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%n%n%n").toDateTimeFormatter();
         assertEquals("\n\n\n", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerT1() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%t").toDateTimeFormatter();
+        assertEquals("\t", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerT2() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%t%t%t").toDateTimeFormatter();
+        assertEquals("\t\t\t", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
     }
 
     @Test

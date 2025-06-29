@@ -1238,7 +1238,7 @@ final class LowerT extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        return formatter.appendLiteral("\t");
     }
 }
 
