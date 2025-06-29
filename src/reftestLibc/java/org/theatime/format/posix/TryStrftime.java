@@ -16,17 +16,11 @@
 
 package org.theatime.format.posix;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 class TryStrftime {
     TryStrftime(final String path) {
@@ -45,7 +39,7 @@ class TryStrftime {
             final int dayOfYear,
             final int isDst,
             final String locale) {
-        final List<String> result;
+        final String result;
         try {
             result = this.invoke(
                     format, year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, dayOfWeek, dayOfYear, isDst, locale);
@@ -54,11 +48,10 @@ class TryStrftime {
         } catch (final InterruptedException ex) {
             throw new RuntimeException(ex);
         }
-        assertEquals(1, result.size());
-        return result.get(0);
+        return result;
     }
 
-    List<String> invoke(
+    String invoke(
             final String format,
             final int year,
             final int monthOfYear,
@@ -101,28 +94,29 @@ class TryStrftime {
             stderr.write(buffer, 0, lengthRead);
         }
 
-        if (stderr.size() > 0) {
-            final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-            final InputStream stdoutInputStream = process.getInputStream();
-            while (true) {
-                final int lengthRead = stdoutInputStream.read(buffer);
-                if (0 > lengthRead) {
-                    break;
-                }
-                stdout.write(buffer, 0, lengthRead);
+        final ByteArrayOutputStream stdout = new ByteArrayOutputStream();
+        final InputStream stdoutInputStream = process.getInputStream();
+        while (true) {
+            final int lengthRead = stdoutInputStream.read(buffer);
+            if (0 > lengthRead) {
+                break;
             }
+            stdout.write(buffer, 0, lengthRead);
+        }
+
+        if (stderr.size() > 0) {
             throw new RuntimeException(
                     "Detected output in standard error.\n"
                     + "stdout: " + stdout.toString() + "\n"
                     + "stderr: " + stderr.toString());
         }
 
-        final InputStream stdout = process.getInputStream();
-        final List<String> lines;
-        try (final BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))) {
-            lines = reader.lines().collect(Collectors.toList());
+        // "try_strftime" should have the trailing newline character in the end.
+        final String stdoutWithTrailingNewline = stdout.toString();
+        if (stdoutWithTrailingNewline.charAt(stdoutWithTrailingNewline.length() - 1) != '\n') {
+            throw new RuntimeException("Output did not end with a newline character (\'\\n\').");
         }
-        return lines;
+        return stdoutWithTrailingNewline.substring(0, stdoutWithTrailingNewline.length() - 1);
     }
 
     private final String path;
