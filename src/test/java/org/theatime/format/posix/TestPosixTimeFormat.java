@@ -296,6 +296,18 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testDateTimeFormatterLowerN1() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%n").toDateTimeFormatter();
+        assertEquals("\n", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterLowerN2() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%n%n%n").toDateTimeFormatter();
+        assertEquals("\n\n\n", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
     public void testDateTimeFormatterLowerE() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%e").toDateTimeFormatter();
         assertEquals(" 1", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
