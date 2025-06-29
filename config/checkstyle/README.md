@@ -9,3 +9,5 @@ Checkstyle
     * To indent with 4-column spaces.
     * To limit columns to 180 characters.
     * To reject unused imports.
+    * To reject trailing space(s) at the end of line.
+    * To require a newline at the end of file.
