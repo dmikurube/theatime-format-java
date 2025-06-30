@@ -1276,6 +1276,43 @@ final class UpperR extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
+        // %R is equivalent to %H:%M (24-hour time)
+
+        if (this.precision > 0 || this.pad != '\0') {
+            // Apply width/padding to the hour field to achieve total width
+            final char pad = this.actualPad(' ');  // Default to space for compound formats
+            final int totalWidth = this.precision > 0 ? this.precision : 0;
+
+            if (totalWidth > 0) {
+                // Calculate extra width needed: total - base format length
+                // Base %R format is "HH:MM" = 5 characters
+                final int baseLength = 5;
+                final int extraWidth = Math.max(0, totalWidth - baseLength);
+                final int hourWidth = 2 + extraWidth;  // Normal hour width (2) + extra
+
+                if (this.isLeftAligned()) {
+                    // Left-aligned: for compound formats, libc still pads to total width
+                    formatter.padNext(hourWidth, ' ');
+                    formatter.appendValue(ChronoField.HOUR_OF_DAY, 2);
+                } else if (pad == '0') {
+                    // Zero padding: apply to hour field
+                    formatter.appendValue(ChronoField.HOUR_OF_DAY, hourWidth);
+                } else {
+                    // Space padding: apply to hour field
+                    formatter.padNext(hourWidth, ' ');
+                    formatter.appendValue(ChronoField.HOUR_OF_DAY, 2);
+                }
+
+                formatter.appendLiteral(':');
+                formatter.appendValue(ChronoField.MINUTE_OF_HOUR, 2);
+                return formatter;
+            }
+        }
+
+        // Default: no modifiers
+        formatter.appendValue(ChronoField.HOUR_OF_DAY, 2);
+        formatter.appendLiteral(':');
+        formatter.appendValue(ChronoField.MINUTE_OF_HOUR, 2);
         return formatter;
     }
 }

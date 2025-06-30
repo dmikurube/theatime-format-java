@@ -130,6 +130,11 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testUpperR() {
+        assertFormat("%R", new UpperR(C));
+    }
+
+    @Test
     public void testUpperS() {
         assertFormat("%S", new UpperS(C));
         assertFormat("%0S", new UpperS(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
@@ -513,6 +518,34 @@ public class TestPosixTimeFormat {
         assertEquals("    01:30:45 PM", formatter15.format(dt));      // 15 chars total, space-padded
         assertEquals("000001:30:45 PM", formatter015.format(dt));     // 15 chars total, zero-padded
         assertEquals("    01:30:45 PM", formatterSpace.format(dt));   // 15 chars total, explicit space padding
+    }
+
+    @Test
+    public void testDateTimeFormatterUpperR() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%R").toDateTimeFormatter();
+        // Test various times - %R is 24-hour format HH:MM
+        assertEquals("06:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 6, 0, 30, 0, ZoneId.of("UTC"))));
+        assertEquals("12:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 30, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("13:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 13, 30, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("23:59", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneId.of("UTC"))));
+        assertEquals("00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterUpperrWithModifiers() {
+        // Test width/padding modifiers for %R - should apply to hour field
+        final DateTimeFormatter formatter10 = PosixTimeFormat.compile("%10R").toDateTimeFormatter();
+        final DateTimeFormatter formatter010 = PosixTimeFormat.compile("%010R").toDateTimeFormatter();
+        final DateTimeFormatter formatterLeft = PosixTimeFormat.compile("%-10R").toDateTimeFormatter();
+        final DateTimeFormatter formatterSpace = PosixTimeFormat.compile("%_10R").toDateTimeFormatter();
+
+        final ZonedDateTime dt = ZonedDateTime.of(2023, 6, 15, 13, 30, 45, 0, ZoneId.of("UTC"));
+
+        // %R produces "13:30" (5 chars), %10R should pad to 10 chars total
+        assertEquals("     13:30", formatter10.format(dt));      // 10 chars total, space-padded
+        assertEquals("0000013:30", formatter010.format(dt));     // 10 chars total, zero-padded
+        assertEquals("     13:30", formatterLeft.format(dt));    // 10 chars total, left-aligned but still padded
+        assertEquals("     13:30", formatterSpace.format(dt));   // 10 chars total, explicit space padding
     }
 
     @Test
