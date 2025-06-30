@@ -116,6 +116,15 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testUpperG() {
+        assertFormat("%G", new UpperG(C));
+        assertFormat("%0G", new UpperG(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_G", new UpperG(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-G", new UpperG(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%6G", new UpperG(new Specification.Context(false, false, 6, -1, '\0', '\0', "", 0, 0)));
+    }
+
+    @Test
     public void testUpperS() {
         assertFormat("%S", new UpperS(C));
         assertFormat("%0S", new UpperS(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));

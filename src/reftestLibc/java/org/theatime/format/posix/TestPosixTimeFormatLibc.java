@@ -275,6 +275,41 @@ public class TestPosixTimeFormatLibc {
             "%_4g,2000,6,15,12,0,30,THURSDAY,167,0,C",
             "%_6g,1999,6,15,12,0,30,TUESDAY,166,0,C",
             "%-g,2023,6,15,12,0,30,THURSDAY,166,0,C",
+            // %G tests (4-digit week-based year)
+            "%G,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%G,2023,1,1,12,0,30,SUNDAY,1,0,C",
+            "%G,2024,1,1,12,0,30,MONDAY,1,0,C",
+            "%G,2022,12,31,12,0,30,SATURDAY,365,0,C",
+            "%_G,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            "%6G,2023,4,1,12,0,30,SATURDAY,91,0,C",
+            // Week-based year boundary cases - January 1st
+            "%G,2025,1,1,12,0,30,WEDNESDAY,1,0,C",
+            "%G,2026,1,1,12,0,30,THURSDAY,1,0,C",
+            "%G,2027,1,1,12,0,30,FRIDAY,1,0,C",
+            "%G,2028,1,1,12,0,30,SATURDAY,1,0,C",
+            "%G,2022,1,1,12,0,30,SATURDAY,1,0,C",
+            "%G,2020,1,1,12,0,30,WEDNESDAY,1,0,C",
+            "%G,2021,1,1,12,0,30,FRIDAY,1,0,C",
+            // December 31st boundary cases
+            "%G,2023,12,31,12,0,30,SUNDAY,365,0,C",
+            "%G,2024,12,31,12,0,30,TUESDAY,366,0,C",
+            "%G,2025,12,31,12,0,30,WEDNESDAY,365,0,C",
+            // Century transitions - complex cases
+            "%G,1999,1,1,12,0,30,FRIDAY,1,0,C",
+            "%G,2000,1,1,12,0,30,SATURDAY,1,0,C",
+            "%G,2001,1,1,12,0,30,MONDAY,1,0,C",
+            "%G,1999,12,31,12,0,30,FRIDAY,365,0,C",
+            "%G,2000,12,31,12,0,30,SUNDAY,366,0,C",
+            // Edge years for testing boundaries
+            "%G,2019,12,30,12,0,30,MONDAY,364,0,C",
+            "%G,2020,1,6,12,0,30,MONDAY,6,0,C",
+            "%G,2021,1,4,12,0,30,MONDAY,4,0,C",
+            "%G,2022,1,3,12,0,30,MONDAY,3,0,C",
+            // Precision and padding tests
+            "%8G,2023,6,15,12,0,30,THURSDAY,166,0,C",
+            "%_6G,2000,6,15,12,0,30,THURSDAY,167,0,C",
+            "%_8G,1999,6,15,12,0,30,TUESDAY,166,0,C",
+            "%-G,2023,6,15,12,0,30,THURSDAY,166,0,C",
     })
     public void test(
             final String format,
