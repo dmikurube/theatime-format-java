@@ -391,6 +391,26 @@ public class TestPosixTimeFormatLibc {
             "%012R,2023,6,15,6,0,30,THURSDAY,166,0,C",     // Width 12, zero padding
             "%-8R,2023,6,15,23,59,59,THURSDAY,166,0,C",    // Width 8, late night
             "%_12R,2023,6,15,0,0,0,THURSDAY,166,0,C",      // Width 12, midnight
+
+            // %T tests (24-hour time as %H:%M:%S)
+            "%T,2023,6,15,6,0,30,THURSDAY,166,0,C",       // Early morning
+            "%T,2023,6,15,12,30,45,THURSDAY,166,0,C",     // Noon
+            "%T,2023,6,15,13,30,45,THURSDAY,166,0,C",     // Afternoon
+            "%T,2023,6,15,23,59,59,THURSDAY,166,0,C",     // Late night
+            "%T,2023,6,15,0,0,0,THURSDAY,166,0,C",        // Midnight
+            "%T,2023,1,1,0,0,0,SUNDAY,1,0,C",             // New Year midnight
+            "%T,2023,12,31,23,59,59,SUNDAY,365,0,C",      // New Year's Eve
+            "%T,2000,2,29,12,0,0,TUESDAY,60,0,C",         // Leap year noon
+
+            // %T modifier tests (width/padding applied to hour field)
+            "%15T,2023,6,15,13,30,45,THURSDAY,166,0,C",    // Width 15, space padding
+            "%015T,2023,6,15,13,30,45,THURSDAY,166,0,C",   // Width 15, zero padding
+            "%-15T,2023,6,15,13,30,45,THURSDAY,166,0,C",   // Width 15, left aligned
+            "%_15T,2023,6,15,13,30,45,THURSDAY,166,0,C",   // Width 15, explicit space padding
+            "%12T,2023,6,15,6,0,30,THURSDAY,166,0,C",      // Width 12, early morning
+            "%018T,2023,6,15,6,0,30,THURSDAY,166,0,C",     // Width 18, zero padding
+            "%-12T,2023,6,15,23,59,59,THURSDAY,166,0,C",   // Width 12, late night
+            "%_18T,2023,6,15,0,0,0,THURSDAY,166,0,C",      // Width 18, midnight
     })
     public void test(
             final String format,

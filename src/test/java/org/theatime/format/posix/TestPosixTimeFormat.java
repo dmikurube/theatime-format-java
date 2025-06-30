@@ -549,6 +549,39 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testUpperT() {
+        assertFormat("%T", new UpperT(C));
+    }
+
+    @Test
+    public void testDateTimeFormatterUpperT() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%T").toDateTimeFormatter();
+        // Test various times - %T is 24-hour format HH:MM:SS
+        assertEquals("06:00:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 6, 0, 30, 0, ZoneId.of("UTC"))));
+        assertEquals("12:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 30, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("13:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 13, 30, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("23:59:59", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneId.of("UTC"))));
+        assertEquals("00:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testDateTimeFormatterUppertWithModifiers() {
+        // Test width/padding modifiers for %T - should apply to hour field
+        final DateTimeFormatter formatter15 = PosixTimeFormat.compile("%15T").toDateTimeFormatter();
+        final DateTimeFormatter formatter015 = PosixTimeFormat.compile("%015T").toDateTimeFormatter();
+        final DateTimeFormatter formatterLeft = PosixTimeFormat.compile("%-15T").toDateTimeFormatter();
+        final DateTimeFormatter formatterSpace = PosixTimeFormat.compile("%_15T").toDateTimeFormatter();
+
+        final ZonedDateTime dt = ZonedDateTime.of(2023, 6, 15, 13, 30, 45, 0, ZoneId.of("UTC"));
+
+        // %T produces "13:30:45" (8 chars), %15T should pad to 15 chars total
+        assertEquals("       13:30:45", formatter15.format(dt));      // 15 chars total, space-padded
+        assertEquals("000000013:30:45", formatter015.format(dt));     // 15 chars total, zero-padded
+        assertEquals("       13:30:45", formatterLeft.format(dt));    // 15 chars total, left-aligned but still padded
+        assertEquals("       13:30:45", formatterSpace.format(dt));   // 15 chars total, explicit space padding
+    }
+
+    @Test
     public void testDateTimeFormatterLowerE() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%e").toDateTimeFormatter();
         assertEquals(" 1", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
