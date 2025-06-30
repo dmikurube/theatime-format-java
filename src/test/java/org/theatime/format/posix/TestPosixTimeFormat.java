@@ -125,6 +125,11 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testLowerR() {
+        assertFormat("%r", new LowerR(C));
+    }
+
+    @Test
     public void testUpperS() {
         assertFormat("%S", new UpperS(C));
         assertFormat("%0S", new UpperS(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
@@ -405,6 +410,110 @@ public class TestPosixTimeFormat {
         assertEquals("   0", formatterSpace.format(ZonedDateTime.of(2000, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));  // "0" not "00"
     }
 
+    @Test
+    public void testDateTimeFormatterLowerR() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%r").toDateTimeFormatter();
+
+        // Test AM times
+        assertEquals("06:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 6, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("11:59:59 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 11, 59, 59, 0, ZoneId.of("UTC"))));
+
+        // Test PM times
+        assertEquals("12:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01:30:45 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 13, 30, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("11:59:59 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneId.of("UTC"))));
+
+        // Test midnight and noon
+        assertEquals("12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterLowerRBoundaries() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%r").toDateTimeFormatter();
+
+        // Critical hour boundaries - AM/PM transitions
+        assertEquals("12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));     // Midnight
+        assertEquals("12:00:01 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 1, 0, ZoneId.of("UTC"))));     // First second of day
+        assertEquals("12:59:59 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 59, 59, 0, ZoneId.of("UTC"))));   // Last minute of 12 AM hour
+        assertEquals("01:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));     // First 1 AM
+        assertEquals("11:59:59 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 11, 59, 59, 0, ZoneId.of("UTC"))));  // Last second of AM
+        assertEquals("12:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));    // Noon
+        assertEquals("12:00:01 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 1, 0, ZoneId.of("UTC"))));    // First second of PM
+        assertEquals("12:59:59 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 59, 59, 0, ZoneId.of("UTC"))));  // Last minute of 12 PM hour
+        assertEquals("01:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));    // First 1 PM
+        assertEquals("11:59:59 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneId.of("UTC"))));  // Last second of day
+
+        // All 12-hour values with AM
+        assertEquals("01:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("02:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 2, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("03:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 3, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("04:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 4, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("05:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 5, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("06:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 6, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("07:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 7, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("08:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 8, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("09:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("10:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 10, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("11:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 11, 0, 0, 0, ZoneId.of("UTC"))));
+
+        // All 12-hour values with PM
+        assertEquals("01:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("02:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("03:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 15, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("04:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 16, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("05:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 17, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("06:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 18, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("07:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 19, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("08:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 20, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("09:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 21, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("10:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 22, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("11:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 0, 0, 0, ZoneId.of("UTC"))));
+
+        // Edge cases with different seconds and minutes
+        assertEquals("12:00:59 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 59, 0, ZoneId.of("UTC"))));
+        assertEquals("12:01:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 1, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12:59:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 59, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12:00:59 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 59, 0, ZoneId.of("UTC"))));
+        assertEquals("12:01:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 1, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12:59:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 59, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterLowerRDateBoundaries() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%r").toDateTimeFormatter();
+
+        // Test across different dates to ensure no date dependency
+        assertEquals("12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"))));      // New Year
+        assertEquals("11:59:59 PM", formatter.format(ZonedDateTime.of(2023, 12, 31, 23, 59, 59, 0, ZoneId.of("UTC")))); // New Year's Eve
+        assertEquals("12:00:00 PM", formatter.format(ZonedDateTime.of(2000, 2, 29, 12, 0, 0, 0, ZoneId.of("UTC"))));    // Leap year
+        assertEquals("06:30:45 AM", formatter.format(ZonedDateTime.of(1999, 12, 31, 6, 30, 45, 0, ZoneId.of("UTC"))));  // Y2K eve
+        assertEquals("01:15:30 PM", formatter.format(ZonedDateTime.of(2024, 7, 4, 13, 15, 30, 0, ZoneId.of("UTC"))));   // Different year
+    }
+
+    @Test
+    @SuppressWarnings("checkstyle:AbbreviationAsWordInName")
+    public void testDateTimeFormatterLowerRModifiers() {
+        // Test width/padding modifiers for compound format %r
+        // These now work by applying the modifiers to the first element (hour)
+
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%r").toDateTimeFormatter();
+        final DateTimeFormatter formatter15 = PosixTimeFormat.compile("%15r").toDateTimeFormatter();
+        final DateTimeFormatter formatter015 = PosixTimeFormat.compile("%015r").toDateTimeFormatter();
+        final DateTimeFormatter formatterSpace = PosixTimeFormat.compile("%_15r").toDateTimeFormatter();
+
+        final ZonedDateTime dt = ZonedDateTime.of(2023, 6, 15, 13, 30, 45, 0, ZoneId.of("UTC"));
+
+        // Test basic format
+        assertEquals("01:30:45 PM", formatter.format(dt));
+
+        // Test width modifiers - should match libc behavior
+        assertEquals("    01:30:45 PM", formatter15.format(dt));      // 15 chars total, space-padded
+        assertEquals("000001:30:45 PM", formatter015.format(dt));     // 15 chars total, zero-padded
+        assertEquals("    01:30:45 PM", formatterSpace.format(dt));   // 15 chars total, explicit space padding
+    }
 
     @Test
     public void testDateTimeFormatterLowerE() {

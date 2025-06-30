@@ -310,6 +310,67 @@ public class TestPosixTimeFormatLibc {
             "%_6G,2000,6,15,12,0,30,THURSDAY,167,0,C",
             "%_8G,1999,6,15,12,0,30,TUESDAY,166,0,C",
             "%-G,2023,6,15,12,0,30,THURSDAY,166,0,C",
+            // %r tests (12-hour clock time with AM/PM - equivalent to %I:%M:%S %p)
+            "%r,2023,6,15,6,0,0,THURSDAY,166,0,C",
+            "%r,2023,6,15,11,59,59,THURSDAY,166,0,C",
+            "%r,2023,6,15,12,0,0,THURSDAY,166,0,C",
+            "%r,2023,6,15,13,30,45,THURSDAY,166,0,C",
+            "%r,2023,6,15,23,59,59,THURSDAY,166,0,C",
+            "%r,2023,6,15,0,0,0,THURSDAY,166,0,C",
+            "%r,2023,1,1,1,2,3,SUNDAY,1,0,C",
+            "%r,2023,12,31,18,45,30,SUNDAY,365,0,C",
+            // %r boundary tests - Critical AM/PM transitions
+            "%r,2023,6,15,0,0,1,THURSDAY,166,0,C",      // First second of day
+            "%r,2023,6,15,0,59,59,THURSDAY,166,0,C",    // Last minute of 12 AM hour
+            "%r,2023,6,15,1,0,0,THURSDAY,166,0,C",      // First 1 AM
+            "%r,2023,6,15,11,59,58,THURSDAY,166,0,C",   // Two seconds before noon
+            "%r,2023,6,15,12,0,1,THURSDAY,166,0,C",     // First second of PM
+            "%r,2023,6,15,12,59,59,THURSDAY,166,0,C",   // Last minute of 12 PM hour
+            "%r,2023,6,15,13,0,0,THURSDAY,166,0,C",     // First 1 PM
+            "%r,2023,6,15,23,59,58,THURSDAY,166,0,C",   // Two seconds before midnight
+            // %r all AM hours
+            "%r,2023,6,15,1,0,0,THURSDAY,166,0,C",      // 1 AM
+            "%r,2023,6,15,2,0,0,THURSDAY,166,0,C",      // 2 AM
+            "%r,2023,6,15,3,0,0,THURSDAY,166,0,C",      // 3 AM
+            "%r,2023,6,15,4,0,0,THURSDAY,166,0,C",      // 4 AM
+            "%r,2023,6,15,5,0,0,THURSDAY,166,0,C",      // 5 AM
+            "%r,2023,6,15,7,0,0,THURSDAY,166,0,C",      // 7 AM
+            "%r,2023,6,15,8,0,0,THURSDAY,166,0,C",      // 8 AM
+            "%r,2023,6,15,9,0,0,THURSDAY,166,0,C",      // 9 AM
+            "%r,2023,6,15,10,0,0,THURSDAY,166,0,C",     // 10 AM
+            "%r,2023,6,15,11,0,0,THURSDAY,166,0,C",     // 11 AM
+            // %r all PM hours
+            "%r,2023,6,15,13,0,0,THURSDAY,166,0,C",     // 1 PM
+            "%r,2023,6,15,14,0,0,THURSDAY,166,0,C",     // 2 PM
+            "%r,2023,6,15,15,0,0,THURSDAY,166,0,C",     // 3 PM
+            "%r,2023,6,15,16,0,0,THURSDAY,166,0,C",     // 4 PM
+            "%r,2023,6,15,17,0,0,THURSDAY,166,0,C",     // 5 PM
+            "%r,2023,6,15,18,0,0,THURSDAY,166,0,C",     // 6 PM
+            "%r,2023,6,15,19,0,0,THURSDAY,166,0,C",     // 7 PM
+            "%r,2023,6,15,20,0,0,THURSDAY,166,0,C",     // 8 PM
+            "%r,2023,6,15,21,0,0,THURSDAY,166,0,C",     // 9 PM
+            "%r,2023,6,15,22,0,0,THURSDAY,166,0,C",     // 10 PM
+            "%r,2023,6,15,23,0,0,THURSDAY,166,0,C",     // 11 PM
+            // %r edge cases with minutes and seconds
+            "%r,2023,6,15,0,0,59,THURSDAY,166,0,C",     // Midnight with seconds
+            "%r,2023,6,15,0,1,0,THURSDAY,166,0,C",      // Midnight with minutes
+            "%r,2023,6,15,0,59,0,THURSDAY,166,0,C",     // Late in 12 AM hour
+            "%r,2023,6,15,12,0,59,THURSDAY,166,0,C",    // Noon with seconds
+            "%r,2023,6,15,12,1,0,THURSDAY,166,0,C",     // Noon with minutes
+            "%r,2023,6,15,12,59,0,THURSDAY,166,0,C",    // Late in 12 PM hour
+            // %r different dates to ensure no date dependency
+            "%r,2023,1,1,0,0,0,SUNDAY,1,0,C",           // New Year midnight
+            "%r,2023,12,31,23,59,59,SUNDAY,365,0,C",    // New Year's Eve last second
+            "%r,2000,2,29,12,0,0,TUESDAY,60,0,C",       // Leap year noon
+            "%r,1999,12,31,6,30,45,FRIDAY,365,0,C",     // Y2K eve morning
+            "%r,2024,7,4,13,15,30,THURSDAY,186,0,C",    // Different year afternoon
+            "%r,2022,6,21,6,0,0,TUESDAY,172,0,C",       // Summer solstice morning
+            "%r,2022,12,21,18,0,0,WEDNESDAY,355,0,C",   // Winter solstice evening
+            // %r with modifiers - Now supported by applying padding to first element (hour)
+            "%15r,2023,6,15,13,30,45,THURSDAY,166,0,C",   // Width 15 - space padding
+            "%015r,2023,6,15,13,30,45,THURSDAY,166,0,C",  // Zero padding
+            "%-15r,2023,6,15,13,30,45,THURSDAY,166,0,C",  // Left align
+            "%_15r,2023,6,15,13,30,45,THURSDAY,166,0,C",  // Space padding explicit
     })
     public void test(
             final String format,

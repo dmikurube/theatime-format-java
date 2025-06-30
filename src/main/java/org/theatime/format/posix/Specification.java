@@ -1211,6 +1211,49 @@ final class LowerR extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
+        // %r is equivalent to %I:%M:%S %p (12-hour clock time with AM/PM)
+        // For compound formats, apply width/padding modifiers to the first element (hour)
+
+        if (this.precision > 0 || this.pad != '\0') {
+            // Apply width/padding to the hour field to achieve total width
+            final char pad = this.actualPad(' ');  // Default to space for compound formats
+            final int totalWidth = this.precision > 0 ? this.precision : 0;
+
+            if (totalWidth > 0) {
+                // Calculate extra width needed: total - base format length
+                // Base %r format is "HH:MM:SS AM" = 11 characters
+                final int baseLength = 11;
+                final int extraWidth = Math.max(0, totalWidth - baseLength);
+                final int hourWidth = 2 + extraWidth;  // Normal hour width (2) + extra
+
+                if (this.isLeftAligned()) {
+                    // Left-aligned: for compound formats, libc still pads to total width
+                    formatter.padNext(hourWidth, ' ');
+                    formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, 2);
+                } else if (pad == '0') {
+                    // Zero padding: apply to hour field
+                    formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, hourWidth);
+                } else {
+                    // Space padding: apply to hour field
+                    formatter.padNext(hourWidth, ' ');
+                    formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, 2);  // Maintain 2-digit base format
+                }
+            } else {
+                // No width specified, use default
+                formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, 2);
+            }
+        } else {
+            // No modifiers, use default
+            formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, 2);
+        }
+
+        // Append the rest of the compound format
+        formatter.appendLiteral(':');
+        formatter.appendValue(ChronoField.MINUTE_OF_HOUR, 2);
+        formatter.appendLiteral(':');
+        formatter.appendValue(ChronoField.SECOND_OF_MINUTE, 2);
+        formatter.appendLiteral(' ');
+        formatter.appendText(ChronoField.AMPM_OF_DAY, TextStyle.SHORT);
         return formatter;
     }
 }
