@@ -525,6 +525,7 @@ public class TestPosixTimeFormatLibc {
                 "T",
                 "t",
                 "u",
+                "U",
                 // "q",
                 "%"
                 ).flatMap(specifier -> Stream.of(
