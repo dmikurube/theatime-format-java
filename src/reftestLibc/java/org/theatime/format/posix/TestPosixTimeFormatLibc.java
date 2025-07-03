@@ -439,7 +439,7 @@ public class TestPosixTimeFormatLibc {
     }
 
     @ParameterizedTest
-    @MethodSource("formatsAndDateTimes")
+    @MethodSource("formattingFormatsAndDateTimes")
     public void testFormattingWithPatterns(final String format, final LocalDateTime datetime) {
         assertStrftime(format,
                        datetime.getYear(),
@@ -454,11 +454,11 @@ public class TestPosixTimeFormatLibc {
                        "C");
     }
 
-    static Stream<Arguments> formatsAndDateTimes() {
-        return dateTimes().flatMap(dt -> formats().map(f -> Arguments.of(f, dt)));
+    static Stream<Arguments> formattingFormatsAndDateTimes() {
+        return dateTimes().flatMap(dt -> formattingFormats().map(f -> Arguments.of(f, dt)));
     }
 
-    static Stream<String> formats() {
+    static Stream<String> formattingFormats() {
         return Stream.of(
                 fixedFormattingFormats(),
                 randomFormattingFormats()
