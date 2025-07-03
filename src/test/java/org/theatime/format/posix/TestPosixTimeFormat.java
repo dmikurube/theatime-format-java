@@ -107,6 +107,15 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testLowerU() {
+        assertFormat("%u", new LowerU(C));
+        assertFormat("%0u", new LowerU(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_u", new LowerU(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-u", new LowerU(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%2u", new LowerU(new Specification.Context(false, false, 2, -1, '\0', '\0', "", 0, 0)));
+    }
+
+    @Test
     public void testLowerG() {
         assertFormat("%g", new LowerG(C));
         assertFormat("%0g", new LowerG(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
