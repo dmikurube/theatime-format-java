@@ -413,7 +413,7 @@ public class TestPosixTimeFormatLibc {
             "%-12T,2023,6,15,23,59,59,THURSDAY,166,0,C",   // Width 12, late night
             "%_18T,2023,6,15,0,0,0,THURSDAY,166,0,C",      // Width 18, midnight
     })
-    public void test(
+    public void testFormatting(
             final String format,
             final String year,
             final String monthOfYear,
@@ -440,7 +440,7 @@ public class TestPosixTimeFormatLibc {
 
     @ParameterizedTest
     @MethodSource("formatsAndDateTimes")
-    public void testOrdinaryDateTime(final String format, final LocalDateTime datetime) {
+    public void testFormattingWithPatterns(final String format, final LocalDateTime datetime) {
         assertStrftime(format,
                        datetime.getYear(),
                        datetime.getMonthValue(),
@@ -460,12 +460,12 @@ public class TestPosixTimeFormatLibc {
 
     static Stream<String> formats() {
         return Stream.of(
-                fixedFormats(),
-                randomFormats()
+                fixedFormattingFormats(),
+                randomFormattingFormats()
                 ).flatMap(Function.identity());
     }
 
-    static Stream<String> fixedFormats() {
+    static Stream<String> fixedFormattingFormats() {
         return Stream.of(
                 "%c",
                 "%C",
@@ -502,7 +502,7 @@ public class TestPosixTimeFormatLibc {
                 );
     }
 
-    static Stream<String> randomFormats() {
+    static Stream<String> randomFormattingFormats() {
         final int precision = 10;  // TODO: Randomize this.
         return Stream.of(
                 "a",
@@ -548,8 +548,9 @@ public class TestPosixTimeFormatLibc {
 
     static Stream<LocalDateTime> dateTimes() {
         return Stream.of(
-                fixedDateTimes(),
-                randomDateTimes()
+                randomModernDateTimes(18),
+                // randomPastDateTimes(2),
+                fixedDateTimes()
                 ).flatMap(Function.identity());
     }
 
@@ -560,12 +561,30 @@ public class TestPosixTimeFormatLibc {
         );
     }
 
-    static Stream<LocalDateTime> randomDateTimes() {
-        return Stream.generate(() -> randomModernLocalDateTime()).limit(20);
+    static Stream<LocalDateTime> randomModernDateTimes(final int n) {
+        return Stream.generate(() -> randomModernLocalDateTime()).limit(n);
+    }
+
+    static Stream<LocalDateTime> randomPastDateTimes(final int n) {
+        return Stream.generate(() -> randomPastLocalDateTime()).limit(n);
     }
 
     private static LocalDateTime randomModernLocalDateTime() {
-        final int year = RANDOM.nextInt(2024 - 1970) + 1970;
+        final int year = RANDOM.nextInt(2100 - 1970) + 1970;
+        final int month = RANDOM.nextInt(12) + 1;
+        final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
+        return LocalDateTime.of(
+                year,
+                month,
+                day,
+                RANDOM.nextInt(24),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(1_000_000_000));
+    }
+
+    private static LocalDateTime randomPastLocalDateTime() {
+        final int year = RANDOM.nextInt(1970);
         final int month = RANDOM.nextInt(12) + 1;
         final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
         return LocalDateTime.of(
