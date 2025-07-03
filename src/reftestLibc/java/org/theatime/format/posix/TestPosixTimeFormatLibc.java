@@ -13,6 +13,8 @@ import java.time.OffsetDateTime;
 import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -454,6 +456,12 @@ public class TestPosixTimeFormatLibc {
                        "C");
     }
 
+    @ParameterizedTest
+    @MethodSource("parsableFormatsAndDateTimes")
+    public void testParsingWithGeneratedPatterns(final String format, final LocalDateTime datetime) {
+        assertStrptime(format, datetime, "C");
+    }
+
     static Stream<Arguments> formattingFormatsAndDateTimes() {
         return dateTimes().flatMap(dt -> formattingFormats().map(f -> Arguments.of(f, dt)));
     }
@@ -546,6 +554,25 @@ public class TestPosixTimeFormatLibc {
                 ));
     }
 
+    static Stream<Arguments> parsableFormatsAndDateTimes() {
+        return dateTimes().flatMap(dt -> fixedParsableFormats().map(f -> Arguments.of(f, dt)));
+    }
+
+    static Stream<String> fixedParsableFormats() {
+        return Stream.of(
+                "%Y-%m-%d",
+                "%d/%m/%Y",
+                "%H:%M:%S",
+                "%Y-%m-%d %H:%M:%S",
+                "%a %b %d %Y",
+                "%u",
+                "%U",
+                "%d",
+                "%m",
+                "%Y"
+                );
+    }
+
     static Stream<LocalDateTime> dateTimes() {
         return Stream.of(
                 randomModernDateTimes(18),
@@ -634,6 +661,46 @@ public class TestPosixTimeFormatLibc {
         System.out.println("\"" + expectedFormatted + "\"");
         System.out.println("\"" + actualFormatted + "\"");
         assertEquals(expectedFormatted, actualFormatted);
+    }
+
+    private static void assertStrptime(
+            final String format,
+            final LocalDateTime datetime,
+            final String locale) {
+        final String pathTryStrptime = System.getProperty("reftestLibcTryStrptime");
+        assertNotNull(pathTryStrptime);
+
+        final DateTimeFormatter formatter = PosixTimeFormat.compile(format).toDateTimeFormatter();
+        final String formatted = formatter.format(datetime);
+
+        final TryStrptime.Parsed expectedParsed = new TryStrptime(pathTryStrptime).strptime(format, formatted, locale);
+
+        final int actualParsedYear;
+        final int actualParsedMonth;
+        final int actualParsedDayOfMonth;
+        final int actualParsedHour;
+        final int actualParsedMinute;
+        final int actualParsedSecond;
+        try {
+            final TemporalAccessor actualParsed = formatter.parse(formatted);
+            actualParsedYear = actualParsed.isSupported(ChronoField.YEAR) ? actualParsed.get(ChronoField.YEAR) : -1;
+            actualParsedMonth = actualParsed.isSupported(ChronoField.MONTH_OF_YEAR) ? actualParsed.get(ChronoField.MONTH_OF_YEAR) : -1;
+            actualParsedDayOfMonth = actualParsed.isSupported(ChronoField.DAY_OF_MONTH) ? actualParsed.get(ChronoField.DAY_OF_MONTH) : -1;
+            actualParsedHour = actualParsed.isSupported(ChronoField.HOUR_OF_DAY) ? actualParsed.get(ChronoField.HOUR_OF_DAY) : -1;
+            actualParsedMinute = actualParsed.isSupported(ChronoField.MINUTE_OF_HOUR) ? actualParsed.get(ChronoField.MINUTE_OF_HOUR) : -1;
+            actualParsedSecond = actualParsed.isSupported(ChronoField.SECOND_OF_MINUTE) ? actualParsed.get(ChronoField.SECOND_OF_MINUTE) : -1;
+        } catch (final Exception ex) {
+            throw new AssertionError(
+                    "Our parser failed but libc strptime succeeded. Input: " + formatted
+                    + ", Format: " + format + ", Expected: " + expectedParsed, ex);
+        }
+
+        assertEquals(expectedParsed.year, actualParsedYear, "Year mismatch");
+        assertEquals(expectedParsed.mon, actualParsedMonth, "Month mismatch");
+        assertEquals(expectedParsed.mday, actualParsedDayOfMonth, "Day mismatch");
+        assertEquals(expectedParsed.hour, actualParsedHour, "Hour mismatch");
+        assertEquals(expectedParsed.min, actualParsedMinute, "Minute mismatch");
+        assertEquals(expectedParsed.sec, actualParsedSecond, "Second mismatch");
     }
 
     private static Random RANDOM = new Random();
