@@ -39,6 +39,41 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testFormat1() {
+        assertFormat(
+                "%nabc",
+                Literal.of("\n", C),
+                Literal.of("abc", C));
+    }
+
+    @Test
+    public void testFormat2() {
+        assertFormat(
+                "abc%nabc",
+                Literal.of("abc", C),
+                Literal.of("\n", C),
+                Literal.of("abc", C));
+    }
+
+    @Test
+    public void testFormat3() {
+        assertFormat(
+                "abc%12nabc",
+                Literal.of("abc", C),
+                Literal.of("\n", C),
+                Literal.of("abc", C));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "abc",
+            "%",
+    })
+    public void testFormatUnmatch(final String format) {
+        assertFormat(format, Literal.of(format, C));
+    }
+
+    @Test
     public void testEndWithSinglePercent() {
         assertFormat("%", Literal.of("%", C));
         assertFormat("foo%", Literal.of("foo", C), Literal.of("%", C));
@@ -48,6 +83,58 @@ public class TestPosixTimeFormat {
     public void testLowerA() {
         assertFormat("%a", new LowerA(C));
         assertFormat("%0a", new LowerA(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_10a").toDateTimeFormatter();
+        assertEquals("       Mon", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testUpperA() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
+        assertEquals("  Monday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" Tuesday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Wednesday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Thursday",
+                     formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testUpperA2() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
+        System.out.println(formatter.parse("  Monday").getLong(ChronoField.DAY_OF_WEEK));
+        System.out.println(formatter.parse(" Tuesday").getLong(ChronoField.DAY_OF_WEEK));
+        System.out.println(formatter.parse("Wednesday").getLong(ChronoField.DAY_OF_WEEK));
+        System.out.println(formatter.parse("Thursday").getLong(ChronoField.DAY_OF_WEEK));
+    }
+
+    @Test
+    public void testUpperB() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%7B").toDateTimeFormatter();
+        assertEquals("January",
+                     formatter.format(ZonedDateTime.of(2023, 1, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("February",
+                     formatter.format(ZonedDateTime.of(2023, 2, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("  March",
+                     formatter.format(ZonedDateTime.of(2023, 3, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("    May",
+                     formatter.format(ZonedDateTime.of(2023, 5, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals(" August",
+                     formatter.format(ZonedDateTime.of(2023, 8, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("September",
+                     formatter.format(ZonedDateTime.of(2023, 9, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testLowerY() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%y").toDateTimeFormatter();
+        assertEquals(2000, formatter.parse("00").getLong(ChronoField.YEAR));
+        assertEquals(2068, formatter.parse("68").getLong(ChronoField.YEAR));
+        assertEquals(1969, formatter.parse("69").getLong(ChronoField.YEAR));
+        assertEquals(1970, formatter.parse("70").getLong(ChronoField.YEAR));
+        assertEquals(1999, formatter.parse("99").getLong(ChronoField.YEAR));
     }
 
     @Test
@@ -81,7 +168,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
-    public void testMixed() {
+    public void testMixed1() {
         assertFormat("foo%bbar",
                      Literal.of("foo", C),
                      new LowerB(C),
@@ -139,85 +226,21 @@ public class TestPosixTimeFormat {
                      Literal.of("%", C));
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "abc",
-            "%",
-    })
-    public void testUnmatch(final String format) {
-        assertFormat(format, Literal.of(format, C));
-    }
-
     @Test
-    public void testDateTimeFormatter() {
+    public void testMixed2() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%a%A%10q%b%B").toDateTimeFormatter();
         assertEquals("MonMonday      %10qAprApril",
                      formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
     }
 
     @Test
-    public void testDateTimeFormatter2() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_10a").toDateTimeFormatter();
-        assertEquals("       Mon", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-    }
-
-    @Test
-    public void testDateTimeFormatter3() {
+    public void testMixed3() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%C ... %y").toDateTimeFormatter();
         assertEquals("20 ... 23", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
         final TemporalAccessor accessor = formatter.parse("19 ... 87");
         assertEquals(87, accessor.getLong(PosixFields.YEAR_OF_POSIX_CENTURY_1969_2068));
         assertEquals(19, accessor.getLong(PosixFields.POSIX_CENTURY));
         assertEquals(1987, accessor.getLong(ChronoField.YEAR));
-    }
-
-    @Test
-    public void testDateTimeFormatter4() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%y").toDateTimeFormatter();
-        assertEquals(2000, formatter.parse("00").getLong(ChronoField.YEAR));
-        assertEquals(2068, formatter.parse("68").getLong(ChronoField.YEAR));
-        assertEquals(1969, formatter.parse("69").getLong(ChronoField.YEAR));
-        assertEquals(1970, formatter.parse("70").getLong(ChronoField.YEAR));
-        assertEquals(1999, formatter.parse("99").getLong(ChronoField.YEAR));
-    }
-
-    @Test
-    public void testDateTimeFormatter5() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
-        assertEquals("  Monday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals(" Tuesday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("Wednesday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("Thursday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-    }
-
-    @Test
-    public void testDateTimeFormatter6() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%7B").toDateTimeFormatter();
-        assertEquals("January",
-                     formatter.format(ZonedDateTime.of(2023, 1, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("February",
-                     formatter.format(ZonedDateTime.of(2023, 2, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("  March",
-                     formatter.format(ZonedDateTime.of(2023, 3, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("    May",
-                     formatter.format(ZonedDateTime.of(2023, 5, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals(" August",
-                     formatter.format(ZonedDateTime.of(2023, 8, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("September",
-                     formatter.format(ZonedDateTime.of(2023, 9, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-    }
-
-    @Test
-    public void testDateTimeFormatter7() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
-        System.out.println(formatter.parse("  Monday").getLong(ChronoField.DAY_OF_WEEK));
-        System.out.println(formatter.parse(" Tuesday").getLong(ChronoField.DAY_OF_WEEK));
-        System.out.println(formatter.parse("Wednesday").getLong(ChronoField.DAY_OF_WEEK));
-        System.out.println(formatter.parse("Thursday").getLong(ChronoField.DAY_OF_WEEK));
     }
 
     /*
@@ -244,32 +267,6 @@ public class TestPosixTimeFormat {
                 year, monthValue, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, nanoOfSecond, ZoneOffset.UTC);
         final String actualFormatted = actualFormatter.format(actualDateTime);
         assertEquals(expectedFormatted, actualFormatted);
-    }
-
-    @Test
-    public void test1() {
-        assertFormat(
-                "%nabc",
-                Literal.of("\n", C),
-                Literal.of("abc", C));
-    }
-
-    @Test
-    public void test2() {
-        assertFormat(
-                "abc%nabc",
-                Literal.of("abc", C),
-                Literal.of("\n", C),
-                Literal.of("abc", C));
-    }
-
-    @Test
-    public void test3() {
-        assertFormat(
-                "abc%12nabc",
-                Literal.of("abc", C),
-                Literal.of("\n", C),
-                Literal.of("abc", C));
     }
 
     @ParameterizedTest
