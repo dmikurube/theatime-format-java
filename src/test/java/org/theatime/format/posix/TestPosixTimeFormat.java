@@ -116,6 +116,15 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testLowerW() {
+        assertFormat("%w", new LowerW(C));
+        assertFormat("%0w", new LowerW(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_w", new LowerW(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-w", new LowerW(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%2w", new LowerW(new Specification.Context(false, false, 2, -1, '\0', '\0', "", 0, 0)));
+    }
+
+    @Test
     public void testLowerG() {
         assertFormat("%g", new LowerG(C));
         assertFormat("%0g", new LowerG(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));

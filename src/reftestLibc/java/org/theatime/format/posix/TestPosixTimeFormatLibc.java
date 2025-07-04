@@ -535,6 +535,7 @@ public class TestPosixTimeFormatLibc {
                 "u",
                 "U",
                 "V",
+                "w",
                 "W",
                 // "q",
                 "%"

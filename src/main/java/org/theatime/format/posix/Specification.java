@@ -1637,7 +1637,79 @@ final class LowerW extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 0) {
+            final char pad = this.actualPad('0');
+            if (pad == '0') {
+                return formatter.appendValue(SundayBasedDayOfWeek.FIELD, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(SundayBasedDayOfWeek.FIELD);
+            }
+        } else if (this.pad == '_') {
+            formatter.padNext(1, ' ');
+            return formatter.appendValue(SundayBasedDayOfWeek.FIELD);
+        }
+        return formatter.appendValue(SundayBasedDayOfWeek.FIELD, 1);
+    }
+
+    private static class SundayBasedDayOfWeek implements TemporalField {
+        static final TemporalField FIELD = new SundayBasedDayOfWeek();
+
+        private SundayBasedDayOfWeek() {
+        }
+
+        @Override
+        public String getDisplayName(final Locale locale) {
+            return "SundayBasedDayOfWeek";
+        }
+
+        @Override
+        public TemporalUnit getBaseUnit() {
+            return ChronoUnit.DAYS;
+        }
+
+        @Override
+        public TemporalUnit getRangeUnit() {
+            return ChronoUnit.WEEKS;
+        }
+
+        @Override
+        public ValueRange range() {
+            return ValueRange.of(0, 6);
+        }
+
+        @Override
+        public boolean isDateBased() {
+            return true;
+        }
+
+        @Override
+        public boolean isTimeBased() {
+            return false;
+        }
+
+        @Override
+        public boolean isSupportedBy(final TemporalAccessor temporal) {
+            return temporal.isSupported(ChronoField.DAY_OF_WEEK);
+        }
+
+        @Override
+        public ValueRange rangeRefinedBy(final TemporalAccessor temporal) {
+            return range();
+        }
+
+        @Override
+        public long getFrom(final TemporalAccessor temporal) {
+            final int isoDayOfWeek = temporal.get(ChronoField.DAY_OF_WEEK);
+            // Convert ISO day of week (Monday=1, Tuesday=2, ..., Sunday=7)
+            // to Sunday-based (Sunday=0, Monday=1, ..., Saturday=6)
+            return isoDayOfWeek % 7;
+        }
+
+        @Override
+        public <R extends Temporal> R adjustInto(final R temporal, final long newValue) {
+            throw new UnsupportedTemporalTypeException("Cannot adjust " + this);
+        }
     }
 }
 
