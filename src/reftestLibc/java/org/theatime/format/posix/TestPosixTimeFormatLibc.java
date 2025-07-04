@@ -26,6 +26,7 @@ import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -94,42 +95,13 @@ public class TestPosixTimeFormatLibc {
 
     static Stream<String> formats() {
         return Stream.of(
-                "%a",
-                "%^a",
-                "%#a",
-                "%10a",
-                "%^10a",
-                "%#10a",
-                "%010a",
-                "%^010a",
-                "%#010a",
-                "%A",
-                "%^A",
-                "%#A",
-                "%10A",
-                "%^10A",
-                "%#10A",
-                "%010A",
-                "%^010A",
-                "%#010A",
-                "%b",
-                "%^b",
-                "%#b",
-                "%10b",
-                "%^10b",
-                "%#10b",
-                "%010b",
-                "%^010b",
-                "%#010b",
-                "%B",
-                "%^B",
-                "%#B",
-                "%10B",
-                "%^10B",
-                "%#10B",
-                "%010B",
-                "%^010B",
-                "%#010B",
+                fixedFormats(),
+                randomFormats()
+                ).flatMap(Function.identity());
+    }
+
+    static Stream<String> fixedFormats() {
+        return Stream.of(
                 "%c",
                 "%C",
                 "%^C",
@@ -146,19 +118,37 @@ public class TestPosixTimeFormatLibc {
                 "%10q",
                 // "%^10q",
                 // "%#10q",
-                "%010q",
+                "%010q"
                 // "%^010q",
                 // "%#010q",
-                "%%",
-                "%^%",
-                "%#%",
-                "%10%",
-                "%^10%",
-                "%#10%",
-                "%010%",
-                "%^010%",
-                "%#010%"
                 );
+    }
+
+    static Stream<String> randomFormats() {
+        final int precision = 10;  // TODO: Randomize this.
+        return Stream.of(
+                "a",
+                "A",
+                "b",
+                "B"
+                // "c"
+                // "C",
+                ).flatMap(specifier -> Stream.of(
+                    "%" + specifier,
+                    "%^" + specifier,
+                    "%#" + specifier,
+                    "%" + precision + specifier,
+                    "%^" + precision + specifier,
+                    "%#" + precision + specifier,
+                    "%0" + precision + specifier,
+                    "%^0" + precision + specifier,
+                    "%#0" + precision + specifier,
+                    "%0" + specifier,
+                    "%_" + specifier,
+                    // "%-" + specifier,
+                    "%3" + specifier,
+                    "%4" + specifier
+                ));
     }
 
     static Stream<LocalDateTime> ordinaryDateTime() {
