@@ -74,7 +74,7 @@ public class TestPosixTimeFormatLibc {
     }
 
     @ParameterizedTest
-    @MethodSource("formatAndOrdinaryDateTime")
+    @MethodSource("formatsAndDateTimes")
     public void testOrdinaryDateTime(final String format, final LocalDateTime datetime) {
         assertStrftime(format,
                        datetime.getYear(),
@@ -89,8 +89,8 @@ public class TestPosixTimeFormatLibc {
                        "C");
     }
 
-    static Stream<Arguments> formatAndOrdinaryDateTime() {
-        return ordinaryDateTime().flatMap(dt -> formats().map(f -> Arguments.of(f, dt)));
+    static Stream<Arguments> formatsAndDateTimes() {
+        return dateTimes().flatMap(dt -> formats().map(f -> Arguments.of(f, dt)));
     }
 
     static Stream<String> formats() {
@@ -151,8 +151,36 @@ public class TestPosixTimeFormatLibc {
                 ));
     }
 
-    static Stream<LocalDateTime> ordinaryDateTime() {
-        return Stream.generate(() -> randomOrdinaryLocalDateTime()).limit(20);
+    static Stream<LocalDateTime> dateTimes() {
+        return Stream.of(
+                fixedDateTimes(),
+                randomDateTimes()
+                ).flatMap(Function.identity());
+    }
+
+    static Stream<LocalDateTime> fixedDateTimes() {
+        return Stream.of(
+                LocalDateTime.of(1999, 12, 31, 23, 59, 59, 999_999_999),
+                LocalDateTime.of(2000, 1, 1, 0, 0, 0)
+        );
+    }
+
+    static Stream<LocalDateTime> randomDateTimes() {
+        return Stream.generate(() -> randomModernLocalDateTime()).limit(20);
+    }
+
+    private static LocalDateTime randomModernLocalDateTime() {
+        final int year = RANDOM.nextInt(2024 - 1970) + 1970;
+        final int month = RANDOM.nextInt(12) + 1;
+        final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
+        return LocalDateTime.of(
+                year,
+                month,
+                day,
+                RANDOM.nextInt(24),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(1_000_000_000));
     }
 
     private static void assertStrftime(
@@ -192,20 +220,6 @@ public class TestPosixTimeFormatLibc {
         System.out.println("\"" + expectedFormatted + "\"");
         System.out.println("\"" + actualFormatted + "\"");
         assertEquals(expectedFormatted, actualFormatted);
-    }
-
-    private static LocalDateTime randomOrdinaryLocalDateTime() {
-        final int year = RANDOM.nextInt(2024 - 1970) + 1970;
-        final int month = RANDOM.nextInt(12) + 1;
-        final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
-        return LocalDateTime.of(
-                year,
-                month,
-                day,
-                RANDOM.nextInt(24),
-                RANDOM.nextInt(60),
-                RANDOM.nextInt(60),
-                RANDOM.nextInt(1_000_000_000));
     }
 
     private static Random RANDOM = new Random();
