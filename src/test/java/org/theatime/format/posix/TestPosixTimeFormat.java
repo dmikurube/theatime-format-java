@@ -600,6 +600,15 @@ public class TestPosixTimeFormat {
     }
 
     @Test
+    public void testUpperV() {
+        assertFormat("%V", new UpperV(C));
+        assertFormat("%0V", new UpperV(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_V", new UpperV(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-V", new UpperV(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%3V", new UpperV(new Specification.Context(false, false, 3, -1, '\0', '\0', "", 0, 0)));
+    }
+
+    @Test
     public void testDateTimeFormatterLowerE() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%e").toDateTimeFormatter();
         assertEquals(" 1", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
