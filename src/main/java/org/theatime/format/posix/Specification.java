@@ -729,9 +729,15 @@ final class UpperC extends ConversionSpecification {
         if (this.precision >= 0) {
             final char pad = this.actualPad('0');
             if (pad == '0') {
-                return formatter.appendValue(PosixFields.POSIX_CENTURY, this.precision);
+                if (this.precision >= 2) {
+                    return formatter.appendValue(PosixFields.POSIX_CENTURY, this.precision);
+                } else {
+                    return formatter.appendValue(PosixFields.POSIX_CENTURY);
+                }
             } else {
-                formatter.padNext(this.precision, pad);
+                if (this.precision >= 2) {
+                    formatter.padNext(this.precision, pad);
+                }
                 return formatter.appendValue(PosixFields.POSIX_CENTURY);
             }
         }

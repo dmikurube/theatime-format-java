@@ -103,15 +103,7 @@ public class TestPosixTimeFormatLibc {
     static Stream<String> fixedFormattingFormats() {
         return Stream.of(
                 "%c",
-                "%C",
-                "%^C",
-                "%#C",
-                "%10C",
-                "%^10C",
-                "%#10C",
-                "%010C",
-                "%^010C",
-                "%#010C",
+                "%-C",
                 "%-e",
                 "%q",  // "%q" does not exist.
                 // "%^q",
@@ -133,7 +125,7 @@ public class TestPosixTimeFormatLibc {
                 "b",
                 "B",
                 // "c"
-                // "C",
+                "C",
                 "e"
                 ).flatMap(specifier -> Stream.of(
                     "%" + specifier,
