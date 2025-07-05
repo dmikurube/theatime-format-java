@@ -335,41 +335,9 @@ final class LowerA extends ConversionSpecification {
         }
 
         if (this.upperCase || this.changeCase) {
-            return formatter.appendText(ChronoField.DAY_OF_WEEK, AllUpperCase.TEXTS);
+            return formatter.appendText(ChronoField.DAY_OF_WEEK, DayOfWeekNames.shortUpperCase());
         } else {
-            return formatter.appendText(ChronoField.DAY_OF_WEEK, StartCase.TEXTS);
-        }
-    }
-
-    private static class StartCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "Mon");
-            texts.put(2L, "Tue");
-            texts.put(3L, "Wed");
-            texts.put(4L, "Thu");
-            texts.put(5L, "Fri");
-            texts.put(6L, "Sat");
-            texts.put(7L, "Sun");
-            TEXTS = Collections.unmodifiableMap(texts);
-        }
-    }
-
-    private static class AllUpperCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "MON");
-            texts.put(2L, "TUE");
-            texts.put(3L, "WED");
-            texts.put(4L, "THU");
-            texts.put(5L, "FRI");
-            texts.put(6L, "SAT");
-            texts.put(7L, "SUN");
-            TEXTS = Collections.unmodifiableMap(texts);
+            return formatter.appendText(ChronoField.DAY_OF_WEEK, DayOfWeekNames.shortTitleCase());
         }
     }
 }
@@ -408,15 +376,15 @@ final class UpperA extends ConversionSpecification {
                 formatter.padNext(this.precision, this.actualPad(' '));
             }
             if (this.upperCase || this.changeCase) {
-                return formatter.appendText(ChronoField.DAY_OF_WEEK, AllUpperCase.TEXTS);
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, DayOfWeekNames.fullUpperCase());
             } else {
-                return formatter.appendText(ChronoField.DAY_OF_WEEK, StartCase.TEXTS);
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, DayOfWeekNames.fullTitleCase());
             }
         } else {
             if (this.upperCase || this.changeCase) {
-                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(AllUpperCase.TEXTS, precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(DayOfWeekNames.fullUpperCase(), precision, this.actualPad(' ')));
             } else {
-                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(StartCase.TEXTS, precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(DayOfWeekNames.fullTitleCase(), precision, this.actualPad(' ')));
             }
         }
     }
@@ -436,38 +404,6 @@ final class UpperA extends ConversionSpecification {
         }
         builder.append(text);
         return builder.toString();
-    }
-
-    private static class StartCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "Monday");
-            texts.put(2L, "Tuesday");
-            texts.put(3L, "Wednesday");
-            texts.put(4L, "Thursday");
-            texts.put(5L, "Friday");
-            texts.put(6L, "Saturday");
-            texts.put(7L, "Sunday");
-            TEXTS = Collections.unmodifiableMap(texts);
-        }
-    }
-
-    private static class AllUpperCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "MONDAY");
-            texts.put(2L, "TUESDAY");
-            texts.put(3L, "WEDNESDAY");
-            texts.put(4L, "THURSDAY");
-            texts.put(5L, "FRIDAY");
-            texts.put(6L, "SATURDAY");
-            texts.put(7L, "SUNDAY");
-            TEXTS = Collections.unmodifiableMap(texts);
-        }
     }
 }
 
@@ -502,51 +438,9 @@ final class LowerB extends ConversionSpecification {
         }
 
         if (this.upperCase || this.changeCase) {
-            return formatter.appendText(ChronoField.MONTH_OF_YEAR, AllUpperCase.TEXTS);
+            return formatter.appendText(ChronoField.MONTH_OF_YEAR, MonthOfYearNames.shortUpperCase());
         } else {
-            return formatter.appendText(ChronoField.MONTH_OF_YEAR, StartCase.TEXTS);
-        }
-    }
-
-    private static class StartCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "Jan");
-            texts.put(2L, "Feb");
-            texts.put(3L, "Mar");
-            texts.put(4L, "Apr");
-            texts.put(5L, "May");
-            texts.put(6L, "Jun");
-            texts.put(7L, "Jul");
-            texts.put(8L, "Aug");
-            texts.put(9L, "Sep");
-            texts.put(10L, "Oct");
-            texts.put(11L, "Nov");
-            texts.put(12L, "Dec");
-            TEXTS = Collections.unmodifiableMap(texts);
-        }
-    }
-
-    private static class AllUpperCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "JAN");
-            texts.put(2L, "FEB");
-            texts.put(3L, "MAR");
-            texts.put(4L, "APR");
-            texts.put(5L, "MAY");
-            texts.put(6L, "JUN");
-            texts.put(7L, "JUL");
-            texts.put(8L, "AUG");
-            texts.put(9L, "SEP");
-            texts.put(10L, "OCT");
-            texts.put(11L, "NOV");
-            texts.put(12L, "DEC");
-            TEXTS = Collections.unmodifiableMap(texts);
+            return formatter.appendText(ChronoField.MONTH_OF_YEAR, MonthOfYearNames.shortTitleCase());
         }
     }
 }
@@ -578,15 +472,15 @@ final class UpperB extends ConversionSpecification {
                 formatter.padNext(this.precision, this.actualPad(' '));
             }
             if (this.upperCase || this.changeCase) {
-                return formatter.appendText(ChronoField.MONTH_OF_YEAR, AllUpperCase.TEXTS);
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, MonthOfYearNames.fullUpperCase());
             } else {
-                return formatter.appendText(ChronoField.MONTH_OF_YEAR, StartCase.TEXTS);
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, MonthOfYearNames.fullTitleCase());
             }
         } else {
             if (this.upperCase || this.changeCase) {
-                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(AllUpperCase.TEXTS, precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(MonthOfYearNames.fullUpperCase(), precision, this.actualPad(' ')));
             } else {
-                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(StartCase.TEXTS, precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(MonthOfYearNames.fullTitleCase(), precision, this.actualPad(' ')));
             }
         }
     }
@@ -606,48 +500,6 @@ final class UpperB extends ConversionSpecification {
         }
         builder.append(text);
         return builder.toString();
-    }
-
-    private static class StartCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "January");
-            texts.put(2L, "February");
-            texts.put(3L, "March");
-            texts.put(4L, "April");
-            texts.put(5L, "May");
-            texts.put(6L, "June");
-            texts.put(7L, "July");
-            texts.put(8L, "August");
-            texts.put(9L, "September");
-            texts.put(10L, "October");
-            texts.put(11L, "November");
-            texts.put(12L, "December");
-            TEXTS = Collections.unmodifiableMap(texts);
-        }
-    }
-
-    private static class AllUpperCase {  // Initialization-on-demand holder idiom.
-        static final Map<Long, String> TEXTS;
-
-        static {
-            final HashMap<Long, String> texts = new HashMap<>();
-            texts.put(1L, "JANUARY");
-            texts.put(2L, "FEBRUARY");
-            texts.put(3L, "MARCH");
-            texts.put(4L, "APRIL");
-            texts.put(5L, "MAY");
-            texts.put(6L, "JUNE");
-            texts.put(7L, "JULY");
-            texts.put(8L, "AUGUST");
-            texts.put(9L, "SEPTEMBER");
-            texts.put(10L, "OCTOBER");
-            texts.put(11L, "NOVEMBER");
-            texts.put(12L, "DECEMBER");
-            TEXTS = Collections.unmodifiableMap(texts);
-        }
     }
 }
 
