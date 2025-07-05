@@ -533,13 +533,11 @@ final class LowerC extends ConversionSpecification {
         // strftime, strftime_l - convert date and time to a string
         // The Open Group Base Specifications Issue 7, 2018 edition
         // https://pubs.opengroup.org/onlinepubs/9699919799/functions/strftime.html#tag_16_576_07
-        if (this.pad == '0' || this.upperCase || this.changeCase) {
-            throw new IllegalStateException();
-        }
+
         return formatter
-                .appendText(ChronoField.DAY_OF_WEEK, TextStyle.SHORT)
+                .appendText(ChronoField.DAY_OF_WEEK, (this.upperCase ? DayOfWeekNames.shortUpperCase() : DayOfWeekNames.shortTitleCase()))
                 .appendLiteral(" ")
-                .appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT)
+                .appendText(ChronoField.MONTH_OF_YEAR, (this.upperCase ? MonthOfYearNames.shortUpperCase() : MonthOfYearNames.shortTitleCase()))
                 .appendLiteral(" ")
                 .padNext(2, ' ')
                 .appendValue(ChronoField.DAY_OF_MONTH)
