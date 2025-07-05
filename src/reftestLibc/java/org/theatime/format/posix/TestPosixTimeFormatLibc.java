@@ -232,6 +232,7 @@ public class TestPosixTimeFormatLibc {
         assertEquals(dayOfYear, actualDateTime.getDayOfYear());
         final String actualFormatted = actualFormatter.format(actualDateTime);
 
+        System.out.println("\"" + format + "\"");
         System.out.println("\"" + expectedFormatted + "\"");
         System.out.println("\"" + actualFormatted + "\"");
         assertEquals(expectedFormatted, actualFormatted);
