@@ -217,6 +217,16 @@ public class TestPosixTimeFormatTokenize {
                      Literal.of("%", C));
     }
 
+    @Test
+    public void testTokenizeOfMixed10() {
+        assertFormat("%b %e, %Y",
+                     new LowerB(C),
+                     Literal.of(" ", C),
+                     new LowerE(C),
+                     Literal.of(", ", C),
+                     new UpperY(C));
+    }
+
     @ParameterizedTest
     @CsvSource({
             // "%%,%,false,false,-1,-1,,,%%",
@@ -254,6 +264,15 @@ public class TestPosixTimeFormatTokenize {
     public void testTokenizeOfLowerA() {
         assertFormat("%a", new LowerA(C));
         assertFormat("%0a", new LowerA(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+    }
+
+    @Test
+    public void testTokenizeOfLowerE() {
+        assertFormat("%e", new LowerE(C));
+        assertFormat("%0e", new LowerE(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
+        assertFormat("%_e", new LowerE(new Specification.Context(false, false, -1, -1, '_', '\0', "", 0, 0)));
+        assertFormat("%-e", new LowerE(new Specification.Context(false, false, -1, -1, '-', '\0', "", 0, 0)));
+        assertFormat("%3e", new LowerE(new Specification.Context(false, false, 3, -1, '\0', '\0', "", 0, 0)));
     }
 
     private void assertFormat(final String format, final Specification... expectedFormatSpecifications) {

@@ -801,7 +801,20 @@ final class LowerE extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision >= 0) {
+            final char pad = this.actualPad(' ');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.DAY_OF_MONTH, (this.precision > 2 ? this.precision : 2));
+            } else {
+                formatter.padNext((this.precision > 2 ? this.precision : 2), pad);
+                return formatter.appendValue(ChronoField.DAY_OF_MONTH);
+            }
+        }
+
+        if (!this.isLeftAligned()) {
+            formatter.padNext(2, ' ');
+        }
+        return formatter.appendValue(ChronoField.DAY_OF_MONTH);
     }
 }
 

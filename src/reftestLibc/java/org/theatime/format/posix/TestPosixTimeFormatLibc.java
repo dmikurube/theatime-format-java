@@ -112,6 +112,7 @@ public class TestPosixTimeFormatLibc {
                 "%010C",
                 "%^010C",
                 "%#010C",
+                "%-e",
                 "%q",  // "%q" does not exist.
                 // "%^q",
                 // "%#q",
@@ -130,9 +131,10 @@ public class TestPosixTimeFormatLibc {
                 "a",
                 "A",
                 "b",
-                "B"
+                "B",
                 // "c"
                 // "C",
+                "e"
                 ).flatMap(specifier -> Stream.of(
                     "%" + specifier,
                     "%^" + specifier,
@@ -146,6 +148,8 @@ public class TestPosixTimeFormatLibc {
                     "%0" + specifier,
                     "%_" + specifier,
                     // "%-" + specifier,
+                    "%1" + specifier,
+                    "%2" + specifier,
                     "%3" + specifier,
                     "%4" + specifier
                 ));
