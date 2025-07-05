@@ -19,27 +19,20 @@ package org.theatime.format.posix;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class TestPosixTimeFormat {
+public class TestPosixTimeFormatTokenize {
     @Test
-    public void testEmpty() {
+    public void testTokenizeEmpty() {
         assertFormat("");
     }
 
     @Test
-    public void testFormat1() {
+    public void testTokenize1() {
         assertFormat(
                 "%nabc",
                 Literal.of("\n", C),
@@ -47,7 +40,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
-    public void testFormat2() {
+    public void testTokenize2() {
         assertFormat(
                 "abc%nabc",
                 Literal.of("abc", C),
@@ -56,7 +49,7 @@ public class TestPosixTimeFormat {
     }
 
     @Test
-    public void testFormat3() {
+    public void testTokenize3() {
         assertFormat(
                 "abc%12nabc",
                 Literal.of("abc", C),
@@ -69,96 +62,62 @@ public class TestPosixTimeFormat {
             "abc",
             "%",
     })
-    public void testFormatUnmatch(final String format) {
+    public void testTokenizeWithoutAnySpecification(final String format) {
         assertFormat(format, Literal.of(format, C));
     }
 
     @Test
-    public void testEndWithSinglePercent() {
+    public void testTokenizeEndingWithSinglePercent() {
         assertFormat("%", Literal.of("%", C));
         assertFormat("foo%", Literal.of("foo", C), Literal.of("%", C));
     }
 
     @Test
-    public void testLowerA() {
-        assertFormat("%a", new LowerA(C));
-        assertFormat("%0a", new LowerA(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
-
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_10a").toDateTimeFormatter();
-        assertEquals("       Mon", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-    }
-
-    @Test
-    public void testUpperA() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
-        assertEquals("  Monday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals(" Tuesday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("Wednesday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("Thursday",
-                     formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-    }
-
-    @Test
-    public void testUpperA2() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%8A").toDateTimeFormatter();
-        System.out.println(formatter.parse("  Monday").getLong(ChronoField.DAY_OF_WEEK));
-        System.out.println(formatter.parse(" Tuesday").getLong(ChronoField.DAY_OF_WEEK));
-        System.out.println(formatter.parse("Wednesday").getLong(ChronoField.DAY_OF_WEEK));
-        System.out.println(formatter.parse("Thursday").getLong(ChronoField.DAY_OF_WEEK));
-    }
-
-    @Test
-    public void testUpperB() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%7B").toDateTimeFormatter();
-        assertEquals("January",
-                     formatter.format(ZonedDateTime.of(2023, 1, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("February",
-                     formatter.format(ZonedDateTime.of(2023, 2, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("  March",
-                     formatter.format(ZonedDateTime.of(2023, 3, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("    May",
-                     formatter.format(ZonedDateTime.of(2023, 5, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals(" August",
-                     formatter.format(ZonedDateTime.of(2023, 8, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        assertEquals("September",
-                     formatter.format(ZonedDateTime.of(2023, 9, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-    }
-
-    @Test
-    public void testLowerY() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%y").toDateTimeFormatter();
-        assertEquals(2000, formatter.parse("00").getLong(ChronoField.YEAR));
-        assertEquals(2068, formatter.parse("68").getLong(ChronoField.YEAR));
-        assertEquals(1969, formatter.parse("69").getLong(ChronoField.YEAR));
-        assertEquals(1970, formatter.parse("70").getLong(ChronoField.YEAR));
-        assertEquals(1999, formatter.parse("99").getLong(ChronoField.YEAR));
-    }
-
-    @Test
-    public void testLiteral() {
+    public void testTokenizeOfLiteral1() {
         assertFormat("foo",
                      Literal.of("foo", C));
+    }
+
+    @Test
+    public void testTokenizeOfLiteral2() {
         assertFormat("%&",
                      Literal.of("%&", C));
+    }
+
+    @Test
+    public void testTokenizeOfLiteral3() {
         assertFormat("%10&",
                      Literal.of("%10&", new Specification.Context(false, false, 10, -1, '0', '\0', "", 0, 0)));
+    }
+
+    @Test
+    public void testTokenizeOfLiteral4() {
         assertFormat("foo%&bar",
                      Literal.of("foo", C),
                      Literal.of("%&", C),
                      Literal.of("bar", C));
+    }
+
+    @Test
+    public void testTokenizeOfLiteral5() {
         assertFormat("%&foo%&",
                      Literal.of("%&", C),
                      Literal.of("foo", C),
                      Literal.of("%&", C));
+    }
+
+    @Test
+    public void testTokenizeOfLiteral6() {
         assertFormat("%&foo%&bar%&",
                      Literal.of("%&", C),
                      Literal.of("foo", C),
                      Literal.of("%&", C),
                      Literal.of("bar", C),
                      Literal.of("%&", C));
+    }
+
+    @Test
+    public void testTokenizeOfLiteral7() {
         assertFormat("foo%&bar%&baz",
                      Literal.of("foo", C),
                      Literal.of("%&", C),
@@ -168,27 +127,43 @@ public class TestPosixTimeFormat {
     }
 
     @Test
-    public void testMixed1() {
+    public void testTokenizeOfMixed1() {
         assertFormat("foo%bbar",
                      Literal.of("foo", C),
                      new LowerB(C),
                      Literal.of("bar", C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed2() {
         assertFormat("%bfoo%a",
                      new LowerB(C),
                      Literal.of("foo", C),
                      new LowerA(C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed3() {
         assertFormat("foo%&bar%bbaz",
                      Literal.of("foo", C),
                      Literal.of("%&", C),
                      Literal.of("bar", C),
                      new LowerB(C),
                      Literal.of("baz", C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed4() {
         assertFormat("foo%bbar%&baz",
                      Literal.of("foo", C),
                      new LowerB(C),
                      Literal.of("bar", C),
                      Literal.of("%&", C),
                      Literal.of("baz", C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed5() {
         assertFormat("foo%&bar%bbaz%a",
                      Literal.of("foo", C),
                      Literal.of("%&", C),
@@ -196,6 +171,10 @@ public class TestPosixTimeFormat {
                      new LowerB(C),
                      Literal.of("baz", C),
                      new LowerA(C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed6() {
         assertFormat("foo%bbar%&baz%a",
                      Literal.of("foo", C),
                      new LowerB(C),
@@ -203,6 +182,10 @@ public class TestPosixTimeFormat {
                      Literal.of("%&", C),
                      Literal.of("baz", C),
                      new LowerA(C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed7() {
         assertFormat("foo%&bar%bbaz%$",
                      Literal.of("foo", C),
                      Literal.of("%&", C),
@@ -210,6 +193,10 @@ public class TestPosixTimeFormat {
                      new LowerB(C),
                      Literal.of("baz", C),
                      Literal.of("%$", C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed8() {
         assertFormat("foo%bbar%&baz%$",
                      Literal.of("foo", C),
                      new LowerB(C),
@@ -217,6 +204,10 @@ public class TestPosixTimeFormat {
                      Literal.of("%&", C),
                      Literal.of("baz", C),
                      Literal.of("%$", C));
+    }
+
+    @Test
+    public void testTokenizeOfMixed9() {
         assertFormat("foo%bbar%&baz%",
                      Literal.of("foo", C),
                      new LowerB(C),
@@ -224,49 +215,6 @@ public class TestPosixTimeFormat {
                      Literal.of("%&", C),
                      Literal.of("baz", C),
                      Literal.of("%", C));
-    }
-
-    @Test
-    public void testMixed2() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%a%A%10q%b%B").toDateTimeFormatter();
-        assertEquals("MonMonday      %10qAprApril",
-                     formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-    }
-
-    @Test
-    public void testMixed3() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%C ... %y").toDateTimeFormatter();
-        assertEquals("20 ... 23", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
-        final TemporalAccessor accessor = formatter.parse("19 ... 87");
-        assertEquals(87, accessor.getLong(PosixFields.YEAR_OF_POSIX_CENTURY_1969_2068));
-        assertEquals(19, accessor.getLong(PosixFields.POSIX_CENTURY));
-        assertEquals(1987, accessor.getLong(ChronoField.YEAR));
-    }
-
-    /*
-     * Import test cases that failed in reftests.
-     */
-    @ParameterizedTest
-    @CsvSource({
-            "OCT,%^2b,2020,10,26,7,48,59,526929475",
-            // "'        29',%-10d,1985,9,29,4,23,20,62491315",
-            // "0000000TUE,%0#10a,2008,9,2,5,31,03,340494545",
-    })
-    public void testFormatSingleWithDateTimeFormatter(
-            final String expectedFormatted,
-            final String format,
-            final int year,
-            final int monthValue,
-            final int dayOfMonth,
-            final int hourOfDay,
-            final int minuteOfHour,
-            final int secondOfMinute,
-            final int nanoOfSecond) {
-        final DateTimeFormatter actualFormatter = PosixTimeFormat.compile(format).toDateTimeFormatter();
-        final OffsetDateTime actualDateTime = OffsetDateTime.of(
-                year, monthValue, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, nanoOfSecond, ZoneOffset.UTC);
-        final String actualFormatted = actualFormatter.format(actualDateTime);
-        assertEquals(expectedFormatted, actualFormatted);
     }
 
     @ParameterizedTest
@@ -281,7 +229,7 @@ public class TestPosixTimeFormat {
             "%:::z,z,false,false,-1,3,,,%:::z",
             "%::::z,z,false,false,-1,4,,,%::::z",
     })
-    public void testSingles(
+    public void testTokenizeOfSingleSpecification(
             final String format,
             final String expectedChar,
             final String expectedUpperCase,
@@ -300,6 +248,12 @@ public class TestPosixTimeFormat {
                 (expectedPad == null || expectedPad.isEmpty()) ? '\0' : expectedPad.charAt(0),
                 (expectedModifier == null || expectedModifier.isEmpty()) ? '\0' : expectedModifier.charAt(0),
                 format);
+    }
+
+    @Test
+    public void testTokenizeOfLowerA() {
+        assertFormat("%a", new LowerA(C));
+        assertFormat("%0a", new LowerA(new Specification.Context(false, false, 0, -1, '0', '\0', "", 0, 0)));
     }
 
     private void assertFormat(final String format, final Specification... expectedFormatSpecifications) {
