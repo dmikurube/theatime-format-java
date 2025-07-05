@@ -698,7 +698,7 @@ final class LowerC extends ConversionSpecification {
                 .appendLiteral(":")
                 .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
                 .appendLiteral(" ")
-                .appendValue(ChronoField.YEAR, 4, 19, SignStyle.NORMAL);
+                .appendValue(ChronoField.YEAR, 1, 19, SignStyle.NORMAL);
     }
 }
 

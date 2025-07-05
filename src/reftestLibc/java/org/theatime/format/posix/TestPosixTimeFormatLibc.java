@@ -157,6 +157,7 @@ public class TestPosixTimeFormatLibc {
 
     static Stream<LocalDateTime> fixedDateTimes() {
         return Stream.of(
+                LocalDateTime.of(8, 12, 31, 23, 59, 59, 999_999_999),
                 LocalDateTime.of(1999, 12, 31, 23, 59, 59, 999_999_999),
                 LocalDateTime.of(2000, 1, 1, 0, 0, 0)
         );
