@@ -49,7 +49,7 @@ final class Literal extends Specification {
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
         if (this.precision > 0) {
-            formatter.padNext(this.precision, this.actualPad(' '));
+            formatter.padNext(this.precision, this.effectivePadWithDefault(' '));
         }
         // TODO: upperCase
         // TODO: changeCase

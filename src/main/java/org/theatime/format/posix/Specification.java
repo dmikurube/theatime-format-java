@@ -59,7 +59,7 @@ public abstract class Specification {
             PaddingStyle paddingStyle,
             Optional<Locale> locale);
 
-    final char actualPad(final char defaultPad) {
+    final char effectivePadWithDefault(final char defaultPad) {
         if (this.pad == '\0') {
             return defaultPad;
         } else if (this.pad == '0') {
@@ -323,7 +323,7 @@ final class LowerA extends ConversionSpecification {
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
         if (this.precision >= 4) {
-            formatter.padNext(this.precision, this.actualPad(' '));
+            formatter.padNext(this.precision, this.effectivePadWithDefault(' '));
         }
 
         if (locale.isPresent()) {
@@ -373,7 +373,7 @@ final class UpperA extends ConversionSpecification {
          */
         if (this.precision <= 6 || this.precision >= 9) {
             if (this.precision >= 9) {
-                formatter.padNext(this.precision, this.actualPad(' '));
+                formatter.padNext(this.precision, this.effectivePadWithDefault(' '));
             }
             if (this.upperCase || this.changeCase) {
                 return formatter.appendText(ChronoField.DAY_OF_WEEK, DayOfWeekNames.fullUpperCase());
@@ -382,9 +382,9 @@ final class UpperA extends ConversionSpecification {
             }
         } else {
             if (this.upperCase || this.changeCase) {
-                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(DayOfWeekNames.fullUpperCase(), precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(DayOfWeekNames.fullUpperCase(), precision, this.effectivePadWithDefault(' ')));
             } else {
-                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(DayOfWeekNames.fullTitleCase(), precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.DAY_OF_WEEK, softPad(DayOfWeekNames.fullTitleCase(), precision, this.effectivePadWithDefault(' ')));
             }
         }
     }
@@ -426,7 +426,7 @@ final class LowerB extends ConversionSpecification {
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
         if (this.precision >= 4) {
-            formatter.padNext(this.precision, this.actualPad(' '));
+            formatter.padNext(this.precision, this.effectivePadWithDefault(' '));
         }
 
         if (locale.isPresent()) {
@@ -469,7 +469,7 @@ final class UpperB extends ConversionSpecification {
 
         if (this.precision <= 3 || this.precision >= 9) {
             if (this.precision >= 9) {
-                formatter.padNext(this.precision, this.actualPad(' '));
+                formatter.padNext(this.precision, this.effectivePadWithDefault(' '));
             }
             if (this.upperCase || this.changeCase) {
                 return formatter.appendText(ChronoField.MONTH_OF_YEAR, MonthOfYearNames.fullUpperCase());
@@ -478,9 +478,9 @@ final class UpperB extends ConversionSpecification {
             }
         } else {
             if (this.upperCase || this.changeCase) {
-                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(MonthOfYearNames.fullUpperCase(), precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(MonthOfYearNames.fullUpperCase(), precision, this.effectivePadWithDefault(' ')));
             } else {
-                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(MonthOfYearNames.fullTitleCase(), precision, this.actualPad(' ')));
+                return formatter.appendText(ChronoField.MONTH_OF_YEAR, softPad(MonthOfYearNames.fullTitleCase(), precision, this.effectivePadWithDefault(' ')));
             }
         }
     }
@@ -577,7 +577,7 @@ final class UpperC extends ConversionSpecification {
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
         if (this.precision >= 0) {
-            final char pad = this.actualPad('0');
+            final char pad = this.effectivePadWithDefault('0');
             if (pad == '0') {
                 if (this.precision >= 2) {
                     return formatter.appendValue(PosixFields.POSIX_CENTURY, this.precision);
@@ -614,7 +614,7 @@ final class LowerD extends ConversionSpecification {
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
         if (this.precision >= 0) {
-            final char pad = this.actualPad('0');
+            final char pad = this.effectivePadWithDefault('0');
             if (pad == '0') {
                 return formatter.appendValue(ChronoField.DAY_OF_MONTH, (this.precision > 2 ? this.precision : 2));
             } else {
@@ -630,7 +630,7 @@ final class LowerD extends ConversionSpecification {
         }
 
         if (!this.isLeftAligned()) {
-            formatter.padNext(2, this.actualPad('0'));
+            formatter.padNext(2, this.effectivePadWithDefault('0'));
         }
         return formatter.appendValue(ChronoField.DAY_OF_MONTH);
     }
@@ -677,7 +677,7 @@ final class LowerE extends ConversionSpecification {
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
         if (this.precision >= 0) {
-            final char pad = this.actualPad(' ');
+            final char pad = this.effectivePadWithDefault(' ');
             if (pad == '0') {
                 return formatter.appendValue(ChronoField.DAY_OF_MONTH, (this.precision > 2 ? this.precision : 2));
             } else {
