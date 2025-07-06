@@ -210,7 +210,7 @@ public class TestPosixTimeFormatLibc {
     static Stream<LocalDateTime> dateTimes() {
         return Stream.of(
                 randomModernDateTimes(18),
-                // randomPastDateTimes(2),
+                randomPastDateTimes(2),
                 fixedDateTimes()
                 ).flatMap(Function.identity());
     }
