@@ -102,8 +102,6 @@ public class TestPosixTimeFormatLibc {
 
     static Stream<String> fixedFormattingFormats() {
         return Stream.of(
-                "%-C",
-                "%-e",
                 "%q",  // "%q" does not exist.
                 // "%^q",
                 // "%#q",
@@ -117,7 +115,8 @@ public class TestPosixTimeFormatLibc {
     }
 
     static Stream<String> randomFormattingFormats() {
-        final int precision = 10;  // TODO: Randomize this.
+        final int precision = RANDOM.nextInt(20 - 4) + 4;
+
         return Stream.of(
                 "a",
                 "A",
@@ -130,19 +129,80 @@ public class TestPosixTimeFormatLibc {
                     "%" + specifier,
                     "%^" + specifier,
                     "%#" + specifier,
+                    "%-" + specifier,
+                    "%^-" + specifier,
+                    "%#-" + specifier,
+                    "%_" + specifier,
+                    "%^_" + specifier,
+                    "%#_" + specifier,
+                    "%0" + specifier,
+                    "%^0" + specifier,
+                    "%#0" + specifier,
+
+                    "%1" + specifier,
+                    "%^1" + specifier,
+                    "%#1" + specifier,
+                    "%-1" + specifier,
+                    "%^-1" + specifier,
+                    "%#-1" + specifier,
+                    "%_1" + specifier,
+                    "%^_1" + specifier,
+                    "%#_1" + specifier,
+                    "%01" + specifier,
+                    "%^01" + specifier,
+                    "%#01" + specifier,
+
+                    "%2" + specifier,
+                    "%^2" + specifier,
+                    "%#2" + specifier,
+                    "%-2" + specifier,
+                    "%^-2" + specifier,
+                    "%#-2" + specifier,
+                    "%_2" + specifier,
+                    "%^_2" + specifier,
+                    "%#_2" + specifier,
+                    "%02" + specifier,
+                    "%^02" + specifier,
+                    "%#02" + specifier,
+
+                    "%3" + specifier,
+                    "%^3" + specifier,
+                    "%#3" + specifier,
+                    "%-3" + specifier,
+                    "%^-3" + specifier,
+                    "%#-3" + specifier,
+                    "%_3" + specifier,
+                    "%^_3" + specifier,
+                    "%#_3" + specifier,
+                    "%03" + specifier,
+                    "%^03" + specifier,
+                    "%#03" + specifier,
+
+                    "%4" + specifier,
+                    "%^4" + specifier,
+                    "%#4" + specifier,
+                    "%-4" + specifier,
+                    "%^-4" + specifier,
+                    "%#-4" + specifier,
+                    "%_4" + specifier,
+                    "%^_4" + specifier,
+                    "%#_4" + specifier,
+                    "%04" + specifier,
+                    "%^04" + specifier,
+                    "%#04" + specifier,
+
                     "%" + precision + specifier,
                     "%^" + precision + specifier,
                     "%#" + precision + specifier,
+                    "%-" + precision + specifier,
+                    "%^-" + precision + specifier,
+                    "%#-" + precision + specifier,
+                    "%_" + precision + specifier,
+                    "%^_" + precision + specifier,
+                    "%#_" + precision + specifier,
                     "%0" + precision + specifier,
                     "%^0" + precision + specifier,
-                    "%#0" + precision + specifier,
-                    "%0" + specifier,
-                    "%_" + specifier,
-                    // "%-" + specifier,
-                    "%1" + specifier,
-                    "%2" + specifier,
-                    "%3" + specifier,
-                    "%4" + specifier
+                    "%#0" + precision + specifier
                 ));
     }
 

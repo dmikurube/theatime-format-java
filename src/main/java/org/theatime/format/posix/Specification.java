@@ -662,7 +662,13 @@ final class LowerE extends ConversionSpecification {
             if (pad == '0') {
                 return formatter.appendValue(ChronoField.DAY_OF_MONTH, (this.precision > 2 ? this.precision : 2));
             } else {
-                formatter.padNext((this.precision > 2 ? this.precision : 2), pad);
+                if (this.isLeftAligned()) {
+                    if (this.precision >= 2) {
+                        formatter.padNext(this.precision, pad);
+                    }
+                } else {
+                    formatter.padNext((this.precision > 2 ? this.precision : 2), pad);
+                }
                 return formatter.appendValue(ChronoField.DAY_OF_MONTH);
             }
         }
