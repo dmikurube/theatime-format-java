@@ -30,49 +30,9 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class TestPosixTimeFormatLibc {
-    @ParameterizedTest
-    @CsvSource({
-            "%a,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%10a,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%A,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%10A,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%b,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%10b,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%B,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%10B,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%c,2006,1,2,15,4,5,MONDAY,2,0,C",
-            "%c,9999,1,2,15,4,5,SATURDAY,2,0,C",
-            // "%c,10000,1,2,15,4,5,SUNDAY,2,0,C",  // libc may not work for this case -- the day of week to be: "?"
-    })
-    public void testFormatting(
-            final String format,
-            final String year,
-            final String monthOfYear,
-            final String dayOfMonth,
-            final String hourOfDay,
-            final String minuteOfHour,
-            final String secondOfMinute,
-            final String dayOfWeek,
-            final String dayOfYear,
-            final String isDst,
-            final String locale) {
-        assertStrftime(format,
-                       Integer.parseInt(year),
-                       Integer.parseInt(monthOfYear),
-                       Integer.parseInt(dayOfMonth),
-                       Integer.parseInt(hourOfDay),
-                       Integer.parseInt(minuteOfHour),
-                       Integer.parseInt(secondOfMinute),
-                       DayOfWeek.valueOf(dayOfWeek),
-                       Integer.parseInt(dayOfYear),
-                       Integer.parseInt(isDst),
-                       locale);
-    }
-
     @ParameterizedTest
     @MethodSource("formattingFormatsAndDateTimes")
     public void testFormattingWithPatterns(final String format, final LocalDateTime datetime) {
