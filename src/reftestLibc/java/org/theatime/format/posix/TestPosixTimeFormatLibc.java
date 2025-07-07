@@ -98,6 +98,7 @@ public class TestPosixTimeFormatLibc {
                 "e",
                 "H",
                 "m",
+                "M",
                 "S",
                 "Y"
                 ).flatMap(specifier -> Stream.of(
@@ -190,6 +191,7 @@ public class TestPosixTimeFormatLibc {
                 "%d",
                 // "%H",  // A single "%H" does not work for parsing.
                 "%m",
+                // "%M",  // A single "%M" does not work for parsing.
                 // "%S",  // A single "%S" does not work for parsing.
                 "%Y"
                 );
