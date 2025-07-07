@@ -1051,7 +1051,26 @@ final class UpperS extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (this.precision >= 0) {
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.SECOND_OF_MINUTE, (this.precision > 2 ? this.precision : 2));
+            } else {
+                if (this.isLeftAligned()) {
+                    if (this.precision >= 2) {
+                        formatter.padNext(this.precision, pad);
+                    }
+                } else {
+                    formatter.padNext((this.precision > 2 ? this.precision : 2), pad);
+                }
+                return formatter.appendValue(ChronoField.SECOND_OF_MINUTE);
+            }
+        }
+
+        if (!this.isLeftAligned()) {
+            formatter.padNext(2, pad);
+        }
+        return formatter.appendValue(ChronoField.SECOND_OF_MINUTE);
     }
 }
 
