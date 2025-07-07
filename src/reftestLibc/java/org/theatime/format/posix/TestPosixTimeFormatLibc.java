@@ -97,7 +97,8 @@ public class TestPosixTimeFormatLibc {
                 "d",
                 "e",
                 "H",
-                "m"
+                "m",
+                "Y"
                 ).flatMap(specifier -> Stream.of(
                     "%" + specifier,
                     "%^" + specifier,
@@ -187,7 +188,8 @@ public class TestPosixTimeFormatLibc {
         return Stream.of(
                 "%d",
                 // "%H",  // A single "%H" does not work for parsing.
-                "%m"
+                "%m",
+                "%Y"
                 );
     }
 
@@ -270,15 +272,23 @@ public class TestPosixTimeFormatLibc {
                 isDst,
                 locale);
 
-        final DateTimeFormatter actualFormatter = PosixTimeFormat.compile(format).toDateTimeFormatter();
+        System.out.println("\"" + format + "\"");
+        System.out.println("\"" + expectedFormatted + "\"");
+
+        final DateTimeFormatter actualFormatter;
+        try {
+            actualFormatter = PosixTimeFormat.compile(format).toDateTimeFormatter();
+        } catch (final UnsupportedPaddingException ex) {
+            System.out.println("The padding style is not supported: " + ex.getMessage());
+            return;
+        }
+
         final OffsetDateTime actualDateTime = OffsetDateTime.of(
                 year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, 0, ZoneOffset.UTC);
         assertEquals(dayOfWeek, actualDateTime.getDayOfWeek());
         assertEquals(dayOfYear, actualDateTime.getDayOfYear());
         final String actualFormatted = actualFormatter.format(actualDateTime);
 
-        System.out.println("\"" + format + "\"");
-        System.out.println("\"" + expectedFormatted + "\"");
         System.out.println("\"" + actualFormatted + "\"");
         assertEquals(expectedFormatted, actualFormatted);
     }

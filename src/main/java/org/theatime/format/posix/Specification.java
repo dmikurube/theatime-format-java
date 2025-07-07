@@ -1307,7 +1307,46 @@ final class UpperY extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (this.precision >= 0) {
+            if (pad == '0') {
+                // When padding with '0', ranged padding works.
+                return formatter.appendValue(ChronoField.YEAR, Math.max(this.precision, 1), 19, SignStyle.NORMAL);
+            }
+        }
+
+        if (this.precision > 0) {
+            // When padding with ' ', ranged padding does not work, therefore strftime cannot be emulated 100%.
+            //
+            // For example, strftime formats 10 into:
+            //   * into "10" by "%_2Y"
+            //   * into " 10" by "%_3Y"
+            //   * into "  10" by "%_4Y".
+            //
+            // At the same time, strftime formats 1000 into:
+            //   * into "1000" by "%_2Y"
+            //   * into "1000" by "%_3Y"
+            //   * into "1000" by "%_4Y".
+            //
+            // This flexibility of ranged padding cannot be realized in java.time.format.DateTimeFormatterBuilder.
+            switch (paddingStyle) {
+                case STRICT:
+                    throw new UnsupportedPaddingException("Padding %Y is not supported in the STRICT padding style.");
+                case SMART:
+                    if (this.precision < 4) {
+                        throw new UnsupportedPaddingException(
+                                "Padding %Y with width" + this.precision + " is not supported in the SMART padding style.");
+                    }
+                    formatter.padNext(this.precision, pad);
+                    break;
+                case LENIENT:
+                    // No padding actually.
+                    break;
+                default:
+                    throw new UnsupportedPaddingException();
+            }
+        }
+        return formatter.appendValue(ChronoField.YEAR);
     }
 }
 
