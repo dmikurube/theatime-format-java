@@ -163,6 +163,10 @@ task reftestLibc(type: Test) {
     if (project.hasProperty("reftestLibcTryStrftime")) {
         systemProperty "reftestLibcTryStrftime", getProperty("reftestLibcTryStrftime")
     }
+    if (project.hasProperty("reftestLibcTryStrptime")) {
+        systemProperty "reftestLibcTryStrptime", getProperty("reftestLibcTryStrptime")
+    }
+
     classpath = sourceSets.reftestLibc.runtimeClasspath
     testClassesDirs = sourceSets.reftestLibc.output.classesDirs
 

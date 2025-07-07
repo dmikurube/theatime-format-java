@@ -17,7 +17,9 @@
 package org.theatime.format.posix;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -25,6 +27,8 @@ import java.time.OffsetDateTime;
 import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -47,6 +51,12 @@ public class TestPosixTimeFormatLibc {
                        datetime.getDayOfYear(),
                        0,
                        "C");
+    }
+
+    @ParameterizedTest
+    @MethodSource("parsableFormatsAndDateTimes")
+    public void testParsingWithGeneratedPatterns(final String format, final LocalDateTime datetime) {
+        assertStrptime(format, datetime, "C");
     }
 
     static Stream<Arguments> formattingFormatsAndDateTimes() {
@@ -167,6 +177,16 @@ public class TestPosixTimeFormatLibc {
                 ));
     }
 
+    static Stream<Arguments> parsableFormatsAndDateTimes() {
+        return dateTimes().flatMap(dt -> fixedParsableFormats().map(f -> Arguments.of(f, dt)));
+    }
+
+    static Stream<String> fixedParsableFormats() {
+        return Stream.of(
+                "%d"
+                );
+    }
+
     static Stream<LocalDateTime> dateTimes() {
         return Stream.of(
                 randomModernDateTimes(18),
@@ -257,6 +277,103 @@ public class TestPosixTimeFormatLibc {
         System.out.println("\"" + expectedFormatted + "\"");
         System.out.println("\"" + actualFormatted + "\"");
         assertEquals(expectedFormatted, actualFormatted);
+    }
+
+    private static void assertStrptime(
+            final String format,
+            final LocalDateTime datetime,
+            final String locale) {
+        final String pathTryStrptime = System.getProperty("reftestLibcTryStrptime");
+        assertNotNull(pathTryStrptime);
+
+        final DateTimeFormatter formatter = PosixTimeFormat.compile(format).toDateTimeFormatter();
+        final String formatted = formatter.format(datetime);
+
+        final TryStrptime.Parsed expectedParsed = new TryStrptime(pathTryStrptime).strptime(format, formatted, locale);
+
+        System.out.println("\"" + format + "\"");
+        System.out.println("\"" + formatted + "\"");
+
+        final TemporalAccessor actualParsed;
+        try {
+            actualParsed = formatter.parse(formatted);
+        } catch (final Exception ex) {
+            throw new AssertionError(
+                    "Our parser failed but libc strptime succeeded. Input: " + formatted
+                    + ", Format: " + format + ", Expected: " + expectedParsed, ex);
+        }
+
+        if (expectedParsed.year < 0) {
+            System.out.println("Year: N/A");
+            System.out.println("Year: "
+                    + (actualParsed.isSupported(ChronoField.YEAR) ? ("" + actualParsed.get(ChronoField.YEAR)) : "N/A"));
+            assertFalse(actualParsed.isSupported(ChronoField.YEAR));
+        } else {
+            System.out.println("Year: " + expectedParsed.year);
+            assertTrue(actualParsed.isSupported(ChronoField.YEAR));
+            System.out.println("Year: " + actualParsed.get(ChronoField.YEAR));
+            assertEquals(expectedParsed.year, actualParsed.get(ChronoField.YEAR));
+        }
+
+        if (expectedParsed.mon < 0) {
+            System.out.println("Month: N/A");
+            System.out.println("Month: "
+                    + (actualParsed.isSupported(ChronoField.MONTH_OF_YEAR) ? ("" + actualParsed.get(ChronoField.MONTH_OF_YEAR)) : "N/A"));
+            assertFalse(actualParsed.isSupported(ChronoField.MONTH_OF_YEAR));
+        } else {
+            System.out.println("Month: " + expectedParsed.mon);
+            assertTrue(actualParsed.isSupported(ChronoField.MONTH_OF_YEAR));
+            System.out.println("Month: " + actualParsed.get(ChronoField.MONTH_OF_YEAR));
+            assertEquals(expectedParsed.mon, actualParsed.get(ChronoField.MONTH_OF_YEAR));
+        }
+
+        if (expectedParsed.mday < 0) {
+            System.out.println("Day: N/A");
+            System.out.println("Day: "
+                    + (actualParsed.isSupported(ChronoField.DAY_OF_MONTH) ? ("" + actualParsed.get(ChronoField.DAY_OF_MONTH)) : "N/A"));
+            assertFalse(actualParsed.isSupported(ChronoField.DAY_OF_MONTH));
+        } else {
+            System.out.println("Day: " + expectedParsed.mday);
+            assertTrue(actualParsed.isSupported(ChronoField.DAY_OF_MONTH));
+            System.out.println("Day: " + actualParsed.get(ChronoField.DAY_OF_MONTH));
+            assertEquals(expectedParsed.mday, actualParsed.get(ChronoField.DAY_OF_MONTH));
+        }
+
+        if (expectedParsed.hour < 0) {
+            System.out.println("Hour: N/A");
+            System.out.println("Hour: "
+                    + (actualParsed.isSupported(ChronoField.HOUR_OF_DAY) ? ("" + actualParsed.get(ChronoField.HOUR_OF_DAY)) : "N/A"));
+            assertFalse(actualParsed.isSupported(ChronoField.HOUR_OF_DAY));
+        } else {
+            System.out.println("Hour: " + expectedParsed.hour);
+            assertTrue(actualParsed.isSupported(ChronoField.HOUR_OF_DAY));
+            System.out.println("Hour: " + actualParsed.get(ChronoField.HOUR_OF_DAY));
+            assertEquals(expectedParsed.hour, actualParsed.get(ChronoField.HOUR_OF_DAY));
+        }
+
+        if (expectedParsed.min < 0) {
+            System.out.println("Minute: N/A");
+            System.out.println("Minute: "
+                    + (actualParsed.isSupported(ChronoField.MINUTE_OF_HOUR) ? ("" + actualParsed.get(ChronoField.MINUTE_OF_HOUR)) : "N/A"));
+            assertFalse(actualParsed.isSupported(ChronoField.MINUTE_OF_HOUR));
+        } else {
+            System.out.println("Minute: " + expectedParsed.min);
+            assertTrue(actualParsed.isSupported(ChronoField.MINUTE_OF_HOUR));
+            System.out.println("Minute: " + actualParsed.get(ChronoField.MINUTE_OF_HOUR));
+            assertEquals(expectedParsed.min, actualParsed.get(ChronoField.MINUTE_OF_HOUR));
+        }
+
+        if (expectedParsed.sec < 0) {
+            System.out.println("Second: N/A");
+            System.out.println("Second: "
+                    + (actualParsed.isSupported(ChronoField.SECOND_OF_MINUTE) ? ("" + actualParsed.get(ChronoField.SECOND_OF_MINUTE)) : "N/A"));
+            assertFalse(actualParsed.isSupported(ChronoField.SECOND_OF_MINUTE));
+        } else {
+            System.out.println("Second: " + expectedParsed.sec);
+            assertTrue(actualParsed.isSupported(ChronoField.SECOND_OF_MINUTE));
+            System.out.println("Second: " + actualParsed.get(ChronoField.SECOND_OF_MINUTE));
+            assertEquals(expectedParsed.sec, actualParsed.get(ChronoField.SECOND_OF_MINUTE));
+        }
     }
 
     private static Random RANDOM = new Random();

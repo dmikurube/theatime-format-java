@@ -25,7 +25,7 @@ jobs:
       run: mkdir -p build/reftestLibc
     - name: Compile try_strftime.c
       run: gcc -o build/reftestLibc/try_strftime src/reftestLibc/resources/try_strftime.c
-    - name: "Try try_strftime (Expect: '000000Mon Jan  2 15:04:05 2006')"
-      run: ./build/reftestLibc/try_strftime "%030c" 2006 1 2 15 4 5 1 2 0 C
+    - name: Compile try_strptime.c
+      run: gcc -o build/reftestLibc/try_strptime src/reftestLibc/resources/try_strptime.c
     - name: Reftest with libc
-      run: ./gradlew --info -PreftestLibcTryStrftime=build/reftestLibc/try_strftime reftestLibc
+      run: ./gradlew --info -PreftestLibcTryStrftime=build/reftestLibc/try_strftime -PreftestLibcTryStrptime=build/reftestLibc/try_strptime reftestLibc
