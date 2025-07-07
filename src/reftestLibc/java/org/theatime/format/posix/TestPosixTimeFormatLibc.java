@@ -96,6 +96,7 @@ public class TestPosixTimeFormatLibc {
                 "C",
                 "d",
                 "e",
+                "H",
                 "m"
                 ).flatMap(specifier -> Stream.of(
                     "%" + specifier,
@@ -185,6 +186,7 @@ public class TestPosixTimeFormatLibc {
     static Stream<String> fixedParsableFormats() {
         return Stream.of(
                 "%d",
+                // "%H",  // A single "%H" does not work for parsing.
                 "%m"
                 );
     }
