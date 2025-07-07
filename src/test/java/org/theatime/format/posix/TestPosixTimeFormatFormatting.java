@@ -164,4 +164,29 @@ public class TestPosixTimeFormatFormatting {
         final String actualFormatted = actualFormatter.format(actualDateTime);
         assertEquals(expectedFormatted, actualFormatted);
     }
+
+    @Test
+    public void testFormattingByLowerM() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%m").toDateTimeFormatter();
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("02", formatter.format(ZonedDateTime.of(2023, 2, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("03", formatter.format(ZonedDateTime.of(2023, 3, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByLowerMwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4m").toDateTimeFormatter();
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  10", formatter.format(ZonedDateTime.of(2023, 10, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByLowerMwithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%04m").toDateTimeFormatter();
+        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0010", formatter.format(ZonedDateTime.of(2023, 10, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
 }
