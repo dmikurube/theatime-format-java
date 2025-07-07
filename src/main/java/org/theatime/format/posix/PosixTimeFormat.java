@@ -126,13 +126,17 @@ public final class PosixTimeFormat {
     }
 
     public DateTimeFormatter toDateTimeFormatter() {
-        return this.toDateTimeFormatter(Optional.empty());
+        return this.toDateTimeFormatter(PaddingStyle.SMART);
     }
 
-    public DateTimeFormatter toDateTimeFormatter(final Optional<Locale> locale) {
+    public DateTimeFormatter toDateTimeFormatter(final PaddingStyle paddingStyle) {
+        return this.toDateTimeFormatter(Optional.empty(), paddingStyle);
+    }
+
+    public DateTimeFormatter toDateTimeFormatter(final Optional<Locale> locale, final PaddingStyle paddingStyle) {
         final DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
         for (final Specification specification : this.formatSpecifications) {
-            specification.appendTo(builder, PaddingStyle.DEFAULT, locale);
+            specification.appendTo(builder, paddingStyle, locale);
         }
         return builder.toFormatter(locale.orElse(Locale.ROOT));
     }

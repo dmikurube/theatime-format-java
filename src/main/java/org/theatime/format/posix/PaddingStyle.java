@@ -17,13 +17,11 @@
 package org.theatime.format.posix;
 
 public enum PaddingStyle {
-    DEFAULT,
+    STRICT,
 
-    DETECT,
+    SMART,
 
-    FAKE,
-
-    IGNORE,
+    LENIENT,
 
     ;
 }
