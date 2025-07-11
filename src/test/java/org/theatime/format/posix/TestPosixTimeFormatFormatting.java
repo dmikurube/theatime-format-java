@@ -216,6 +216,35 @@ public class TestPosixTimeFormatFormatting {
     }
 
     @Test
+    public void testFormattingByUpperI() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%I").toDateTimeFormatter();
+        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("11", formatter.format(ZonedDateTime.of(2023, 1, 15, 11, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("11", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByUpperIwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4I").toDateTimeFormatter();
+        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByUpperIwithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%04I").toDateTimeFormatter();
+        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
     public void testFormattingByUpperY() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y").toDateTimeFormatter();
         assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));

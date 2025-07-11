@@ -861,7 +861,26 @@ final class UpperI extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision >= 0) {
+            final char pad = this.effectivePadWithDefault('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, (this.precision > 2 ? this.precision : 2));
+            } else {
+                if (this.isLeftAligned()) {
+                    if (this.precision >= 2) {
+                        formatter.padNext(this.precision, pad);
+                    }
+                } else {
+                    formatter.padNext((this.precision > 2 ? this.precision : 2), pad);
+                }
+                return formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM);
+            }
+        }
+
+        if (!this.isLeftAligned()) {
+            formatter.padNext(2, this.effectivePadWithDefault('0'));
+        }
+        return formatter.appendValue(ChronoField.CLOCK_HOUR_OF_AMPM);
     }
 }
 
