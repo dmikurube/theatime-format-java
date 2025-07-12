@@ -902,7 +902,44 @@ final class LowerJ extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (pad == '0') {
+            // When padding with '0', ranged padding works.
+            return formatter.appendValue(ChronoField.DAY_OF_YEAR, (this.precision > 3 ? this.precision : 3));
+        }
+
+        if (this.precision > 0) {
+            // When padding with ' ', ranged padding does not work, therefore strftime cannot be emulated 100%.
+            //
+            // For example, strftime formats 10 into:
+            //   * into "10" by "%_2j"
+            //   * into " 10" by "%_3j"
+            //   * into "  10" by "%_4j".
+            //
+            // This flexibility of ranged padding cannot be realized in java.time.format.DateTimeFormatterBuilder.
+            switch (paddingStyle) {
+                case STRICT:
+                    throw new UnsupportedPaddingException("Padding %j is not supported in the STRICT padding style.");
+                case SMART:
+                    if (this.precision < 3) {
+                        throw new UnsupportedPaddingException(
+                                "Padding %j with width" + this.precision + " is not supported in the SMART padding style.");
+                    }
+                    formatter.padNext(this.precision, pad);
+                    break;
+                case LENIENT:
+                    // No padding actually.
+                    break;
+                default:
+                    throw new UnsupportedPaddingException();
+            }
+            return formatter.appendValue(ChronoField.DAY_OF_YEAR);
+        }
+
+        if (!this.isLeftAligned()) {
+            formatter.padNext(3, this.effectivePadWithDefault('0'));
+        }
+        return formatter.appendValue(ChronoField.DAY_OF_YEAR);
     }
 }
 

@@ -245,6 +245,33 @@ public class TestPosixTimeFormatFormatting {
     }
 
     @Test
+    public void testFormattingByLowerJ() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
+        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("059", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("060", formatter.format(ZonedDateTime.of(2023, 3, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("366", formatter.format(ZonedDateTime.of(2024, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByLowerJwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_5j").toDateTimeFormatter();
+        assertEquals("    1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   32", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByLowerJwithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%05j").toDateTimeFormatter();
+        assertEquals("00001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
     public void testFormattingByUpperY() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y").toDateTimeFormatter();
         assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
