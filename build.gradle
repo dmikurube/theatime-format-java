@@ -46,10 +46,12 @@ sourceSets {
 }
 
 dependencies {
-    testImplementation platform(libs.junit5.bom)
-    testImplementation libs.bundles.junit5.implementation
+    testImplementation platform(group: "org.junit", name: "junit-bom", version: "5.13.2")
+    testImplementation(group: "org.junit.jupiter", name: "junit-jupiter-api")
+    testImplementation(group: "org.junit.jupiter", name: "junit-jupiter-params")
 
-    testRuntimeOnly libs.bundles.junit5.runtime
+    testRuntimeOnly(group: "org.junit.jupiter", name: "junit-jupiter-engine")
+    testRuntimeOnly(group: "org.junit.platform", name: "junit-platform-launcher")
 }
 
 javadoc {
@@ -190,7 +192,7 @@ tasks.withType(Checkstyle) {
 }
 
 checkstyle {
-    toolVersion = libs.versions.checkstyle.get()
+    toolVersion = "9.3"
     configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
     configProperties = [
         "org.checkstyle.google.suppressionfilter.config": file("${rootProject.projectDir}/config/checkstyle/checkstyle-suppressions.xml")
