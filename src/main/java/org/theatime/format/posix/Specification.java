@@ -745,7 +745,51 @@ final class UpperF extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 6) {
+            final char pad = this.effectivePadWithDefault(' ');
+            if (pad == '0') {
+                formatter.appendValue(ChronoField.YEAR, Math.max(this.precision - 6, 1), 19, SignStyle.NORMAL);
+            } else {
+                // When padding with ' ', ranged padding does not work, therefore strftime cannot be emulated 100%.
+                //
+                // For example, strftime formats 10-12-31 into:
+                //   * into "10-12-31" by "%_8F"
+                //   * into " 10-12-31" by "%_9F"
+                //   * into "  10-12-31" by "%_10F".
+                //
+                // At the same time, strftime formats 1000-12-31 into:
+                //   * into "1000-12-31" by "%_8Y"
+                //   * into "1000-12-31" by "%_9Y"
+                //   * into "1000-12-31" by "%_10Y".
+                //
+                // This flexibility of ranged padding cannot be realized in java.time.format.DateTimeFormatterBuilder.
+                switch (paddingStyle) {
+                    case STRICT:
+                        throw new UnsupportedPaddingException("Padding %F is not supported in the STRICT padding style.");
+                    case SMART:
+                        if (this.precision < 10) {
+                            throw new UnsupportedPaddingException(
+                                "Padding %F with width" + this.precision + " is not supported in the SMART padding style.");
+                        }
+                        formatter.padNext(this.precision - 6, pad);
+                        break;
+                    case LENIENT:
+                        // No padding actually.
+                        break;
+                    default:
+                        throw new UnsupportedPaddingException();
+                }
+                formatter.appendValue(ChronoField.YEAR, 1, 19, SignStyle.NORMAL);
+            }
+        } else {
+            formatter.appendValue(ChronoField.YEAR, 1, 19, SignStyle.NORMAL);
+        }
+
+        return formatter
+                .appendLiteral('-')
+                .appendValue(ChronoField.MONTH_OF_YEAR, 2)
+                .appendLiteral('-')
+                .appendValue(ChronoField.DAY_OF_MONTH, 2);
     }
 }
 

@@ -282,6 +282,25 @@ public class TestPosixTimeFormatFormatting {
     }
 
     @Test
+    public void testFormattingByUpperF() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%F").toDateTimeFormatter();
+        assertEquals("2023-01-15", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("2023-02-28", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("1999-12-31", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("2000-01-01", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("1976-07-04", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("8-12-31", formatter.format(ZonedDateTime.of(8, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("777-06-30", formatter.format(ZonedDateTime.of(777, 6, 30, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByUpperFwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%15F").toDateTimeFormatter();
+        assertEquals("     1990-01-14", formatter.format(ZonedDateTime.of(1990, 1, 14, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("        8-01-01", formatter.format(ZonedDateTime.of(8, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
     public void testFormattingByUpperY() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y").toDateTimeFormatter();
         assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
