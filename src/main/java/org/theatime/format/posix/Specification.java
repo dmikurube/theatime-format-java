@@ -301,6 +301,10 @@ abstract class ConversionSpecification extends Specification {
         return builder.toString();
     }
 
+    static String repeat(final String s, final int n) {
+        return String.join("", Collections.nCopies(n, s));
+    }
+
     final ConversionType terminatingConversionSpecifier;
 }
 
@@ -654,7 +658,21 @@ final class UpperD extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 8) {
+            // The padding for "%D" is independent from the padding for MONTH_OF_YEAR.
+            if (this.effectivePadWithDefault(' ') == '0') {
+                formatter.appendLiteral(repeat("0", this.precision - 8));
+            } else {
+                formatter.appendLiteral(repeat(" ", this.precision - 8));
+            }
+        }
+
+        return formatter
+                .appendValue(ChronoField.MONTH_OF_YEAR, 2)  // The padding for this MONTH_OF_YEAR is always '0'.
+                .appendLiteral('/')
+                .appendValue(ChronoField.DAY_OF_MONTH, 2)
+                .appendLiteral('/')
+                .appendValueReduced(ChronoField.YEAR, 2, 2, 1900);
     }
 }
 

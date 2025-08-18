@@ -272,6 +272,16 @@ public class TestPosixTimeFormatFormatting {
     }
 
     @Test
+    public void testFormattingByUpperD() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
+        assertEquals("01/15/23", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("02/28/23", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12/31/99", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01/01/00", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("07/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
     public void testFormattingByUpperY() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y").toDateTimeFormatter();
         assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));

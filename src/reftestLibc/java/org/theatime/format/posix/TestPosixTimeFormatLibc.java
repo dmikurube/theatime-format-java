@@ -95,6 +95,7 @@ public class TestPosixTimeFormatLibc {
                 "c",
                 "C",
                 "d",
+                "D",
                 "e",
                 "H",
                 "I",
