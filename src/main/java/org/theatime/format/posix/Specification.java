@@ -1087,21 +1087,6 @@ final class UpperM extends ConversionSpecification {
     }
 }
 
-@SuppressWarnings("checkstyle:OneTopLevelClass")
-final class LowerN extends ConversionSpecification {
-    LowerN(final Context context) {
-        super(ConversionType.IMMEDIATE_WHITESPACE_NEWLINE, context);
-    }
-
-    @Override
-    DateTimeFormatterBuilder appendTo(
-            final DateTimeFormatterBuilder formatter,
-            final PaddingStyle paddingStyle,
-            final Optional<Locale> locale) {
-        return formatter;
-    }
-}
-
 /**
  * {@code %p}
  *
@@ -1208,21 +1193,6 @@ final class UpperS extends ConversionSpecification {
             formatter.padNext(2, pad);
         }
         return formatter.appendValue(ChronoField.SECOND_OF_MINUTE);
-    }
-}
-
-@SuppressWarnings("checkstyle:OneTopLevelClass")
-final class LowerT extends ConversionSpecification {
-    LowerT(final Context context) {
-        super(ConversionType.IMMEDIATE_WHITESPACE_TAB, context);
-    }
-
-    @Override
-    DateTimeFormatterBuilder appendTo(
-            final DateTimeFormatterBuilder formatter,
-            final PaddingStyle paddingStyle,
-            final Optional<Locale> locale) {
-        return formatter;
     }
 }
 

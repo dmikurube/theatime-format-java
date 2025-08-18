@@ -103,7 +103,9 @@ public class TestPosixTimeFormatLibc {
                 "j",
                 "m",
                 "M",
+                "n",
                 "S",
+                "t",
                 "Y"
                 ).flatMap(specifier -> Stream.of(
                     "%" + specifier,

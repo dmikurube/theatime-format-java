@@ -374,4 +374,28 @@ public class TestPosixTimeFormatFormatting {
         assertEquals("0030", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 0, 0, ZoneId.of("UTC"))));
         assertEquals("0059", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 59, 0, 0, ZoneId.of("UTC"))));
     }
+
+    @Test
+    public void testFormattingByLowerN() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%n").toDateTimeFormatter();
+        assertEquals("\n", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingWithLowerNinMixed() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y-%m-%d%n%H:%M:%S").toDateTimeFormatter();
+        assertEquals("2023-01-15\n12:30:45", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 45, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByLowerT() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%t").toDateTimeFormatter();
+        assertEquals("\t", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingWithLowerTinMixed() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y-%m-%d%t%H:%M:%S").toDateTimeFormatter();
+        assertEquals("2023-01-15\t12:30:45", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 45, 0, ZoneId.of("UTC"))));
+    }
 }
