@@ -106,6 +106,7 @@ public class TestPosixTimeFormatLibc {
                 "m",
                 "M",
                 "n",
+                "r",
                 "S",
                 "t",
                 "Y"
@@ -200,6 +201,7 @@ public class TestPosixTimeFormatLibc {
                 // "%H",  // A single "%H" does not work for parsing.
                 "%m",
                 // "%M",  // A single "%M" does not work for parsing.
+                "%r",   // 12-hour clock time with AM/PM - compound format
                 // "%S",  // A single "%S" does not work for parsing.
                 "%Y"
                 );

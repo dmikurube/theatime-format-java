@@ -1199,7 +1199,23 @@ final class LowerR extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 11) {
+            // The padding for "%r" is independent from the padding for CLOCK_HOUR_OF_AMPM.
+            if (this.effectivePadWithDefault(' ') == '0') {
+                formatter.appendLiteral(repeat("0", this.precision - 11));
+            } else {
+                formatter.appendLiteral(repeat(" ", this.precision - 11));
+            }
+        }
+
+        return formatter
+                .appendValue(ChronoField.CLOCK_HOUR_OF_AMPM, 2)  // The padding for this CLOCK_HOUR_OF_AMPM is always '0'.
+                .appendLiteral(':')
+                .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+                .appendLiteral(':')
+                .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+                .appendLiteral(' ')
+                .appendText(ChronoField.AMPM_OF_DAY);
     }
 }
 
