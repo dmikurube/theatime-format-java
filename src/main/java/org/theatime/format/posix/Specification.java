@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoField;
+import java.time.temporal.IsoFields;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -812,7 +813,39 @@ final class LowerG extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (this.precision >= 0) {
+            if (pad == '0') {
+                if (this.precision > 2) {
+                    formatter.padNext(this.precision, pad);
+                    return formatter.appendValueReduced(IsoFields.WEEK_BASED_YEAR, 1, 2, 1900);
+                } else {
+                    if (this.isLeftAligned()) {
+                        return formatter.appendValueReduced(IsoFields.WEEK_BASED_YEAR, 1, 2, 1900);
+                    } else {
+                        return formatter.appendValueReduced(IsoFields.WEEK_BASED_YEAR, 2, 2, 1900);
+                    }
+                }
+            } else {
+                if (this.isLeftAligned()) {
+                    if (this.precision >= 2) {
+                        formatter.padNext(this.precision, pad);
+                    }
+                } else {
+                    if (this.precision > 2) {
+                        formatter.padNext(this.precision, pad);
+                    } else {
+                        formatter.padNext(2, pad);
+                    }
+                }
+                return formatter.appendValueReduced(IsoFields.WEEK_BASED_YEAR, 1, 2, 1900);
+            }
+        }
+
+        if (!this.isLeftAligned()) {
+            formatter.padNext(2, pad);
+        }
+        return formatter.appendValueReduced(IsoFields.WEEK_BASED_YEAR, 1, 2, 1900);
     }
 }
 
