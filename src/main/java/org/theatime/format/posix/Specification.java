@@ -871,7 +871,44 @@ final class UpperG extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (this.precision > 0) {
+            if (pad == '0') {
+                if (this.precision > 0) {
+                    return formatter.appendValue(IsoFields.WEEK_BASED_YEAR, this.precision, 19, SignStyle.NORMAL);
+                } else {
+                    return formatter.appendValue(IsoFields.WEEK_BASED_YEAR, 1, 19, SignStyle.NORMAL);
+                }
+            } else {
+                // When padding with ' ', ranged padding does not work, therefore strftime cannot be emulated 100%.
+                //
+                // For example, strftime formats 10 into:
+                //   * into "10" by "%_2G"
+                //   * into " 10" by "%_3G"
+                //   * into "  10" by "%_4G".
+                //
+                // This flexibility of ranged padding cannot be realized in java.time.format.DateTimeFormatterBuilder.
+                switch (paddingStyle) {
+                    case STRICT:
+                        throw new UnsupportedPaddingException("Padding %G is not supported in the STRICT padding style.");
+                    case SMART:
+                        if (this.precision < 4) {
+                            throw new UnsupportedPaddingException(
+                                    "Padding %G with width" + this.precision + " is not supported in the SMART padding style.");
+                        }
+                        formatter.padNext(this.precision, pad);
+                        break;
+                    case LENIENT:
+                        // No padding actually.
+                        break;
+                    default:
+                        throw new UnsupportedPaddingException();
+                }
+                return formatter.appendValue(IsoFields.WEEK_BASED_YEAR, 1, 19, SignStyle.NORMAL);
+            }
+        }
+
+        return formatter.appendValue(IsoFields.WEEK_BASED_YEAR, 1, 19, SignStyle.NORMAL);
     }
 }
 
