@@ -207,7 +207,10 @@ public class TestPosixTimeFormatLibc {
     static Stream<LocalDateTime> dateTimes() {
         return Stream.of(
                 randomModernDateTimes(18),
-                randomPastDateTimes(2),
+                randomPast4DigitDateTimes(2),
+                randomPast3DigitDateTimes(1),
+                randomPast2DigitDateTimes(1),
+                randomPast1DigitDateTimes(1),
                 fixedDateTimes()
                 ).flatMap(Function.identity());
     }
@@ -224,8 +227,20 @@ public class TestPosixTimeFormatLibc {
         return Stream.generate(() -> randomModernLocalDateTime()).limit(n);
     }
 
-    static Stream<LocalDateTime> randomPastDateTimes(final int n) {
-        return Stream.generate(() -> randomPastLocalDateTime()).limit(n);
+    static Stream<LocalDateTime> randomPast4DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast4DigitLocalDateTime()).limit(n);
+    }
+
+    static Stream<LocalDateTime> randomPast3DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast3DigitLocalDateTime()).limit(n);
+    }
+
+    static Stream<LocalDateTime> randomPast2DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast2DigitLocalDateTime()).limit(n);
+    }
+
+    static Stream<LocalDateTime> randomPast1DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast1DigitLocalDateTime()).limit(n);
     }
 
     private static LocalDateTime randomModernLocalDateTime() {
@@ -242,8 +257,50 @@ public class TestPosixTimeFormatLibc {
                 RANDOM.nextInt(1_000_000_000));
     }
 
-    private static LocalDateTime randomPastLocalDateTime() {
-        final int year = RANDOM.nextInt(1970);
+    private static LocalDateTime randomPast4DigitLocalDateTime() {
+        final int year = RANDOM.nextInt(970) + 1000;
+        final int month = RANDOM.nextInt(12) + 1;
+        final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
+        return LocalDateTime.of(
+                year,
+                month,
+                day,
+                RANDOM.nextInt(24),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(1_000_000_000));
+    }
+
+    private static LocalDateTime randomPast3DigitLocalDateTime() {
+        final int year = RANDOM.nextInt(900) + 100;
+        final int month = RANDOM.nextInt(12) + 1;
+        final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
+        return LocalDateTime.of(
+                year,
+                month,
+                day,
+                RANDOM.nextInt(24),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(1_000_000_000));
+    }
+
+    private static LocalDateTime randomPast2DigitLocalDateTime() {
+        final int year = RANDOM.nextInt(90) + 10;
+        final int month = RANDOM.nextInt(12) + 1;
+        final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
+        return LocalDateTime.of(
+                year,
+                month,
+                day,
+                RANDOM.nextInt(24),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(60),
+                RANDOM.nextInt(1_000_000_000));
+    }
+
+    private static LocalDateTime randomPast1DigitLocalDateTime() {
+        final int year = RANDOM.nextInt(9);
         final int month = RANDOM.nextInt(12) + 1;
         final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
         return LocalDateTime.of(
