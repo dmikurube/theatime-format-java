@@ -110,6 +110,7 @@ public class TestPosixTimeFormatLibc {
                 "R",
                 "S",
                 "t",
+                "T",
                 "Y"
                 ).flatMap(specifier -> Stream.of(
                     "%" + specifier,
@@ -204,6 +205,7 @@ public class TestPosixTimeFormatLibc {
                 // "%M",  // A single "%M" does not work for parsing.
                 "%r",   // 12-hour clock time with AM/PM - compound format
                 // "%S",  // A single "%S" does not work for parsing.
+                "%T",   // 24-hour time (%H:%M:%S) - compound format
                 "%Y"
                 );
     }

@@ -1312,7 +1312,21 @@ final class UpperT extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 8) {
+            // The padding for "%T" is independent from the padding for HOUR_OF_DAY.
+            if (this.effectivePadWithDefault(' ') == '0') {
+                formatter.appendLiteral(repeat("0", this.precision - 8));
+            } else {
+                formatter.appendLiteral(repeat(" ", this.precision - 8));
+            }
+        }
+
+        return formatter
+                .appendValue(ChronoField.HOUR_OF_DAY, 2)  // The padding for this HOUR_OF_DAY is always '0'.
+                .appendLiteral(':')
+                .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+                .appendLiteral(':')
+                .appendValue(ChronoField.SECOND_OF_MINUTE, 2);
     }
 }
 
