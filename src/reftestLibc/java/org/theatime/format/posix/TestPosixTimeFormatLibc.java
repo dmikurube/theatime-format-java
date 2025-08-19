@@ -107,6 +107,7 @@ public class TestPosixTimeFormatLibc {
                 "M",
                 "n",
                 "r",
+                "R",
                 "S",
                 "t",
                 "Y"
