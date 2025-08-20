@@ -168,451 +168,451 @@ public class TestPosixTimeFormatFormatting {
     @Test
     public void testFormattingByLowerM() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%m").toDateTimeFormatter();
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("02", formatter.format(ZonedDateTime.of(2023, 2, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("03", formatter.format(ZonedDateTime.of(2023, 3, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("02", formatter.format(ZonedDateTime.of(2023, 2, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("03", formatter.format(ZonedDateTime.of(2023, 3, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerMwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4m").toDateTimeFormatter();
-        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  10", formatter.format(ZonedDateTime.of(2023, 10, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  10", formatter.format(ZonedDateTime.of(2023, 10, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerMwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%04m").toDateTimeFormatter();
-        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0010", formatter.format(ZonedDateTime.of(2023, 10, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0010", formatter.format(ZonedDateTime.of(2023, 10, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 12, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperH() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%H").toDateTimeFormatter();
-        assertEquals("00", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperHwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4H").toDateTimeFormatter();
-        assertEquals("   0", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  23", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   0", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  23", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperHwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%04H").toDateTimeFormatter();
-        assertEquals("0000", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0023", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0000", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0023", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperI() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%I").toDateTimeFormatter();
-        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("11", formatter.format(ZonedDateTime.of(2023, 1, 15, 11, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("11", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("11", formatter.format(ZonedDateTime.of(2023, 1, 15, 11, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("11", formatter.format(ZonedDateTime.of(2023, 1, 15, 23, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperIwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4I").toDateTimeFormatter();
-        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  12", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperIwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%04I").toDateTimeFormatter();
-        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 1, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0012", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0001", formatter.format(ZonedDateTime.of(2023, 1, 15, 13, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerJ() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
-        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("059", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("060", formatter.format(ZonedDateTime.of(2023, 3, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("366", formatter.format(ZonedDateTime.of(2024, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("059", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("060", formatter.format(ZonedDateTime.of(2023, 3, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("366", formatter.format(ZonedDateTime.of(2024, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerJwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_5j").toDateTimeFormatter();
-        assertEquals("    1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   32", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("    1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   32", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerJwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%05j").toDateTimeFormatter();
-        assertEquals("00001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("00032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("00365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("00032", formatter.format(ZonedDateTime.of(2023, 2, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("00365", formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperD() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%D").toDateTimeFormatter();
-        assertEquals("01/15/23", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("02/28/23", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("12/31/99", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01/01/00", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("07/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01/15/23", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("02/28/23", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("12/31/99", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01/01/00", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("07/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperF() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%F").toDateTimeFormatter();
-        assertEquals("2023-01-15", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("2023-02-28", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("1999-12-31", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("2000-01-01", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("1976-07-04", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("8-12-31", formatter.format(ZonedDateTime.of(8, 12, 31, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("777-06-30", formatter.format(ZonedDateTime.of(777, 6, 30, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("2023-01-15", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("2023-02-28", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("1999-12-31", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("2000-01-01", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("1976-07-04", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("8-12-31", formatter.format(ZonedDateTime.of(8, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("777-06-30", formatter.format(ZonedDateTime.of(777, 6, 30, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperFwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%15F").toDateTimeFormatter();
-        assertEquals("     1990-01-14", formatter.format(ZonedDateTime.of(1990, 1, 14, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("        8-01-01", formatter.format(ZonedDateTime.of(8, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("     1990-01-14", formatter.format(ZonedDateTime.of(1990, 1, 14, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("        8-01-01", formatter.format(ZonedDateTime.of(8, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperY() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y").toDateTimeFormatter();
-        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("1999", formatter.format(ZonedDateTime.of(1999, 12, 31, 23, 59, 59, 0, ZoneId.of("UTC"))));
-        assertEquals("2000", formatter.format(ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("1", formatter.format(ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("1999", formatter.format(ZonedDateTime.of(1999, 12, 31, 23, 59, 59, 0, ZoneOffset.UTC)));
+        assertEquals("2000", formatter.format(ZonedDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("1", formatter.format(ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperYwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_6Y").toDateTimeFormatter();
-        assertEquals("  2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("    99", formatter.format(ZonedDateTime.of(99, 12, 31, 23, 59, 59, 0, ZoneId.of("UTC"))));
-        assertEquals("     1", formatter.format(ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  2023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("    99", formatter.format(ZonedDateTime.of(99, 12, 31, 23, 59, 59, 0, ZoneOffset.UTC)));
+        assertEquals("     1", formatter.format(ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperYwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%06Y").toDateTimeFormatter();
-        assertEquals("002023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("000099", formatter.format(ZonedDateTime.of(99, 12, 31, 23, 59, 59, 0, ZoneId.of("UTC"))));
-        assertEquals("000001", formatter.format(ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("002023", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("000099", formatter.format(ZonedDateTime.of(99, 12, 31, 23, 59, 59, 0, ZoneOffset.UTC)));
+        assertEquals("000001", formatter.format(ZonedDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperS() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%S").toDateTimeFormatter();
-        assertEquals("00", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 1, 0, ZoneId.of("UTC"))));
-        assertEquals("30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 30, 0, ZoneId.of("UTC"))));
-        assertEquals("59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 59, 0, ZoneId.of("UTC"))));
+        assertEquals("00", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 1, 0, ZoneOffset.UTC)));
+        assertEquals("30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 30, 0, ZoneOffset.UTC)));
+        assertEquals("59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 59, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperSwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4S").toDateTimeFormatter();
-        assertEquals("   0", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 30, 0, ZoneId.of("UTC"))));
-        assertEquals("  59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 59, 0, ZoneId.of("UTC"))));
+        assertEquals("   0", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 30, 0, ZoneOffset.UTC)));
+        assertEquals("  59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 59, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperSwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%04S").toDateTimeFormatter();
-        assertEquals("0000", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0030", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 30, 0, ZoneId.of("UTC"))));
-        assertEquals("0059", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 59, 0, ZoneId.of("UTC"))));
+        assertEquals("0000", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0030", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 30, 0, ZoneOffset.UTC)));
+        assertEquals("0059", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 59, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperM() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%M").toDateTimeFormatter();
-        assertEquals("00", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 1, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 59, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 1, 0, 0, ZoneOffset.UTC)));
+        assertEquals("30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 0, 0, ZoneOffset.UTC)));
+        assertEquals("59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 59, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperMwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4M").toDateTimeFormatter();
-        assertEquals("   0", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 59, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   0", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  30", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  59", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 59, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperMwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%04M").toDateTimeFormatter();
-        assertEquals("0000", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0030", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0059", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 59, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0000", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0030", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0059", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 59, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerN() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%n").toDateTimeFormatter();
-        assertEquals("\n", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("\n", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingWithLowerNinMixed() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y-%m-%d%n%H:%M:%S").toDateTimeFormatter();
-        assertEquals("2023-01-15\n12:30:45", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("2023-01-15\n12:30:45", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 45, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerT() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%t").toDateTimeFormatter();
-        assertEquals("\t", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("\t", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingWithLowerTinMixed() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%Y-%m-%d%t%H:%M:%S").toDateTimeFormatter();
-        assertEquals("2023-01-15\t12:30:45", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("2023-01-15\t12:30:45", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 30, 45, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerG() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%g").toDateTimeFormatter();
-        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("22", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 1, 2, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("22", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerGwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4g").toDateTimeFormatter();
-        assertEquals("  23", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   1", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   0", formatter.format(ZonedDateTime.of(2000, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  81", formatter.format(ZonedDateTime.of(1981, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   7", formatter.format(ZonedDateTime.of(1907, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  23", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   0", formatter.format(ZonedDateTime.of(2000, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  81", formatter.format(ZonedDateTime.of(1981, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   7", formatter.format(ZonedDateTime.of(1907, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerGwithLeftAlignment() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%-g").toDateTimeFormatter();
-        assertEquals("0", formatter.format(ZonedDateTime.of(2000, 2, 29, 21, 26, 19, 0, ZoneId.of("UTC"))));
-        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("1", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0", formatter.format(ZonedDateTime.of(2000, 2, 29, 21, 26, 19, 0, ZoneOffset.UTC)));
+        assertEquals("23", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("1", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerGwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%03g").toDateTimeFormatter();
-        assertEquals("023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("028", formatter.format(ZonedDateTime.of(2028, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("001", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("028", formatter.format(ZonedDateTime.of(2028, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("001", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperG() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%G").toDateTimeFormatter();
-        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("2022", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 2, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("2022", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("2023", formatter.format(ZonedDateTime.of(2023, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperGwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_6G").toDateTimeFormatter();
-        assertEquals("  2023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  2022", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  2023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  2022", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperGwithLeftAlignment() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%-6G").toDateTimeFormatter();
-        assertEquals("  2023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  2022", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  2023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  2022", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperGwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%06G").toDateTimeFormatter();
-        assertEquals("002023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("002028", formatter.format(ZonedDateTime.of(2028, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("002001", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("002023", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("002028", formatter.format(ZonedDateTime.of(2028, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("002001", formatter.format(ZonedDateTime.of(2001, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerR() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%r").toDateTimeFormatter();
-        assertEquals("02:30:45 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("09:15:30 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 15, 30, 0, ZoneId.of("UTC"))));
-        assertEquals("12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("12:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("11:59:59 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneId.of("UTC"))));
-        assertEquals("01:23:45 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 1, 23, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("01:23:45 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 13, 23, 45, 0, ZoneId.of("UTC"))));
+        assertEquals("02:30:45 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("09:15:30 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 15, 30, 0, ZoneOffset.UTC)));
+        assertEquals("12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("12:00:00 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("11:59:59 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneOffset.UTC)));
+        assertEquals("01:23:45 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 1, 23, 45, 0, ZoneOffset.UTC)));
+        assertEquals("01:23:45 PM", formatter.format(ZonedDateTime.of(2023, 6, 15, 13, 23, 45, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerRwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%16r").toDateTimeFormatter();
-        assertEquals("     01:07:39 PM", formatter.format(ZonedDateTime.of(2082, 9, 9, 13, 7, 39, 0, ZoneId.of("UTC"))));
-        assertEquals("     12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("     01:07:39 PM", formatter.format(ZonedDateTime.of(2082, 9, 9, 13, 7, 39, 0, ZoneOffset.UTC)));
+        assertEquals("     12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerRwithZeroPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%015r").toDateTimeFormatter();
-        assertEquals("000001:07:39 PM", formatter.format(ZonedDateTime.of(2082, 9, 9, 13, 7, 39, 0, ZoneId.of("UTC"))));
-        assertEquals("000012:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("000001:07:39 PM", formatter.format(ZonedDateTime.of(2082, 9, 9, 13, 7, 39, 0, ZoneOffset.UTC)));
+        assertEquals("000012:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerRwithMinimalPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%12r").toDateTimeFormatter();
-        assertEquals(" 01:07:39 PM", formatter.format(ZonedDateTime.of(2082, 9, 9, 13, 7, 39, 0, ZoneId.of("UTC"))));
-        assertEquals(" 12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals(" 01:07:39 PM", formatter.format(ZonedDateTime.of(2082, 9, 9, 13, 7, 39, 0, ZoneOffset.UTC)));
+        assertEquals(" 12:00:00 AM", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperR() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%R").toDateTimeFormatter();
-        assertEquals("14:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("09:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("23:59", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneId.of("UTC"))));
-        assertEquals("12:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("14:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("09:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneOffset.UTC)));
+        assertEquals("00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("23:59", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneOffset.UTC)));
+        assertEquals("12:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperRwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%8R").toDateTimeFormatter();
-        assertEquals("   14:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("   09:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   14:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("   09:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperRwithZeroPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%08R").toDateTimeFormatter();
-        assertEquals("00014:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("00009:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("00000:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00014:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("00009:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneOffset.UTC)));
+        assertEquals("00000:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperRwithMinimalPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%6R").toDateTimeFormatter();
-        assertEquals(" 14:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals(" 09:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneId.of("UTC"))));
+        assertEquals(" 14:30", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals(" 09:05", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperT() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%T").toDateTimeFormatter();
-        assertEquals("14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneId.of("UTC"))));
-        assertEquals("00:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("23:59:59", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneId.of("UTC"))));
-        assertEquals("12:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneOffset.UTC)));
+        assertEquals("00:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("23:59:59", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneOffset.UTC)));
+        assertEquals("12:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperTwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%10T").toDateTimeFormatter();
-        assertEquals("  14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("  09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneId.of("UTC"))));
-        assertEquals("  00:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("  09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneOffset.UTC)));
+        assertEquals("  00:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperTwithZeroPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%012T").toDateTimeFormatter();
-        assertEquals("000014:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals("000009:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneId.of("UTC"))));
-        assertEquals("000000:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("000014:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("000009:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneOffset.UTC)));
+        assertEquals("000000:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperTwithMinimalPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%9T").toDateTimeFormatter();
-        assertEquals(" 14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
-        assertEquals(" 09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneId.of("UTC"))));
+        assertEquals(" 14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals(" 09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerU() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%u").toDateTimeFormatter();
-        assertEquals("1", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("2", formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("3", formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("4", formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("5", formatter.format(ZonedDateTime.of(2023, 4, 21, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("6", formatter.format(ZonedDateTime.of(2023, 4, 22, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("7", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("1", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("2", formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("3", formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("4", formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("5", formatter.format(ZonedDateTime.of(2023, 4, 21, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("6", formatter.format(ZonedDateTime.of(2023, 4, 22, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("7", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerUwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_3u").toDateTimeFormatter();
-        assertEquals("  1", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("  7", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  1", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  7", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByLowerUwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%03u").toDateTimeFormatter();
-        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("007", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("007", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperU() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%U").toDateTimeFormatter();
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 7, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("02", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("00", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("00", formatter.format(ZonedDateTime.of(2024, 1, 6, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("01", formatter.format(ZonedDateTime.of(2024, 1, 7, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("16", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 7, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("02", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("00", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("00", formatter.format(ZonedDateTime.of(2024, 1, 6, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2024, 1, 7, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("16", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperUwithPadding() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4U").toDateTimeFormatter();
-        assertEquals("   2", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("   0", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   2", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   0", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
     public void testFormattingByUpperUwithPrecision() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%04U").toDateTimeFormatter();
-        assertEquals("0002", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneId.of("UTC"))));
-        assertEquals("0000", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0002", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0000", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 }
