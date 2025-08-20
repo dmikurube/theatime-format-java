@@ -563,4 +563,30 @@ public class TestPosixTimeFormatFormatting {
         assertEquals(" 14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneId.of("UTC"))));
         assertEquals(" 09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneId.of("UTC"))));
     }
+
+    @Test
+    public void testFormattingByLowerU() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%u").toDateTimeFormatter();
+        assertEquals("1", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("2", formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("3", formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("4", formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("5", formatter.format(ZonedDateTime.of(2023, 4, 21, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("6", formatter.format(ZonedDateTime.of(2023, 4, 22, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("7", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByLowerUwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_3u").toDateTimeFormatter();
+        assertEquals("  1", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("  7", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByLowerUwithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%03u").toDateTimeFormatter();
+        assertEquals("001", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("007", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
 }

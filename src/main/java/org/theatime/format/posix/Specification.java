@@ -1348,7 +1348,17 @@ final class LowerU extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 1) {
+            final char pad = this.effectivePadWithDefault('0');
+            if (pad == '0') {
+                return formatter.appendValue(ChronoField.DAY_OF_WEEK, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(ChronoField.DAY_OF_WEEK);
+            }
+        }
+
+        return formatter.appendValue(ChronoField.DAY_OF_WEEK);
     }
 }
 
