@@ -17,11 +17,20 @@
 package org.theatime.format.posix;
 
 import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.SignStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.IsoFields;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalField;
+import java.time.temporal.TemporalUnit;
+import java.time.temporal.UnsupportedTemporalTypeException;
+import java.time.temporal.ValueRange;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -1362,6 +1371,78 @@ final class LowerU extends ConversionSpecification {
     }
 }
 
+@SuppressWarnings("checkstyle:OneTopLevelClass")
+final class WeekOfYearStartingWithSunday implements TemporalField {
+    private WeekOfYearStartingWithSunday() {
+        // No instantiation.
+    }
+
+    @Override
+    public String getDisplayName(final Locale locale) {
+        return "WeekOfYearStartingWithSunday";
+    }
+
+    @Override
+    public TemporalUnit getBaseUnit() {
+        return ChronoUnit.WEEKS;
+    }
+
+    @Override
+    public TemporalUnit getRangeUnit() {
+        return ChronoUnit.YEARS;
+    }
+
+    @Override
+    public ValueRange range() {
+        return ValueRange.of(0, 53);
+    }
+
+    @Override
+    public boolean isDateBased() {
+        return true;
+    }
+
+    @Override
+    public boolean isTimeBased() {
+        return false;
+    }
+
+    @Override
+    public boolean isSupportedBy(final TemporalAccessor temporal) {
+        return temporal.isSupported(ChronoField.DAY_OF_YEAR) && temporal.isSupported(ChronoField.YEAR);
+    }
+
+    @Override
+    public ValueRange rangeRefinedBy(final TemporalAccessor temporal) {
+        return range();
+    }
+
+    @Override
+    public long getFrom(final TemporalAccessor temporal) {
+        final int dayOfYear = temporal.get(ChronoField.DAY_OF_YEAR);
+        final int year = temporal.get(ChronoField.YEAR);
+
+        final LocalDate firstOfYear = LocalDate.of(year, 1, 1);
+        final DayOfWeek firstDayOfWeek = firstOfYear.getDayOfWeek();
+
+        final int daysToFirstSunday = (7 - firstDayOfWeek.getValue()) % 7;
+        final int firstSundayDayOfYear = 1 + daysToFirstSunday;
+
+        if (dayOfYear < firstSundayDayOfYear) {
+            return 0;
+        } else {
+            return ((dayOfYear - firstSundayDayOfYear) / 7) + 1;
+        }
+    }
+
+    @Override
+    public <R extends Temporal> R adjustInto(final R temporal, final long newValue) {
+        throw new UnsupportedTemporalTypeException("Cannot adjust " + this);
+    }
+
+    static final TemporalField FIELD = new WeekOfYearStartingWithSunday();
+}
+
 /**
  * {@code %U}
  *
@@ -1382,7 +1463,26 @@ final class UpperU extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (this.precision > 1) {
+            if (pad == '0') {
+                return formatter.appendValue(WeekOfYearStartingWithSunday.FIELD, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(WeekOfYearStartingWithSunday.FIELD);
+            }
+        }
+
+        if (this.isLeftAligned()) {
+            return formatter.appendValue(WeekOfYearStartingWithSunday.FIELD);
+        } else {
+            if (pad == '0') {
+                return formatter.appendValue(WeekOfYearStartingWithSunday.FIELD, 2);
+            } else {
+                formatter.padNext(2, pad);
+                return formatter.appendValue(WeekOfYearStartingWithSunday.FIELD);
+            }
+        }
     }
 }
 

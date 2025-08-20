@@ -589,4 +589,30 @@ public class TestPosixTimeFormatFormatting {
         assertEquals("001", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
         assertEquals("007", formatter.format(ZonedDateTime.of(2023, 4, 23, 12, 0, 0, 0, ZoneId.of("UTC"))));
     }
+
+    @Test
+    public void testFormattingByUpperU() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%U").toDateTimeFormatter();
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 7, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("02", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("00", formatter.format(ZonedDateTime.of(2024, 1, 6, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2024, 1, 7, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("16", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByUpperUwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4U").toDateTimeFormatter();
+        assertEquals("   2", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("   0", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
+
+    @Test
+    public void testFormattingByUpperUwithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%04U").toDateTimeFormatter();
+        assertEquals("0002", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneId.of("UTC"))));
+        assertEquals("0000", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneId.of("UTC"))));
+    }
 }
