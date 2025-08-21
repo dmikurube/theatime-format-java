@@ -617,6 +617,32 @@ public class TestPosixTimeFormatFormatting {
     }
 
     @Test
+    public void testFormattingByLowerW() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%w").toDateTimeFormatter();
+        assertEquals("0", formatter.format(ZonedDateTime.of(2023, 4, 16, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("1", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("2", formatter.format(ZonedDateTime.of(2023, 4, 18, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("3", formatter.format(ZonedDateTime.of(2023, 4, 19, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("4", formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("5", formatter.format(ZonedDateTime.of(2023, 4, 21, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("6", formatter.format(ZonedDateTime.of(2023, 4, 22, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByLowerWwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_3w").toDateTimeFormatter();
+        assertEquals("  0", formatter.format(ZonedDateTime.of(2023, 4, 16, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  6", formatter.format(ZonedDateTime.of(2023, 4, 22, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByLowerWwithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%03w").toDateTimeFormatter();
+        assertEquals("000", formatter.format(ZonedDateTime.of(2023, 4, 16, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("006", formatter.format(ZonedDateTime.of(2023, 4, 22, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
     public void testFormattingByUpperV() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%V").toDateTimeFormatter();
         assertEquals("52", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));

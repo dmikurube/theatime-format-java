@@ -23,7 +23,11 @@ import java.time.format.SignStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.IsoFields;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalField;
+import java.time.temporal.TemporalUnit;
+import java.time.temporal.ValueRange;
 import java.time.temporal.WeekFields;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1454,6 +1458,68 @@ final class UpperV extends ConversionSpecification {
     }
 }
 
+// Create a simple TemporalField that converts WeekFields.SUNDAY_START (1-7) to POSIX %w (0-6)
+@SuppressWarnings("checkstyle:OneTopLevelClass")
+final class DayOfWeek06 implements TemporalField {
+    private DayOfWeek06() {
+        // No instantiation.
+    }
+
+    @Override
+    public String getDisplayName(final Locale locale) {
+        return "DayOfWeek";
+    }
+
+    @Override
+    public TemporalUnit getBaseUnit() {
+        return DAY_OF_WEEK_SUNDAY_START.getBaseUnit();
+    }
+
+    @Override
+    public TemporalUnit getRangeUnit() {
+        return DAY_OF_WEEK_SUNDAY_START.getRangeUnit();
+    }
+
+    @Override
+    public ValueRange range() {
+        return ValueRange.of(0, 6);
+    }
+
+    @Override
+    public boolean isDateBased() {
+        return DAY_OF_WEEK_SUNDAY_START.isDateBased();
+    }
+
+    @Override
+    public boolean isTimeBased() {
+        return DAY_OF_WEEK_SUNDAY_START.isTimeBased();
+    }
+
+    @Override
+    public boolean isSupportedBy(final TemporalAccessor temporal) {
+        return DAY_OF_WEEK_SUNDAY_START.isSupportedBy(temporal);
+    }
+
+    @Override
+    public ValueRange rangeRefinedBy(final TemporalAccessor temporal) {
+        return this.range();
+    }
+
+    @Override
+    public long getFrom(final TemporalAccessor temporal) {
+        return temporal.get(DAY_OF_WEEK_SUNDAY_START) - 1;  // From 1-7 to 0-6.
+    }
+
+    @Override
+    public <R extends Temporal> R adjustInto(final R temporal, final long newValue) {
+        return DAY_OF_WEEK_SUNDAY_START.adjustInto(temporal, newValue + 1);  // From 0-6 to 1-7.
+    }
+
+    static final TemporalField FIELD = new DayOfWeek06();
+
+    private static final TemporalField DAY_OF_WEEK_SUNDAY_START = WeekFields.SUNDAY_START.dayOfWeek();
+}
+
 /**
  * {@code %w}
  *
@@ -1472,7 +1538,17 @@ final class LowerW extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 1) {
+            final char pad = this.effectivePadWithDefault('0');
+            if (pad == '0') {
+                return formatter.appendValue(DayOfWeek06.FIELD, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(DayOfWeek06.FIELD);
+            }
+        }
+
+        return formatter.appendValue(DayOfWeek06.FIELD);
     }
 }
 
