@@ -1507,7 +1507,26 @@ final class UpperV extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (this.precision > 1) {
+            if (pad == '0') {
+                return formatter.appendValue(IsoFields.WEEK_OF_WEEK_BASED_YEAR, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+            }
+        }
+
+        if (this.isLeftAligned()) {
+            return formatter.appendValue(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+        } else {
+            if (pad == '0') {
+                return formatter.appendValue(IsoFields.WEEK_OF_WEEK_BASED_YEAR, 2);
+            } else {
+                formatter.padNext(2, pad);
+                return formatter.appendValue(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+            }
+        }
     }
 }
 
