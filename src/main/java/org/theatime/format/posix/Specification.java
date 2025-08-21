@@ -1443,6 +1443,78 @@ final class WeekOfYearStartingWithSunday implements TemporalField {
     static final TemporalField FIELD = new WeekOfYearStartingWithSunday();
 }
 
+@SuppressWarnings("checkstyle:OneTopLevelClass")
+final class WeekOfYearStartingWithMonday implements TemporalField {
+    private WeekOfYearStartingWithMonday() {
+        // No instantiation.
+    }
+
+    @Override
+    public String getDisplayName(final Locale locale) {
+        return "WeekOfYearStartingWithMonday";
+    }
+
+    @Override
+    public TemporalUnit getBaseUnit() {
+        return ChronoUnit.WEEKS;
+    }
+
+    @Override
+    public TemporalUnit getRangeUnit() {
+        return ChronoUnit.YEARS;
+    }
+
+    @Override
+    public ValueRange range() {
+        return ValueRange.of(0, 53);
+    }
+
+    @Override
+    public boolean isDateBased() {
+        return true;
+    }
+
+    @Override
+    public boolean isTimeBased() {
+        return false;
+    }
+
+    @Override
+    public boolean isSupportedBy(final TemporalAccessor temporal) {
+        return temporal.isSupported(ChronoField.DAY_OF_YEAR) && temporal.isSupported(ChronoField.YEAR);
+    }
+
+    @Override
+    public ValueRange rangeRefinedBy(final TemporalAccessor temporal) {
+        return range();
+    }
+
+    @Override
+    public long getFrom(final TemporalAccessor temporal) {
+        final int dayOfYear = temporal.get(ChronoField.DAY_OF_YEAR);
+        final int year = temporal.get(ChronoField.YEAR);
+
+        final LocalDate firstOfYear = LocalDate.of(year, 1, 1);
+        final DayOfWeek firstDayOfWeek = firstOfYear.getDayOfWeek();
+
+        final int daysToFirstMonday = (8 - firstDayOfWeek.getValue()) % 7;
+        final int firstMondayDayOfYear = 1 + daysToFirstMonday;
+
+        if (dayOfYear < firstMondayDayOfYear) {
+            return 0;
+        } else {
+            return ((dayOfYear - firstMondayDayOfYear) / 7) + 1;
+        }
+    }
+
+    @Override
+    public <R extends Temporal> R adjustInto(final R temporal, final long newValue) {
+        throw new UnsupportedTemporalTypeException("Cannot adjust " + this);
+    }
+
+    static final TemporalField FIELD = new WeekOfYearStartingWithMonday();
+}
+
 /**
  * {@code %U}
  *
@@ -1572,7 +1644,26 @@ final class UpperW extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        final char pad = this.effectivePadWithDefault('0');
+        if (this.precision > 1) {
+            if (pad == '0') {
+                return formatter.appendValue(WeekOfYearStartingWithMonday.FIELD, this.precision);
+            } else {
+                formatter.padNext(this.precision, pad);
+                return formatter.appendValue(WeekOfYearStartingWithMonday.FIELD);
+            }
+        }
+
+        if (this.isLeftAligned()) {
+            return formatter.appendValue(WeekOfYearStartingWithMonday.FIELD);
+        } else {
+            if (pad == '0') {
+                return formatter.appendValue(WeekOfYearStartingWithMonday.FIELD, 2);
+            } else {
+                formatter.padNext(2, pad);
+                return formatter.appendValue(WeekOfYearStartingWithMonday.FIELD);
+            }
+        }
     }
 }
 

@@ -642,4 +642,31 @@ public class TestPosixTimeFormatFormatting {
         assertEquals("0002", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
         assertEquals("0001", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
+
+    @Test
+    public void testFormattingByUpperW() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%W").toDateTimeFormatter();
+        assertEquals("00", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 8, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("02", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01", formatter.format(ZonedDateTime.of(2024, 1, 7, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("02", formatter.format(ZonedDateTime.of(2024, 1, 8, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("16", formatter.format(ZonedDateTime.of(2023, 4, 17, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByUpperWwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_4W").toDateTimeFormatter();
+        assertEquals("   2", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("   1", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByUpperWwithPrecision() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%04W").toDateTimeFormatter();
+        assertEquals("0002", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("0001", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
 }
