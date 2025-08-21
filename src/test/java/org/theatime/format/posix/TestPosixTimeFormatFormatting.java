@@ -276,6 +276,38 @@ public class TestPosixTimeFormatFormatting {
     }
 
     @Test
+    public void testFormattingByLowerP() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%p").toDateTimeFormatter();
+        assertEquals("AM", formatter.format(ZonedDateTime.of(2023, 4, 16, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("AM", formatter.format(ZonedDateTime.of(2023, 4, 16, 8, 30, 0, 0, ZoneOffset.UTC)));
+        assertEquals("AM", formatter.format(ZonedDateTime.of(2023, 4, 16, 11, 59, 0, 0, ZoneOffset.UTC)));
+        assertEquals("PM", formatter.format(ZonedDateTime.of(2023, 4, 16, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("PM", formatter.format(ZonedDateTime.of(2023, 4, 16, 15, 45, 0, 0, ZoneOffset.UTC)));
+        assertEquals("PM", formatter.format(ZonedDateTime.of(2023, 4, 16, 23, 59, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByLowerPwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%4p").toDateTimeFormatter();
+        assertEquals("  AM", formatter.format(ZonedDateTime.of(2023, 4, 16, 8, 30, 0, 0, ZoneOffset.UTC)));
+        assertEquals("  PM", formatter.format(ZonedDateTime.of(2023, 4, 16, 15, 45, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByLowerPwithUpperCase() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%^p").toDateTimeFormatter();
+        assertEquals("AM", formatter.format(ZonedDateTime.of(2023, 4, 16, 8, 30, 0, 0, ZoneOffset.UTC)));
+        assertEquals("PM", formatter.format(ZonedDateTime.of(2023, 4, 16, 15, 45, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByLowerPwithChangeCase() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%#p").toDateTimeFormatter();
+        assertEquals("am", formatter.format(ZonedDateTime.of(2023, 4, 16, 8, 30, 0, 0, ZoneOffset.UTC)));
+        assertEquals("pm", formatter.format(ZonedDateTime.of(2023, 4, 16, 15, 45, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
     public void testFormattingByLowerJ() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%j").toDateTimeFormatter();
         assertEquals("001", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));

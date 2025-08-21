@@ -1198,8 +1198,38 @@ final class LowerP extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (this.precision > 2) {
+            formatter.padNext(this.precision, this.effectivePadWithDefault(' '));
+        }
+
+        if (locale.isPresent()) {
+            if (this.upperCase || this.changeCase) {
+                throw new DateTimeException("\"%p\" does not accept \"^\" nor \"#\" with a locale.");
+            }
+            return formatter.appendText(ChronoField.AMPM_OF_DAY, TextStyle.SHORT);
+        }
+
+        if (this.changeCase) {
+            return formatter.appendText(ChronoField.AMPM_OF_DAY, LOWER_AMPM);
+        } else {
+            return formatter.appendText(ChronoField.AMPM_OF_DAY, UPPER_AMPM);
+        }
     }
+
+    static {
+        final HashMap<Long, String> upper = new HashMap<>();
+        upper.put(0L, "AM");
+        upper.put(1L, "PM");
+        final HashMap<Long, String> lower = new HashMap<>();
+        lower.put(0L, "am");
+        lower.put(1L, "pm");
+
+        UPPER_AMPM = Collections.unmodifiableMap(upper);
+        LOWER_AMPM = Collections.unmodifiableMap(lower);
+    }
+
+    private static final Map<Long, String> UPPER_AMPM;
+    private static final Map<Long, String> LOWER_AMPM;
 }
 
 /**
