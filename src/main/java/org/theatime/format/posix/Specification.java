@@ -937,7 +937,23 @@ final class LowerH extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
+        if (this.precision >= 4) {
+            formatter.padNext(this.precision, this.effectivePadWithDefault(' '));
+        }
+
+        if (locale.isPresent()) {
+            if (this.upperCase || this.changeCase) {
+                // TODO: https://stackoverflow.com/a/55236266
+                throw new DateTimeException("\"%b\" does not accept \"^\" nor \"#\" with a locale.");
+            }
+            return formatter.appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT);
+        }
+
+        if (this.upperCase || this.changeCase) {
+            return formatter.appendText(ChronoField.MONTH_OF_YEAR, MonthOfYearNames.shortUpperCase());
+        } else {
+            return formatter.appendText(ChronoField.MONTH_OF_YEAR, MonthOfYearNames.shortTitleCase());
+        }
     }
 }
 

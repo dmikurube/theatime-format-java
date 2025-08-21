@@ -77,6 +77,37 @@ public class TestPosixTimeFormatFormatting {
     }
 
     @Test
+    public void testFormattingByLowerH() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%h").toDateTimeFormatter();
+        assertEquals("Jan", formatter.format(ZonedDateTime.of(2023, 1, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Feb", formatter.format(ZonedDateTime.of(2023, 2, 18, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Mar", formatter.format(ZonedDateTime.of(2023, 3, 19, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Apr", formatter.format(ZonedDateTime.of(2023, 4, 20, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("May", formatter.format(ZonedDateTime.of(2023, 5, 21, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Jun", formatter.format(ZonedDateTime.of(2023, 6, 22, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Jul", formatter.format(ZonedDateTime.of(2023, 7, 23, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Aug", formatter.format(ZonedDateTime.of(2023, 8, 24, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Sep", formatter.format(ZonedDateTime.of(2023, 9, 25, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Oct", formatter.format(ZonedDateTime.of(2023, 10, 26, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Nov", formatter.format(ZonedDateTime.of(2023, 11, 27, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("Dec", formatter.format(ZonedDateTime.of(2023, 12, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testFormattingByLowerHwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%5h").toDateTimeFormatter();
+        assertEquals("  Jan", formatter.format(ZonedDateTime.of(2023, 1, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("  Dec", formatter.format(ZonedDateTime.of(2023, 12, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
+    public void testFormattingByLowerHwithUpperCase() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%^h").toDateTimeFormatter();
+        assertEquals("JAN", formatter.format(ZonedDateTime.of(2023, 1, 17, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+        assertEquals("DEC", formatter.format(ZonedDateTime.of(2023, 12, 28, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
+    }
+
+    @Test
     public void testDateTimeFormatterLowerE() {
         final DateTimeFormatter formatter = PosixTimeFormat.compile("%e").toDateTimeFormatter();
         assertEquals(" 1", formatter.format(ZonedDateTime.of(2023, 4, 1, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))));
