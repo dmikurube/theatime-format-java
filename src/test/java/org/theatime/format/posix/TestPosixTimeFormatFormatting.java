@@ -758,4 +758,54 @@ public class TestPosixTimeFormatFormatting {
         assertEquals("0002", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
         assertEquals("0001", formatter.format(ZonedDateTime.of(2024, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
+
+    @Test
+    public void testFormattingByLowerX() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%x").toDateTimeFormatter();
+        assertEquals("01/15/23", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("02/28/23", formatter.format(ZonedDateTime.of(2023, 2, 28, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("12/31/99", formatter.format(ZonedDateTime.of(1999, 12, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("01/01/00", formatter.format(ZonedDateTime.of(2000, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("07/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByLowerXwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%12x").toDateTimeFormatter();
+        assertEquals("    01/15/23", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("    07/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByLowerXwithZeroPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%012x").toDateTimeFormatter();
+        assertEquals("000001/15/23", formatter.format(ZonedDateTime.of(2023, 1, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("000007/04/76", formatter.format(ZonedDateTime.of(1976, 7, 4, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByUpperX() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%X").toDateTimeFormatter();
+        assertEquals("14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneOffset.UTC)));
+        assertEquals("00:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+        assertEquals("23:59:59", formatter.format(ZonedDateTime.of(2023, 6, 15, 23, 59, 59, 0, ZoneOffset.UTC)));
+        assertEquals("12:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 12, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByUpperXwithPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%10X").toDateTimeFormatter();
+        assertEquals("  14:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("  09:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneOffset.UTC)));
+        assertEquals("  00:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+    }
+
+    @Test
+    public void testFormattingByUpperXwithZeroPadding() {
+        final DateTimeFormatter formatter = PosixTimeFormat.compile("%012X").toDateTimeFormatter();
+        assertEquals("000014:30:45", formatter.format(ZonedDateTime.of(2023, 6, 15, 14, 30, 45, 0, ZoneOffset.UTC)));
+        assertEquals("000009:05:03", formatter.format(ZonedDateTime.of(2023, 6, 15, 9, 5, 3, 0, ZoneOffset.UTC)));
+        assertEquals("000000:00:00", formatter.format(ZonedDateTime.of(2023, 6, 15, 0, 0, 0, 0, ZoneOffset.UTC)));
+    }
 }

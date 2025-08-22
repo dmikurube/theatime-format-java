@@ -1662,7 +1662,25 @@ final class LowerX extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (locale.isPresent()) {
+            throw new DateTimeException("\"%x\" does not accept a locale.");
+        }
+
+        if (this.precision > 8) {
+            // The padding for "%D" is independent from the padding for MONTH_OF_YEAR.
+            if (this.effectivePadWithDefault(' ') == '0') {
+                formatter.appendLiteral(repeat("0", this.precision - 8));
+            } else {
+                formatter.appendLiteral(repeat(" ", this.precision - 8));
+            }
+        }
+
+        return formatter
+                .appendValue(ChronoField.MONTH_OF_YEAR, 2)  // The padding for this MONTH_OF_YEAR is always '0'.
+                .appendLiteral('/')
+                .appendValue(ChronoField.DAY_OF_MONTH, 2)
+                .appendLiteral('/')
+                .appendValueReduced(ChronoField.YEAR, 2, 2, 1900);
     }
 }
 
@@ -1685,7 +1703,25 @@ final class UpperX extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        return formatter;
+        if (locale.isPresent()) {
+            throw new DateTimeException("\"%X\" does not accept a locale.");
+        }
+
+        if (this.precision > 8) {
+            // The padding for "%T" is independent from the padding for HOUR_OF_DAY.
+            if (this.effectivePadWithDefault(' ') == '0') {
+                formatter.appendLiteral(repeat("0", this.precision - 8));
+            } else {
+                formatter.appendLiteral(repeat(" ", this.precision - 8));
+            }
+        }
+
+        return formatter
+                .appendValue(ChronoField.HOUR_OF_DAY, 2)  // The padding for this HOUR_OF_DAY is always '0'.
+                .appendLiteral(':')
+                .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+                .appendLiteral(':')
+                .appendValue(ChronoField.SECOND_OF_MINUTE, 2);
     }
 }
 
