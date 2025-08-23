@@ -625,24 +625,19 @@ final class LowerD extends ConversionSpecification {
             final DateTimeFormatterBuilder formatter,
             final PaddingStyle paddingStyle,
             final Optional<Locale> locale) {
-        if (this.precision >= 0) {
-            final char pad = this.effectivePadWithDefault('0');
-            if (pad == '0') {
-                return formatter.appendValue(ChronoField.DAY_OF_MONTH, (this.precision > 2 ? this.precision : 2));
-            } else {
-                if (this.isLeftAligned()) {
-                    if (this.precision >= 2) {
-                        formatter.padNext(this.precision, pad);
-                    }
-                } else {
-                    formatter.padNext((this.precision > 2 ? this.precision : 2), pad);
-                }
-                return formatter.appendValue(ChronoField.DAY_OF_MONTH);
+        final char pad = this.effectivePadWithDefault('0');
+
+        if (pad == '0') {
+            if (this.precision > 2) {
+                return formatter.appendValue(ChronoField.DAY_OF_MONTH, this.precision);
             }
+            return formatter.appendValue(ChronoField.DAY_OF_MONTH, 2);
         }
 
-        if (!this.isLeftAligned()) {
-            formatter.padNext(2, this.effectivePadWithDefault('0'));
+        if (this.precision >= 2) {
+            formatter.padNext(this.precision, pad);
+        } else if (!this.isLeftAligned()) {
+            formatter.padNext(2, pad);
         }
         return formatter.appendValue(ChronoField.DAY_OF_MONTH);
     }
