@@ -170,6 +170,51 @@ public class TestPosixTimeFormatFormatting {
             "OCT,%^2b,2020,10,26,7,48,59,526929475",
             // "'        29',%-10d,1985,9,29,4,23,20,62491315",
             // "0000000TUE,%0#10a,2008,9,2,5,31,03,340494545",
+            "'01',%d,2023,1,1,12,0,0,0",
+            "'09',%d,2023,1,9,12,0,0,0",
+            "'10',%d,2023,1,10,12,0,0,0",
+            "'30',%d,2023,1,30,12,0,0,0",
+            "'31',%d,2023,1,31,12,0,0,0",
+            "'01',%0d,2023,1,1,12,0,0,0",
+            "'09',%0d,2023,1,9,12,0,0,0",
+            "'10',%0d,2023,1,10,12,0,0,0",
+            "'30',%0d,2023,1,30,12,0,0,0",
+            "'31',%0d,2023,1,31,12,0,0,0",
+            "'01',%01d,2023,1,1,12,0,0,0",
+            "'09',%01d,2023,1,9,12,0,0,0",
+            "'10',%01d,2023,1,10,12,0,0,0",
+            "'30',%01d,2023,1,30,12,0,0,0",
+            "'31',%01d,2023,1,31,12,0,0,0",
+            "'01',%1d,2023,1,1,12,0,0,0",
+            "'09',%1d,2023,1,9,12,0,0,0",
+            "'10',%1d,2023,1,10,12,0,0,0",
+            "'30',%1d,2023,1,30,12,0,0,0",
+            "'31',%1d,2023,1,31,12,0,0,0",
+            "' 1',%_d,2023,1,1,12,0,0,0",
+            "' 9',%_d,2023,1,9,12,0,0,0",
+            "'10',%_d,2023,1,10,12,0,0,0",
+            "'30',%_d,2023,1,30,12,0,0,0",
+            "'31',%_d,2023,1,31,12,0,0,0",
+            "' 1',%_1d,2023,1,1,12,0,0,0",
+            "' 9',%_1d,2023,1,9,12,0,0,0",
+            "'10',%_1d,2023,1,10,12,0,0,0",
+            "'30',%_1d,2023,1,30,12,0,0,0",
+            "'31',%_1d,2023,1,31,12,0,0,0",
+            "'1',%-d,2023,1,1,12,0,0,0",
+            "'9',%-d,2023,1,9,12,0,0,0",
+            "'10',%-d,2023,1,10,12,0,0,0",
+            "'30',%-d,2023,1,30,12,0,0,0",
+            "'31',%-d,2023,1,31,12,0,0,0",
+            "'1',%-1d,2023,1,1,12,0,0,0",
+            "'9',%-1d,2023,1,9,12,0,0,0",
+            "'10',%-1d,2023,1,10,12,0,0,0",
+            "'30',%-1d,2023,1,30,12,0,0,0",
+            "'31',%-1d,2023,1,31,12,0,0,0",
+            "' 1',%-2d,2023,1,1,12,0,0,0",
+            "' 9',%-2d,2023,1,9,12,0,0,0",
+            "'10',%-2d,2023,1,10,12,0,0,0",
+            "'30',%-2d,2023,1,30,12,0,0,0",
+            "'31',%-2d,2023,1,31,12,0,0,0",
             "' 1',%e,2023,1,1,12,0,0,0",
             "' 9',%e,2023,1,9,12,0,0,0",
             "'17',%e,2023,1,17,12,0,0,0",
@@ -194,36 +239,6 @@ public class TestPosixTimeFormatFormatting {
                 year, monthValue, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, nanoOfSecond, ZoneOffset.UTC);
         final String actualFormatted = actualFormatter.format(actualDateTime);
         assertEquals(expectedFormatted, actualFormatted);
-    }
-
-    @Test
-    public void testFormattingByLowerD() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%d").toDateTimeFormatter();
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("09", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("10", formatter.format(ZonedDateTime.of(2023, 1, 10, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("30", formatter.format(ZonedDateTime.of(2023, 1, 30, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("31", formatter.format(ZonedDateTime.of(2023, 1, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
-    }
-
-    @Test
-    public void testFormattingByLowerDwithZero() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%0d").toDateTimeFormatter();
-        assertEquals("01", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("09", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("10", formatter.format(ZonedDateTime.of(2023, 1, 10, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("30", formatter.format(ZonedDateTime.of(2023, 1, 30, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("31", formatter.format(ZonedDateTime.of(2023, 1, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
-    }
-
-    @Test
-    public void testFormattingByLowerDwithSpace() {
-        final DateTimeFormatter formatter = PosixTimeFormat.compile("%_d").toDateTimeFormatter();
-        assertEquals(" 1", formatter.format(ZonedDateTime.of(2023, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals(" 9", formatter.format(ZonedDateTime.of(2023, 1, 9, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("10", formatter.format(ZonedDateTime.of(2023, 1, 10, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("30", formatter.format(ZonedDateTime.of(2023, 1, 30, 12, 0, 0, 0, ZoneOffset.UTC)));
-        assertEquals("31", formatter.format(ZonedDateTime.of(2023, 1, 31, 12, 0, 0, 0, ZoneOffset.UTC)));
     }
 
     @Test
