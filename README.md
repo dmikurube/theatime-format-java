@@ -21,3 +21,8 @@ final String formatted = formatter.format(ZonedDateTime.of(2023, 12, 31, 12, 34,
 
 assert "2023-12-31 12:34:56".equals(formatted);
 ```
+
+Contributing to this project
+-----------------------------
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
