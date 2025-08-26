@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.YearMonth;
 import java.time.ZoneOffset;
@@ -39,7 +38,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 public class TestPosixTimeFormatLibc {
     @ParameterizedTest
     @MethodSource("formattingFormatsAndDateTimes")
-    public void testFormattingWithPatterns(final String format, final LocalDateTime datetime) {
+    public void testFormattingWithPatterns(final String format, final OffsetDateTime datetime) {
         assertStrftime(format,
                        datetime.getYear(),
                        datetime.getMonthValue(),
@@ -55,7 +54,7 @@ public class TestPosixTimeFormatLibc {
 
     @ParameterizedTest
     @MethodSource("parsableFormatsAndDateTimes")
-    public void testParsingWithGeneratedPatterns(final String format, final LocalDateTime datetime) {
+    public void testParsingWithGeneratedPatterns(final String format, final OffsetDateTime datetime) {
         assertStrptime(format, datetime, "C");
     }
 
@@ -219,7 +218,7 @@ public class TestPosixTimeFormatLibc {
                 );
     }
 
-    static Stream<LocalDateTime> dateTimes() {
+    static Stream<OffsetDateTime> dateTimes() {
         return Stream.of(
                 randomModernDateTimes(18),
                 randomPast4DigitDateTimes(2),
@@ -230,102 +229,107 @@ public class TestPosixTimeFormatLibc {
                 ).flatMap(Function.identity());
     }
 
-    static Stream<LocalDateTime> fixedDateTimes() {
+    static Stream<OffsetDateTime> fixedDateTimes() {
         return Stream.of(
-                LocalDateTime.of(8, 12, 31, 23, 59, 59, 999_999_999),
-                LocalDateTime.of(1999, 12, 31, 23, 59, 59, 999_999_999),
-                LocalDateTime.of(2000, 1, 1, 0, 0, 0)
+                OffsetDateTime.of(8, 12, 31, 23, 59, 59, 999_999_999, ZoneOffset.UTC),
+                OffsetDateTime.of(1999, 12, 31, 23, 59, 59, 999_999_999, ZoneOffset.UTC),
+                OffsetDateTime.of(2000, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
         );
     }
 
-    static Stream<LocalDateTime> randomModernDateTimes(final int n) {
-        return Stream.generate(() -> randomModernLocalDateTime()).limit(n);
+    static Stream<OffsetDateTime> randomModernDateTimes(final int n) {
+        return Stream.generate(() -> randomModernOffsetDateTime()).limit(n);
     }
 
-    static Stream<LocalDateTime> randomPast4DigitDateTimes(final int n) {
-        return Stream.generate(() -> randomPast4DigitLocalDateTime()).limit(n);
+    static Stream<OffsetDateTime> randomPast4DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast4DigitOffsetDateTime()).limit(n);
     }
 
-    static Stream<LocalDateTime> randomPast3DigitDateTimes(final int n) {
-        return Stream.generate(() -> randomPast3DigitLocalDateTime()).limit(n);
+    static Stream<OffsetDateTime> randomPast3DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast3DigitOffsetDateTime()).limit(n);
     }
 
-    static Stream<LocalDateTime> randomPast2DigitDateTimes(final int n) {
-        return Stream.generate(() -> randomPast2DigitLocalDateTime()).limit(n);
+    static Stream<OffsetDateTime> randomPast2DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast2DigitOffsetDateTime()).limit(n);
     }
 
-    static Stream<LocalDateTime> randomPast1DigitDateTimes(final int n) {
-        return Stream.generate(() -> randomPast1DigitLocalDateTime()).limit(n);
+    static Stream<OffsetDateTime> randomPast1DigitDateTimes(final int n) {
+        return Stream.generate(() -> randomPast1DigitOffsetDateTime()).limit(n);
     }
 
-    private static LocalDateTime randomModernLocalDateTime() {
+    private static OffsetDateTime randomModernOffsetDateTime() {
         final int year = RANDOM.nextInt(2100 - 1970) + 1970;
         final int month = RANDOM.nextInt(12) + 1;
         final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
-        return LocalDateTime.of(
+        return OffsetDateTime.of(
                 year,
                 month,
                 day,
                 RANDOM.nextInt(24),
                 RANDOM.nextInt(60),
                 RANDOM.nextInt(60),
-                RANDOM.nextInt(1_000_000_000));
+                RANDOM.nextInt(1_000_000_000),
+                ZoneOffset.UTC);
     }
 
-    private static LocalDateTime randomPast4DigitLocalDateTime() {
+    private static OffsetDateTime randomPast4DigitOffsetDateTime() {
         final int year = RANDOM.nextInt(970) + 1000;
         final int month = RANDOM.nextInt(12) + 1;
         final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
-        return LocalDateTime.of(
+        return OffsetDateTime.of(
                 year,
                 month,
                 day,
                 RANDOM.nextInt(24),
                 RANDOM.nextInt(60),
                 RANDOM.nextInt(60),
-                RANDOM.nextInt(1_000_000_000));
+                RANDOM.nextInt(1_000_000_000),
+                ZoneOffset.UTC);
     }
 
-    private static LocalDateTime randomPast3DigitLocalDateTime() {
+    private static OffsetDateTime randomPast3DigitOffsetDateTime() {
         final int year = RANDOM.nextInt(900) + 100;
         final int month = RANDOM.nextInt(12) + 1;
         final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
-        return LocalDateTime.of(
+        return OffsetDateTime.of(
                 year,
                 month,
                 day,
                 RANDOM.nextInt(24),
                 RANDOM.nextInt(60),
                 RANDOM.nextInt(60),
-                RANDOM.nextInt(1_000_000_000));
+                RANDOM.nextInt(1_000_000_000),
+                ZoneOffset.UTC);
     }
 
-    private static LocalDateTime randomPast2DigitLocalDateTime() {
+    private static OffsetDateTime randomPast2DigitOffsetDateTime() {
         final int year = RANDOM.nextInt(90) + 10;
         final int month = RANDOM.nextInt(12) + 1;
         final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
-        return LocalDateTime.of(
+        return OffsetDateTime.of(
                 year,
                 month,
                 day,
                 RANDOM.nextInt(24),
                 RANDOM.nextInt(60),
                 RANDOM.nextInt(60),
-                RANDOM.nextInt(1_000_000_000));
+                RANDOM.nextInt(1_000_000_000),
+                ZoneOffset.UTC);
     }
 
-    private static LocalDateTime randomPast1DigitLocalDateTime() {
+    private static OffsetDateTime randomPast1DigitOffsetDateTime() {
         final int year = RANDOM.nextInt(9);
         final int month = RANDOM.nextInt(12) + 1;
         final int day = RANDOM.nextInt(YearMonth.of(year, month).lengthOfMonth()) + 1;
-        return LocalDateTime.of(
+        return OffsetDateTime.of(
                 year,
                 month,
                 day,
                 RANDOM.nextInt(24),
                 RANDOM.nextInt(60),
                 RANDOM.nextInt(60),
-                RANDOM.nextInt(1_000_000_000));
+                RANDOM.nextInt(1_000_000_000),
+                ZoneOffset.UTC);
     }
 
     private static void assertStrftime(
@@ -378,7 +382,7 @@ public class TestPosixTimeFormatLibc {
 
     private static void assertStrptime(
             final String format,
-            final LocalDateTime datetime,
+            final OffsetDateTime datetime,
             final String locale) {
         final String pathTryStrptime = System.getProperty("reftestLibcTryStrptime");
         assertNotNull(pathTryStrptime);
