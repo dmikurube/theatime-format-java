@@ -13,6 +13,16 @@ group = "org.theatime"
 version = "0.1.0-SNAPSHOT"
 description = "A date-time formatter to/from a string"
 
+sourceSets {
+    reftestLibc {
+        java {
+            srcDir "src/reftestLibc/java"
+        }
+        compileClasspath += main.output
+        runtimeClasspath += main.output
+    }
+}
+
 configurations {
     compileClasspath.resolutionStrategy.activateDependencyLocking()
     runtimeClasspath.resolutionStrategy.activateDependencyLocking()
@@ -33,16 +43,6 @@ java {
 
     withJavadocJar()
     withSourcesJar()
-}
-
-sourceSets {
-    reftestLibc {
-        java {
-            srcDir "src/reftestLibc/java"
-        }
-        compileClasspath += main.output
-        runtimeClasspath += main.output
-    }
 }
 
 dependencies {
