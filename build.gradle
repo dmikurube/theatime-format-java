@@ -36,6 +36,12 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
+tasks.withType(JavaCompile).matching { it.name.toLowerCase().contains("test") }.configureEach {
+    javaCompiler = javaToolchains.compilerFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(8)
@@ -46,12 +52,12 @@ java {
 }
 
 dependencies {
-    testImplementation platform(group: "org.junit", name: "junit-bom", version: "6.0.3")
-    testImplementation(group: "org.junit.jupiter", name: "junit-jupiter-api")
-    testImplementation(group: "org.junit.jupiter", name: "junit-jupiter-params")
+    testImplementation platform("org.junit:junit-bom:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
 
-    testRuntimeOnly(group: "org.junit.jupiter", name: "junit-jupiter-engine")
-    testRuntimeOnly(group: "org.junit.platform", name: "junit-platform-launcher")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 javadoc {
@@ -81,6 +87,10 @@ javadocJar {
     }
 }
 
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
@@ -92,7 +102,7 @@ publishing {
             // See: https://docs.gradle.org/current/javadoc/org/gradle/api/plugins/JavaPluginExtension.html
 
             pom {  // https://central.sonatype.org/pages/requirements.html
-                packaging "jar"
+                packaging = "jar"
 
                 name = project.name
                 description = project.description
@@ -109,6 +119,7 @@ publishing {
 
                 developers {
                     developer {
+                        id = "dmikurube"
                         name = "Dai MIKURUBE"
                         email = "dmikurube@acm.org"
                     }
@@ -127,9 +138,9 @@ publishing {
         maven {  // publishMavenPublicationToMavenCentralRepository
             name = "mavenCentral"
             if (project.version.endsWith("-SNAPSHOT")) {
-                url "https://oss.sonatype.org/content/repositories/snapshots"
+                url = "https://oss.sonatype.org/content/repositories/snapshots"
             } else {
-                url "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
             }
 
             credentials {
@@ -150,6 +161,10 @@ signing {
 
 test {
     useJUnitPlatform()
+    outputs.upToDateWhen { false }
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
     testLogging {
         events "passed", "skipped", "failed", "standardOut", "standardError"
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -157,7 +172,6 @@ test {
         showExceptions = true
         showStackTraces = true
         showStandardStreams = true
-        outputs.upToDateWhen { false }
     }
 }
 
@@ -173,6 +187,10 @@ task reftestLibc(type: Test) {
     testClassesDirs = sourceSets.reftestLibc.output.classesDirs
 
     useJUnitPlatform()
+    outputs.upToDateWhen { false }
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
     testLogging {
         events "passed", "skipped", "failed", "standardOut", "standardError"
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -180,11 +198,14 @@ task reftestLibc(type: Test) {
         showExceptions = true
         showStackTraces = true
         showStandardStreams = true
-        outputs.upToDateWhen { false }
     }
 }
 
 tasks.withType(Checkstyle) {
+    outputs.upToDateWhen { false }
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
     reports {
         xml.required = false
         html.required = true
